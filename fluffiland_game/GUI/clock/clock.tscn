@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://GUI/clock/clock_back.png" type="Texture" id=1]
+[ext_resource path="res://GUI/clock/clock_rotating_part.png" type="Texture" id=2]
+
+[sub_resource type="Animation" id=1]
+resource_name = "clock_rotation"
+length = 120.0
+loop = true
+step = 30.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 120 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
+
+[node name="clock" type="Node2D"]
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, -3 )
+texture = ExtResource( 2 )
+
+[node name="clock_rotation" type="AnimationPlayer" parent="."]
+autoplay = "clock_rotation"
+method_call_mode = 1
+anims/clock_rotation = SubResource( 1 )
+
+[node name="border" type="Sprite" parent="."]
+texture = ExtResource( 1 )

@@ -1,0 +1,749 @@
+[gd_scene load_steps=55 format=2]
+
+[ext_resource path="res://GUI/items_tree/background/items_tree_background.png" type="Texture" id=1]
+[ext_resource path="res://GUI/items_tree/information_item/info_panel_base.png" type="Texture" id=2]
+[ext_resource path="res://font/font.tres" type="DynamicFont" id=3]
+[ext_resource path="res://GUI/items_tree/buttons/animals_button/animals_button_clicked/animals_button_clicked.png" type="Texture" id=4]
+[ext_resource path="res://GUI/items_tree/buttons/animals_button/animals_button_unclicked/animals_button_unclicked.png" type="Texture" id=5]
+[ext_resource path="res://GUI/items_tree/buttons/vegetals_button/vegetals_button_clicked/items_tree_V1.png" type="Texture" id=6]
+[ext_resource path="res://GUI/items_tree/buttons/vegetals_button/vegetals_button_unclicked/vegetals_button_unclicked.png" type="Texture" id=7]
+[ext_resource path="res://GUI/items_tree/buttons/evenments_button/evenments_button_unclicked/evenements_button_unclicked.png" type="Texture" id=8]
+[ext_resource path="res://GUI/items_tree/buttons/evenments_button/evenments_button_clicked/evenments_button_clicked.png" type="Texture" id=9]
+[ext_resource path="res://GUI/items_tree/animal_tree/animal_tree_background/ianimal_tree_bckground.png" type="Texture" id=10]
+[ext_resource path="res://GUI/items_tree/animal_tree/button/fluffilus_button/fluffilus_button_unclicked.png" type="Texture" id=11]
+[ext_resource path="res://GUI/items_tree/animal_tree/button/fluffilus_button/fluffilus_button_clicked.png" type="Texture" id=12]
+[ext_resource path="res://GUI/items_tree/animal_tree/button/unavailable/unavailable.png" type="Texture" id=13]
+[ext_resource path="res://GUI/items_tree/animal_tree/button/rabbibranch/rabbibranch_unclicked.png" type="Texture" id=14]
+[ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=15]
+[ext_resource path="res://GUI/items_tree/information_item/background.png" type="Texture" id=16]
+[ext_resource path="res://GUI/items_tree/eat_and_produce.gd" type="Script" id=17]
+[ext_resource path="res://GUI/items_tree/animal_tree/button/rabbibranch/rabbibranch_clicked.png" type="Texture" id=18]
+[ext_resource path="res://GUI/items_tree/information_item/eat_and_produce_graphic/animal_eat_produce.png" type="Texture" id=19]
+[ext_resource path="res://GUI/items_tree/items_tree.gd" type="Script" id=20]
+[ext_resource path="res://GUI/items_tree/vegetal_tree/vegetal_tree_background/vegetal_tree_background.png" type="Texture" id=21]
+[ext_resource path="res://GUI/close_icon_clicked.png" type="Texture" id=22]
+[ext_resource path="res://GUI/items_tree/animal_tree/button/unavailable/unavailable_clicked.png" type="Texture" id=23]
+[ext_resource path="res://GUI/items_tree/vegetal_tree/button/unavailable_button/unavailable_vegetal_button.png" type="Texture" id=24]
+[ext_resource path="res://GUI/items_tree/ancistrus_button.gd" type="Script" id=25]
+[ext_resource path="res://GUI/items_tree/vegetal_tree/button/pearl_flower/pearl_flower_unclicked.png" type="Texture" id=26]
+[ext_resource path="res://GUI/items_tree/vegetal_tree/button/pearl_flower/pearl_flower_clicked.png" type="Texture" id=27]
+[ext_resource path="res://GUI/items_tree/pearl_flower_button.gd" type="Script" id=28]
+[ext_resource path="res://GUI/items_tree/water_flower_button.gd" type="Script" id=29]
+[ext_resource path="res://GUI/items_tree/vegetal_tree/button/water_flower_button/water_flower_unclicked.png" type="Texture" id=30]
+[ext_resource path="res://GUI/items_tree/vegetal_tree/button/water_flower_button/water_flower_clicked.png" type="Texture" id=31]
+[ext_resource path="res://GUI/items_tree/vegetal_tree/button/strength_flower_button/strength_flower_clicked.png" type="Texture" id=32]
+[ext_resource path="res://GUI/items_tree/catshark.gd" type="Script" id=33]
+[ext_resource path="res://GUI/items_tree/fluffilus_button.gd" type="Script" id=34]
+[ext_resource path="res://GUI/items_tree/coral_ocelot.gd" type="Script" id=35]
+[ext_resource path="res://GUI/items_tree/strength_flower_button.gd" type="Script" id=36]
+[ext_resource path="res://GUI/items_tree/vegetal_tree/button/strength_flower_button/strength_flower_unclicked.png" type="Texture" id=37]
+[ext_resource path="res://GUI/items_tree/cuttledog.gd" type="Script" id=38]
+[ext_resource path="res://GUI/items_tree/information_item/buy_button_pushed.png" type="Texture" id=39]
+[ext_resource path="res://GUI/items_tree/information_item/energy.png" type="Texture" id=40]
+[ext_resource path="res://GUI/items_tree/information_item/health.png" type="Texture" id=41]
+[ext_resource path="res://GUI/items_tree/information_item/pearl.png" type="Texture" id=42]
+[ext_resource path="res://GUI/items_tree/information_item/buy_button.png" type="Texture" id=43]
+[ext_resource path="res://GUI/items_tree/bush_button.gd" type="Script" id=44]
+[ext_resource path="res://GUI/items_tree/tree_button.gd" type="Script" id=45]
+[ext_resource path="res://GUI/items_tree/vegetal_tree/button/bush_button/bush_button_clicked.png" type="Texture" id=46]
+[ext_resource path="res://GUI/items_tree/vegetal_tree/button/clover_tree_button/clover_tree_unclicked.png" type="Texture" id=47]
+[ext_resource path="res://GUI/items_tree/clover_tree_button.gd" type="Script" id=48]
+[ext_resource path="res://GUI/items_tree/vegetal_tree/button/clover_tree_button/clover_tree_clicked.png" type="Texture" id=49]
+[ext_resource path="res://GUI/items_tree/vegetal_tree/button/bush_button/bush_button_unclicked.png" type="Texture" id=51]
+[ext_resource path="res://GUI/items_tree/tree_button2.gd" type="Script" id=52]
+[ext_resource path="res://GUI/items_tree/berry_bush_button.gd" type="Script" id=55]
+[ext_resource path="res://GUI/items_tree/rabbibranch_button.gd" type="Script" id=60]
+[ext_resource path="res://GUI/close_icon.png" type="Texture" id=61]
+
+[node name="Items_tree" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 0.00012207
+script = ExtResource( 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="background" type="NinePatchRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="item_information" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="picture_bg" type="TextureRect" parent="item_information"]
+margin_left = 1235.0
+margin_top = 183.0
+margin_right = 1275.0
+margin_bottom = 223.0
+texture = ExtResource( 16 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="item_background" type="TextureRect" parent="item_information"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1215.0
+margin_top = 119.0
+margin_right = -321.0
+margin_bottom = -50.0
+texture = ExtResource( 2 )
+
+[node name="health" type="TextureRect" parent="item_information"]
+anchor_left = 0.651
+anchor_top = 0.601
+anchor_right = 0.674
+anchor_bottom = 0.641
+margin_left = 0.079834
+margin_top = -12.08
+margin_right = -0.0800781
+margin_bottom = -12.28
+texture = ExtResource( 41 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_picture" type="TextureRect" parent="item_information"]
+anchor_left = 0.651
+anchor_top = 0.585
+anchor_right = 0.689
+anchor_bottom = 0.65
+margin_left = 114.08
+margin_top = -381.859
+margin_right = 113.12
+margin_bottom = -382.059
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="specie_name" type="Label" parent="item_information"]
+margin_left = 1232.0
+margin_top = 140.0
+margin_right = 1580.0
+margin_bottom = 179.0
+custom_fonts/font = ExtResource( 15 )
+custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
+custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="health_text" type="Label" parent="item_information"]
+margin_left = 1298.0
+margin_top = 637.0
+margin_right = 1359.0
+margin_bottom = 680.0
+custom_fonts/font = ExtResource( 15 )
+custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
+custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="energy" type="TextureRect" parent="item_information"]
+anchor_left = 0.651
+anchor_top = 0.585
+anchor_right = 0.689
+anchor_bottom = 0.65
+margin_left = 144.08
+margin_top = 5.20001
+margin_right = 121.12
+margin_bottom = -27.0
+texture = ExtResource( 40 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="energy_text" type="Label" parent="item_information"]
+margin_left = 1444.0
+margin_top = 636.0
+margin_right = 1501.0
+margin_bottom = 680.0
+custom_fonts/font = ExtResource( 15 )
+custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
+custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cost" type="TextureRect" parent="item_information"]
+anchor_left = 0.651
+anchor_top = 0.585
+anchor_right = 0.689
+anchor_bottom = 0.65
+margin_left = -6.92017
+margin_top = -123.8
+margin_right = -7.88013
+margin_bottom = -142.0
+texture = ExtResource( 42 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cost_text" type="Label" parent="item_information"]
+margin_left = 1299.0
+margin_top = 509.0
+margin_right = 1359.0
+margin_bottom = 561.0
+custom_fonts/font = ExtResource( 15 )
+custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
+custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="description" type="Label" parent="item_information"]
+anchor_left = 0.645
+anchor_top = 0.78
+anchor_right = 0.818
+anchor_bottom = 0.926
+margin_left = 20.6
+margin_top = -106.4
+margin_right = -19.5602
+margin_bottom = -84.08
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.694118, 0.388235, 0.360784, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="buy_button" type="TextureButton" parent="item_information"]
+anchor_left = 0.744
+anchor_top = 0.44
+anchor_right = 0.807
+anchor_bottom = 0.507
+margin_left = 39.9418
+margin_top = 31.8
+margin_right = 21.9818
+margin_bottom = 14.4399
+focus_mode = 1
+enabled_focus_mode = 1
+texture_normal = ExtResource( 43 )
+texture_pressed = ExtResource( 39 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="eat_and_produce" type="Control" parent="item_information"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 17 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="eat_and_produce_box" type="HBoxContainer" parent="item_information/eat_and_produce"]
+margin_left = 1224.0
+margin_top = 947.0
+margin_right = 1590.0
+margin_bottom = 1007.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_eat_1" type="TextureRect" parent="item_information/eat_and_produce/eat_and_produce_box"]
+margin_right = 60.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_eat_2" type="TextureRect" parent="item_information/eat_and_produce/eat_and_produce_box"]
+margin_left = 64.0
+margin_right = 124.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_eat_produce" type="TextureRect" parent="item_information/eat_and_produce/eat_and_produce_box"]
+margin_left = 128.0
+margin_right = 238.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 110, 60 )
+texture = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_produce_1" type="TextureRect" parent="item_information/eat_and_produce/eat_and_produce_box"]
+margin_left = 242.0
+margin_right = 302.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_produce_2" type="TextureRect" parent="item_information/eat_and_produce/eat_and_produce_box"]
+margin_left = 306.0
+margin_right = 366.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="trees" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -888.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_tree" type="Control" parent="trees"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 161.0
+margin_bottom = -60.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animals_tree_background" type="NinePatchRect" parent="trees/animal_tree"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 266.0
+margin_top = 66.0
+margin_right = 60.0
+margin_bottom = 33.0
+texture = ExtResource( 10 )
+region_rect = Rect2( 264.757, 63.943, 981.102, 1022.97 )
+patch_margin_left = 50
+patch_margin_top = 50
+patch_margin_right = 50
+patch_margin_bottom = 50
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="buttons" type="Control" parent="trees/animal_tree"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 321.0
+margin_top = 151.0
+margin_right = -716.0
+margin_bottom = -49.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button_container" type="HBoxContainer" parent="trees/animal_tree/buttons"]
+margin_right = 106.0
+margin_bottom = 848.0
+rect_min_size = Vector2( 106, 848 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="column_1" type="VBoxContainer" parent="trees/animal_tree/buttons/Button_container"]
+margin_right = 106.0
+margin_bottom = 848.0
+rect_min_size = Vector2( 106, 106 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="fluffilus_button" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_1"]
+margin_right = 106.0
+margin_bottom = 106.0
+focus_mode = 1
+toggle_mode = true
+action_mode = 0
+enabled_focus_mode = 1
+texture_normal = ExtResource( 11 )
+texture_pressed = ExtResource( 12 )
+texture_disabled = ExtResource( 12 )
+script = ExtResource( 34 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="column_2" type="VBoxContainer" parent="trees/animal_tree/buttons/Button_container"]
+margin_left = 110.0
+margin_right = 216.0
+margin_bottom = 848.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="catshark" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_2"]
+margin_right = 106.0
+margin_bottom = 106.0
+focus_mode = 1
+toggle_mode = true
+action_mode = 0
+enabled_focus_mode = 1
+texture_normal = ExtResource( 13 )
+texture_pressed = ExtResource( 23 )
+script = ExtResource( 33 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cuttledog" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_2"]
+margin_top = 110.0
+margin_right = 106.0
+margin_bottom = 216.0
+focus_mode = 1
+toggle_mode = true
+action_mode = 0
+enabled_focus_mode = 1
+texture_normal = ExtResource( 13 )
+script = ExtResource( 38 )
+
+[node name="column_3" type="VBoxContainer" parent="trees/animal_tree/buttons/Button_container"]
+margin_left = 220.0
+margin_right = 326.0
+margin_bottom = 848.0
+rect_min_size = Vector2( 106, 106 )
+
+[node name="coral_ocelot" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_3"]
+margin_right = 106.0
+margin_bottom = 106.0
+focus_mode = 1
+toggle_mode = true
+action_mode = 0
+enabled_focus_mode = 1
+texture_normal = ExtResource( 13 )
+script = ExtResource( 35 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="column_4" type="VBoxContainer" parent="trees/animal_tree/buttons/Button_container"]
+margin_left = 330.0
+margin_right = 436.0
+margin_bottom = 848.0
+
+[node name="rabbibranch_button" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_4"]
+margin_right = 106.0
+margin_bottom = 106.0
+focus_mode = 1
+toggle_mode = true
+action_mode = 0
+enabled_focus_mode = 1
+texture_normal = ExtResource( 14 )
+texture_pressed = ExtResource( 18 )
+texture_disabled = ExtResource( 18 )
+stretch_mode = 2
+script = ExtResource( 60 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="column_5" type="VBoxContainer" parent="trees/animal_tree/buttons/Button_container"]
+margin_left = 440.0
+margin_right = 546.0
+margin_bottom = 848.0
+
+[node name="ancistrus_button" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_5"]
+margin_right = 106.0
+margin_bottom = 106.0
+texture_normal = ExtResource( 13 )
+script = ExtResource( 25 )
+
+[node name="vegetal_tree" type="Control" parent="trees"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 161.0
+margin_bottom = -60.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vegetal_tree_background" type="NinePatchRect" parent="trees/vegetal_tree"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 266.0
+margin_top = 66.0
+margin_right = 60.0
+margin_bottom = 33.0
+texture = ExtResource( 21 )
+region_rect = Rect2( 266, 66, 980, 1021 )
+patch_margin_left = 50
+patch_margin_top = 50
+patch_margin_right = 50
+patch_margin_bottom = 50
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="buttons" type="Control" parent="trees/vegetal_tree"]
+margin_left = 321.0
+margin_top = 151.0
+margin_right = 361.0
+margin_bottom = 191.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button_container" type="VBoxContainer" parent="trees/vegetal_tree/buttons"]
+margin_right = 844.0
+margin_bottom = 848.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="column_1" type="HBoxContainer" parent="trees/vegetal_tree/buttons/Button_container"]
+margin_right = 844.0
+margin_bottom = 106.0
+rect_min_size = Vector2( 106, 106 )
+
+[node name="bush_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_1"]
+margin_right = 106.0
+margin_bottom = 106.0
+toggle_mode = true
+texture_normal = ExtResource( 51 )
+texture_pressed = ExtResource( 51 )
+texture_disabled = ExtResource( 46 )
+script = ExtResource( 44 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pearl_flower_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_1"]
+margin_left = 110.0
+margin_right = 216.0
+margin_bottom = 106.0
+toggle_mode = true
+texture_normal = ExtResource( 26 )
+texture_pressed = ExtResource( 27 )
+texture_disabled = ExtResource( 26 )
+script = ExtResource( 28 )
+
+[node name="water_flower_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_1"]
+margin_left = 220.0
+margin_right = 326.0
+margin_bottom = 106.0
+toggle_mode = true
+texture_normal = ExtResource( 30 )
+texture_pressed = ExtResource( 31 )
+texture_disabled = ExtResource( 30 )
+script = ExtResource( 29 )
+
+[node name="strength_flower_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_1"]
+margin_left = 330.0
+margin_right = 436.0
+margin_bottom = 106.0
+toggle_mode = true
+texture_normal = ExtResource( 37 )
+texture_pressed = ExtResource( 32 )
+texture_disabled = ExtResource( 37 )
+script = ExtResource( 36 )
+
+[node name="column_2" type="HBoxContainer" parent="trees/vegetal_tree/buttons/Button_container"]
+margin_top = 110.0
+margin_right = 844.0
+margin_bottom = 216.0
+rect_min_size = Vector2( 106, 106 )
+
+[node name="tree_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_2"]
+margin_right = 106.0
+margin_bottom = 106.0
+toggle_mode = true
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 24 )
+texture_disabled = ExtResource( 24 )
+script = ExtResource( 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="big_tree_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_2"]
+margin_left = 110.0
+margin_right = 216.0
+margin_bottom = 106.0
+toggle_mode = true
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 24 )
+texture_disabled = ExtResource( 24 )
+script = ExtResource( 52 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="clover_tree_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_2"]
+margin_left = 220.0
+margin_right = 326.0
+margin_bottom = 106.0
+toggle_mode = true
+texture_normal = ExtResource( 47 )
+texture_pressed = ExtResource( 49 )
+texture_disabled = ExtResource( 49 )
+script = ExtResource( 48 )
+
+[node name="column_3" type="HBoxContainer" parent="trees/vegetal_tree/buttons/Button_container"]
+margin_top = 220.0
+margin_right = 844.0
+margin_bottom = 326.0
+rect_min_size = Vector2( 106, 106 )
+
+[node name="berry_bush_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_3"]
+margin_right = 106.0
+margin_bottom = 106.0
+toggle_mode = true
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 24 )
+script = ExtResource( 55 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="column_4" type="HBoxContainer" parent="trees/vegetal_tree/buttons/Button_container"]
+margin_top = 330.0
+margin_right = 844.0
+margin_bottom = 436.0
+rect_min_size = Vector2( 106, 106 )
+
+[node name="column_5" type="HBoxContainer" parent="trees/vegetal_tree/buttons/Button_container"]
+margin_top = 440.0
+margin_right = 844.0
+margin_bottom = 440.0
+
+[node name="menu_buttons" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 309.0
+margin_right = -1182.0
+margin_bottom = -957.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animals_button" type="TextureButton" parent="menu_buttons"]
+margin_top = 55.0
+margin_right = 144.0
+margin_bottom = 123.0
+toggle_mode = true
+pressed = true
+action_mode = 0
+texture_normal = ExtResource( 5 )
+texture_pressed = ExtResource( 4 )
+texture_disabled = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animals_text" type="Label" parent="menu_buttons/animals_button"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 24.0
+margin_top = 12.0
+margin_right = -25.0
+margin_bottom = -11.0
+custom_fonts/font = ExtResource( 3 )
+text = "animals"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vegetals_button" type="TextureButton" parent="menu_buttons"]
+margin_left = 144.0
+margin_top = 55.0
+margin_right = 288.0
+margin_bottom = 123.0
+toggle_mode = true
+texture_normal = ExtResource( 7 )
+texture_pressed = ExtResource( 6 )
+texture_disabled = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vegetals_text" type="Label" parent="menu_buttons/vegetals_button"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 23.0
+margin_top = 11.0
+margin_right = -24.0
+margin_bottom = -11.0
+custom_fonts/font = ExtResource( 3 )
+text = "vegetals"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="envenments_button" type="TextureButton" parent="menu_buttons"]
+margin_left = 284.926
+margin_top = 58.7406
+margin_right = 428.926
+margin_bottom = 126.741
+toggle_mode = true
+texture_normal = ExtResource( 8 )
+texture_pressed = ExtResource( 9 )
+
+[node name="evenments" type="Label" parent="menu_buttons/envenments_button"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = ExtResource( 3 )
+text = "evenments"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="close_item_tree" type="TextureButton" parent="."]
+anchor_left = 0.797
+anchor_top = 0.047
+anchor_right = 0.823
+anchor_bottom = 0.094
+margin_left = -0.240234
+margin_top = 0.239998
+margin_right = -0.160156
+margin_bottom = -0.520004
+texture_normal = ExtResource( 61 )
+texture_pressed = ExtResource( 22 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="item_information/buy_button" to="." method="_on_buy_button_pressed"]
+[connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_1/fluffilus_button" to="." method="_on_fluffilus_button_pressed"]
+[connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_2/catshark" to="." method="_on_catshark_pressed"]
+[connection signal="unmasked" from="trees/animal_tree/buttons/Button_container/column_2/catshark" to="." method="_on_catshark_unmasked"]
+[connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_2/cuttledog" to="." method="_on_cuttledog_pressed"]
+[connection signal="unmasked" from="trees/animal_tree/buttons/Button_container/column_2/cuttledog" to="." method="_on_cuttledog_unmasked"]
+[connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_3/coral_ocelot" to="." method="_on_coral_ocelot_pressed"]
+[connection signal="unmasked" from="trees/animal_tree/buttons/Button_container/column_3/coral_ocelot" to="." method="_on_coral_ocelot_unmasked"]
+[connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_4/rabbibranch_button" to="." method="_on_rabbibranch_button_pressed"]
+[connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_5/ancistrus_button" to="." method="_on_ancistrus_button_pressed"]
+[connection signal="unmasked" from="trees/animal_tree/buttons/Button_container/column_5/ancistrus_button" to="." method="_on_ancistrus_button_unmasked"]
+[connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_1/bush_button" to="." method="_on_bush_button_pressed"]
+[connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_1/pearl_flower_button" to="." method="_on_pearl_flower_button_pressed"]
+[connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_1/water_flower_button" to="." method="_on_water_flower_button_pressed"]
+[connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_1/strength_flower_button" to="." method="_on_strength_flower_button_pressed"]
+[connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_2/tree_button" to="." method="_on_tree_button_pressed"]
+[connection signal="unmasked" from="trees/vegetal_tree/buttons/Button_container/column_2/tree_button" to="." method="_on_tree_button_unmasked"]
+[connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_2/big_tree_button" to="." method="_on_big_tree_button_pressed"]
+[connection signal="unmasked" from="trees/vegetal_tree/buttons/Button_container/column_2/big_tree_button" to="." method="_on_big_tree_button_unmasked"]
+[connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_2/clover_tree_button" to="." method="_on_clover_tree_button_pressed"]
+[connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_3/berry_bush_button" to="." method="_on_berry_bush_button_pressed"]
+[connection signal="unmasked" from="trees/vegetal_tree/buttons/Button_container/column_3/berry_bush_button" to="." method="_on_berry_bush_button_unmasked"]
+[connection signal="pressed" from="menu_buttons/animals_button" to="." method="_on_animals_button_pressed"]
+[connection signal="pressed" from="menu_buttons/vegetals_button" to="." method="_on_vegetals_button_pressed"]
+[connection signal="pressed" from="close_item_tree" to="." method="_on_close_item_tree_pressed"]

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://items_selected/fluffilus_item/fluffilus_item_texture.png" type="Texture" id=1]
+[ext_resource path="res://items_selected/fluffilus_item/fluffilus_item.gd" type="Script" id=2]
+
+[node name="fluffilus_item" type="TextureButton"]
+anchor_left = -0.053
+anchor_top = -0.101
+margin_left = -1.59769
+margin_top = -0.262436
+margin_right = -1.3577
+margin_bottom = 0.657562
+texture_normal = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

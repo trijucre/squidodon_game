@@ -1,0 +1,108 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://entities/orca_bear/orca_bear_adult/healthbarcarnivore.gd" type="Script" id=1]
+[ext_resource path="res://entities/sand_catshark/sand_catshark_adult/sprites/side_default/catshark_side_default.png" type="Texture" id=2]
+[ext_resource path="res://entities/sand_catshark/sand_catshark_adult/sand_catshark.gd" type="Script" id=3]
+[ext_resource path="res://entities/orca_bear/orca_bear_adult/energybarcarnivore.gd" type="Script" id=7]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 5.41309, 5.13261 )
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 690.053
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 87.5129
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "side_run",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "side_attack",
+"speed": 1.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "side_hurt",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "side_default",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "side_walk",
+"speed": 5.0
+} ]
+
+[node name="sand_catshark" type="KinematicBody2D"]
+collision_layer = 34
+collision_mask = 33015
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2( 7, 7 )
+shape = SubResource( 1 )
+
+[node name="fare_vision" type="Area2D" parent="."]
+collision_layer = 1024
+collision_mask = 33008
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="fare_vision"]
+shape = SubResource( 2 )
+
+[node name="close_vision" type="Area2D" parent="."]
+collision_layer = 1024
+collision_mask = 48
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="close_vision"]
+shape = SubResource( 3 )
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="healthbar" type="ColorRect" parent="."]
+margin_left = -111.425
+margin_top = -193.377
+margin_right = -71.4255
+margin_bottom = -153.377
+color = Color( 1, 0, 0, 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="energybar" type="ColorRect" parent="."]
+margin_left = -109.988
+margin_top = -130.116
+margin_right = -69.9877
+margin_bottom = -90.1162
+color = Color( 1, 0.796078, 0, 1 )
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poop" type="Timer" parent="."]
+wait_time = 30.0
+autostart = true
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 4 )
+animation = "side_hurt"
+[connection signal="aicarnivore_stats_changed" from="." to="healthbar" method="_on_aicarnivore_aicarnivore_stats_changed"]
+[connection signal="aicarnivore_stats_changed" from="." to="energybar" method="_on_aicarnivore_aicarnivore_stats_changed"]
+[connection signal="body_entered" from="fare_vision" to="." method="_on_fare_vision_body_entered"]
+[connection signal="body_exited" from="fare_vision" to="." method="_on_fare_vision_body_exited"]
+[connection signal="body_entered" from="close_vision" to="." method="_on_close_vision_body_entered"]
+[connection signal="body_exited" from="close_vision" to="." method="_on_close_vision_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="poop" to="." method="_on_poop_timeout"]
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]

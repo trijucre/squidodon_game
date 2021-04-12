@@ -1,0 +1,120 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://font/font.tres" type="DynamicFont" id=1]
+[ext_resource path="res://info_panel.gd" type="Script" id=2]
+[ext_resource path="res://GUI/info_panel/info_panel_base.png" type="Texture" id=3]
+[ext_resource path="res://GUI/close_icon.png" type="Texture" id=4]
+[ext_resource path="res://GUI/close_icon_clicked.png" type="Texture" id=5]
+[ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=6]
+[ext_resource path="res://GUI/items_tree/information_item/health.png" type="Texture" id=7]
+[ext_resource path="res://GUI/items_tree/information_item/energy.png" type="Texture" id=8]
+
+[node name="info_panel" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="animal_picture" type="TextureRect" parent="."]
+margin_left = -235.0
+margin_top = 2.0
+margin_right = -195.0
+margin_bottom = 42.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="info_panel_background" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+
+[node name="info_panel_text" type="Control" parent="."]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 54.0
+margin_bottom = 54.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="name" type="Label" parent="info_panel_text"]
+margin_left = -232.0
+margin_top = -288.0
+margin_right = 152.0
+margin_bottom = -196.0
+custom_fonts/font = ExtResource( 6 )
+custom_colors/font_color = Color( 0.74902, 0.45098, 0.411765, 1 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="specie" type="Label" parent="info_panel_text"]
+anchor_left = -4.62
+anchor_top = 0.2
+anchor_right = 2.2
+anchor_bottom = 0.92
+margin_left = 1.52588e-05
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0.74902, 0.45098, 0.411765, 1 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="health_pic" type="TextureRect" parent="info_panel_text"]
+margin_left = -231.617
+margin_top = -151.0
+margin_right = -187.617
+margin_bottom = -107.0
+texture = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="energy_pic" type="TextureRect" parent="info_panel_text"]
+margin_left = -231.0
+margin_top = -78.4632
+margin_right = -182.0
+margin_bottom = -34.4632
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="mood" type="Sprite" parent="."]
+position = Vector2( 188, 40 )
+
+[node name="close_button" type="TextureButton" parent="."]
+margin_left = 193.0
+margin_top = -296.0
+margin_right = 243.0
+margin_bottom = -246.0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gender" type="Sprite" parent="."]
+position = Vector2( 206, -197 )
+
+[node name="pregnant" type="Sprite" parent="."]
+position = Vector2( 196, 140 )
+
+[node name="health_bar" type="TextureRect" parent="."]
+margin_left = -170.0
+margin_top = -158.0
+margin_right = -130.0
+margin_bottom = -118.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="energy_bar" type="TextureRect" parent="."]
+margin_left = -170.0
+margin_top = -82.0
+margin_right = -130.0
+margin_bottom = -42.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="close_button" to="." method="_on_close_button_pressed"]

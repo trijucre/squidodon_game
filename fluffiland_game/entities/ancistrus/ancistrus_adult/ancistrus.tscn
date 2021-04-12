@@ -1,0 +1,90 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://entities/ancistrus/ancistrus_adult/ancistrus.gd" type="Script" id=1]
+[ext_resource path="res://entities/ancistrus/ancistrus_adult/sprites/side_default/ancistrus_adult_side.png" type="Texture" id=2]
+[ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=5]
+[ext_resource path="res://entities/fluffilus/fluffilus_adult/gender.gd" type="Script" id=6]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 82.6647
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "side_hurt",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "side_sleep",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "side_walk",
+"speed": 8.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "side_default",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": false,
+"name": "side_attack",
+"speed": 8.0
+} ]
+
+[node name="ancistrus" type="KinematicBody2D"]
+collision_layer = 66
+collision_mask = 2147483649
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -2, -64 )
+shape = SubResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -68 )
+frames = SubResource( 2 )
+animation = "side_sleep"
+
+[node name="name" type="Label" parent="."]
+margin_left = -159.0
+margin_top = -196.0
+margin_right = 158.0
+margin_bottom = -151.0
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0.74902, 0.45098, 0.411765, 1 )
+align = 1
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="poop" type="Timer" parent="."]
+wait_time = 20.0
+autostart = true
+
+[node name="energyandlife" type="Timer" parent="."]
+autostart = true
+
+[node name="pregnancy" type="Timer" parent="."]
+wait_time = 120.0
+one_shot = true
+
+[node name="info_button" type="TextureButton" parent="."]
+margin_left = -39.0
+margin_top = -87.0
+margin_right = 36.0
+margin_bottom = -15.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="gender" from="." to="name" method="_on_fluffilus_gender"]
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
+[connection signal="timeout" from="poop" to="." method="_on_poop_timeout"]
+[connection signal="timeout" from="energyandlife" to="." method="_on_energyandlife_timeout"]
+[connection signal="timeout" from="pregnancy" to="." method="_on_pregnancy_timeout"]
+[connection signal="pressed" from="info_button" to="." method="_on_info_button_pressed"]
