@@ -53,23 +53,23 @@ func _process(_delta):
 
 func button_text(button) :
 	
-	if button.item == "fluffilus" :
-		button.text = str("fluffilus : ",fluffilus_count)
+	#if button.item == "fluffilus" :
+	#	button.text = str("fluffilus : ",fluffilus_count)
 	
-	elif button.item == "cuttledog" :
-		button.text = str("cuttledogs : ", cuttledog_count)
+	#elif button.item == "cuttledog" :
+	#	button.text = str("cuttledogs : ", cuttledog_count)
 	
-	elif button.item == "coral_ocelot" :
-		button.text = str("coral_ocelots : " , coral_ocelot_count)
+	#elif button.item == "coral_ocelot" :
+	#	button.text = str("coral_ocelots : " , coral_ocelot_count)
 
-	elif button.item == "sand_catshark" :
-		button.text = str("sand_catsharks : ", sand_catshark_count)
+	#elif button.item == "sand_catshark" :
+	#	button.text = str("sand_catsharks : ", sand_catshark_count)
 		
-	elif button.item == "rabbibranch" :
-		button.text = str("rabbibranchs : ", rabbibranch_count)
+	#elif button.item == "rabbibranch" :
+	#	button.text = str("rabbibranchs : ", rabbibranch_count)
 	
-	else :
-		pass
+	#else :
+	pass
 
 
 func _on_Game_number_of_sand_catshark(Game):

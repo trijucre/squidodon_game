@@ -1,6 +1,6 @@
 [gd_scene load_steps=29 format=2]
 
-[ext_resource path="res://entities/fluffilus/fluffilus_adult/test rays.gd" type="Script" id=1]
+[ext_resource path="res://entities/fluffilus/fluffilus_adult/fluffilus.gd" type="Script" id=1]
 [ext_resource path="res://entities/fluffilus/fluffilus_adult/sprites/side_default/bigfish 2.png" type="Texture" id=2]
 [ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=5]
 [ext_resource path="res://entities/fluffilus/fluffilus_adult/gender.gd" type="Script" id=6]
@@ -26,6 +26,7 @@
 [ext_resource path="res://entities/fluffilus/fluffilus_adult/sprites/side_eat/Timeline 1_0005.png" type="Texture" id=27]
 [ext_resource path="res://entities/fluffilus/fluffilus_adult/sprites/side_walk/side_walk_fluffilus_0010.png" type="Texture" id=28]
 [ext_resource path="res://entities/fluffilus/fluffilus_adult/sprites/side_walk/side_walk_fluffilus_0011.png" type="Texture" id=29]
+
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 49.5591

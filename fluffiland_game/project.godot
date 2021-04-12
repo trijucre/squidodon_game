@@ -20,7 +20,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Jeu Squidodon"
+config/name="fluffiland_game"
 run/main_scene="res://Game.tscn"
 config/icon="res://icon.png"
 
@@ -121,4 +121,3 @@ quality/intended_usage/framebuffer_allocation=0
 quality/intended_usage/framebuffer_allocation.mobile=0
 quality/2d/use_pixel_snap=true
 environment/default_clear_color=Color( 0.0901961, 0.470588, 0.721569, 1 )
-environment/default_environment="res://default_env.tres"

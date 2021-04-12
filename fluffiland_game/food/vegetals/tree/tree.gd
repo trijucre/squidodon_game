@@ -2,7 +2,7 @@ extends StaticBody2D
 
 signal water_spend
 
-#var area_radius = $Area2D/area.get_radius()
+onready var area_radius = $Area2D/area.shape.radius
 
 var cost = 1
 var energy = 200
@@ -12,7 +12,7 @@ var health_max = 200
 var specie = "tree"
 var nutrient = 4
 var nutrient_max = 4
-onready var used_position = Vector2(-30, -1000)
+onready var used_position = Vector2(-30, -600)
 
 
 var bush_scene = preload("res://food/vegetals/tree/tree_produced_bush/tree_produced_bush.tscn")

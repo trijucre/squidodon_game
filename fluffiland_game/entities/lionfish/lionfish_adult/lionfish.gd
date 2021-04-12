@@ -37,7 +37,7 @@ var meat_count = 0
 var dead = false
 
 #variable childbirth
-var child_scene = preload("res://entities/orca_bear/orca_bear_baby/orca_bear_baby.tscn")
+var child_scene = preload("res://entities/lionfish/lionfish_baby/lionfish_baby.tscn")
 
 #variables poop
 var food_eaten = false

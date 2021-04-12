@@ -20,9 +20,9 @@ var water_caps = Vector2(1, -1)
 var tree_caps = Vector3(0.5, -0.2, 0.1) 
 var animal_cap = Vector2(0.5, 0)
 
-var show_areas = false
+
 #var number_animals = 5 #xmap/20
-var pearl_count = 10
+var pearl_count = 10000
 var water_count = 10
 var water_max = 100
 var strength_count = 10
@@ -35,11 +35,11 @@ onready var water_flower = preload ("res://food/vegetals/flowers/water_flower/wa
 onready var pearl_flower = preload ("res://food/vegetals/flowers/pearl_flower/pearl_flower.tscn")
 onready var strength_flower = preload("res://food/vegetals/flowers/strength_flower/strength_flower.tscn")
 onready var berry_bush = preload("res://food/vegetals/bush/bush.tscn")
-onready var big_tree = preload("res://bigtree.tscn")
+#onready var big_tree = preload("res://bigtree.tscn")
 onready var parasite_algae = preload ("res://food/vegetals/parasite_algae/baby/parasite_algae_baby.tscn")
 
-onready var rabbibranch = preload ("res://entities/rabbibranch/rabbibranch_adult/rabbibranch.tscn")
 onready var fluffilus = preload("res://entities/fluffilus/fluffilus_adult/fluffilus.tscn")
+onready var rabbibranch = preload ("res://entities/rabbibranch/rabbibranch_adult/rabbibranch.tscn")
 onready var cuttledog = preload("res://entities/cuttledog/cuttledog_adult/cuttledog.tscn")
 onready var lionfish = preload ("res://entities/lionfish/lionfish_adult/lionfish.tscn")
 onready var sand_catshark = preload ("res://entities/sand_catshark/sand_catshark_adult/sand_catshark.tscn")
@@ -519,9 +519,6 @@ func _on_clover_tree_item_pressed():
 	
 func _on_tree_item_pressed():
 	import_item(tree)
-	
-func _on_big_tree_item_pressed():
-	import_item(big_tree)
 
 func _on_water_flower_item_pressed():
 	import_item(water_flower)

@@ -11,7 +11,7 @@ var specie = "clover_tree"
 var nutrient = 4
 var nutrient_max = 4
 onready var used_position = Vector2(-30, -1000)
-
+onready var radius = $Area2D/CollisionShape2D.shape.radius
 
 var bush_scene = preload("res://food/vegetals/clover_tree/tree_produced-clover/tree_produced_clover.tscn")
 onready var sprite = $Sprite
@@ -30,7 +30,7 @@ onready var thirsty = preload ("res://food/vegetals/tree/sprites/tree_thirsty.pn
 var bush_produced = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
+	print(radius)
 	randomize()
 	
 	add_to_group("clover_tree")

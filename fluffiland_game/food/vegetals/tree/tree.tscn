@@ -4,10 +4,10 @@
 [ext_resource path="res://food/vegetals/tree/sprites/tree.png" type="Texture" id=2]
 [ext_resource path="res://food/vegetals/tree/sprites/tree_thirsty.png" type="Texture" id=3]
 
-[sub_resource type="CircleShape2D" id=3]
+[sub_resource type="CircleShape2D" id=1]
 radius = 150.0
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="SpriteFrames" id=2]
 animations = [ {
 "frames": [ ExtResource( 2 ) ],
 "loop": true,
@@ -20,7 +20,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="CircleShape2D" id=2]
+[sub_resource type="CircleShape2D" id=3]
 radius = 42.79
 
 [node name="tree" type="StaticBody2D"]
@@ -33,15 +33,15 @@ collision_layer = 12
 collision_mask = 12
 
 [node name="area" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 3 )
+shape = SubResource( 1 )
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -288 )
-frames = SubResource( 1 )
+frames = SubResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -1 )
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="bush_timer" type="Timer" parent="."]
 wait_time = 60.0
