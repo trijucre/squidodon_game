@@ -34,7 +34,7 @@ func _process(_delta):
 		emit_signal("instance_fluffilus")
 		
 		if counter_created == false :
-			create_counter()
+		#	create_counter()
 			counter_created = true
 			
 		self.queue_free()
@@ -42,22 +42,22 @@ func _process(_delta):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
-func create_counter() :
-	if counter_text_1.item == null or counter_text_1.item == "fluffilus"  :
-		counter_text_1.item = "fluffilus"
+#func create_counter() :
+	#if counter_text_1.item == null or counter_text_1.item == "fluffilus"  :
+	#	counter_text_1.item = "fluffilus"
 		
-	elif counter_text_2.item == null or counter_text_2.item == "fluffilus"  :
-		counter_text_2.item = "fluffilus"
+	#elif counter_text_2.item == null or counter_text_2.item == "fluffilus"  :
+	#	counter_text_2.item = "fluffilus"
 		
-	elif counter_text_3.item == null or counter_text_3.item == "fluffilus"  :
-		counter_text_3.item = "fluffilus"
+	#elif counter_text_3.item == null or counter_text_3.item == "fluffilus"  :
+	#	counter_text_3.item = "fluffilus"
 				
-	elif counter_text_4.item == null or counter_text_4.item == "fluffilus"  :
-		counter_text_4.item = "fluffilus"
+	#elif counter_text_4.item == null or counter_text_4.item == "fluffilus"  :
+	#	counter_text_4.item = "fluffilus"
 		
-	elif counter_text_5.item == null or counter_text_5.item == "fluffilus"  :
-		counter_text_5.item = "fluffilus"
+	#elif counter_text_5.item == null or counter_text_5.item == "fluffilus"  :
+	#	counter_text_5.item = "fluffilus"
 		
-	elif counter_text_6.item == null or counter_text_6.item == "fluffilus"  :
-		counter_text_6.item = "fluffilus"
+	#elif counter_text_6.item == null or counter_text_6.item == "fluffilus"  :
+	#	counter_text_6.item = "fluffilus"
 

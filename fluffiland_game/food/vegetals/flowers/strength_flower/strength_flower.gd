@@ -8,6 +8,8 @@ onready var pearl_timer = $pearl_generation
 onready var sprite = $flower_sprite
 onready var light = $Light2D
 
+onready var area_radius = $Area2D/area.shape.radius
+
 onready var produced_indicator = preload("res://popup/produced_spent_indicator/strength_produced_indicator.tscn")
 onready var used_indicator = preload("res://popup/produced_spent_indicator/water_used_indicator.tscn")
 onready var produced_position = Vector2(30, -120)

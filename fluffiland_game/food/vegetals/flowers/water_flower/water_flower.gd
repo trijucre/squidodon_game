@@ -3,6 +3,8 @@ extends StaticBody2D
 signal water_earned
 signal strength_spend
 
+onready var area_radius = $Area2D/area.shape.radius
+
 onready var pearl_timer = $pearl_generation
 onready var sprite = $flower_sprite
 

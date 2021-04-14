@@ -11,6 +11,8 @@ var health = 50
 var energy = 50
 var specie = "parasite_algae"
 
+onready var area_radius = $Area2D/area.shape.radius
+
 var hunger 
 onready var child_scene = load ("res://food/vegetals/parasite_algae/baby/parasite_algae_baby.tscn")
 

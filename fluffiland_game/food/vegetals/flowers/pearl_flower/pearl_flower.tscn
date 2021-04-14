@@ -11,24 +11,24 @@ radius = 100.0
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
-"frames": [ ExtResource( 1 ) ],
-"loop": true,
-"name": "closed",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 2 ) ],
 "loop": true,
 "name": "open",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 5 ) ],
+"frames": [ ExtResource( 1 ) ],
 "loop": true,
-"name": "closed_thirsty",
+"name": "closed",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 4 ) ],
 "loop": true,
 "name": "open_thirsty",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 5 ) ],
+"loop": true,
+"name": "closed_thirsty",
 "speed": 5.0
 } ]
 
@@ -44,7 +44,7 @@ script = ExtResource( 3 )
 collision_layer = 12
 collision_mask = 12
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="area" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
 
 [node name="flower_sprite" type="AnimatedSprite" parent="."]

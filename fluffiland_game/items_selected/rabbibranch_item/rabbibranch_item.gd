@@ -21,7 +21,7 @@ func _process(_delta):
 		emit_signal("instance_rabbibranch")
 		
 		if counter_created == false :
-			create_counter()
+			#create_counter()
 			counter_created = true
 			
 		self.queue_free()

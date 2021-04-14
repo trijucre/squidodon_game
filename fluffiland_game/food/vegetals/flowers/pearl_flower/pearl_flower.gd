@@ -6,6 +6,8 @@ signal water_spend
 onready var pearl_timer = $pearl_generation
 onready var sprite = $flower_sprite
 
+onready var area_radius = $Area2D/area.shape.radius
+
 var cost = 4
 var health = 180
 var health_max = 180
