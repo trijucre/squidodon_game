@@ -51,7 +51,7 @@ onready var orca_bear = preload("res://entities/orca_bear/orca_bear_adult/orca_b
 var day_count = 1
 signal day_number
 #signal diversity_number
-
+onready var pause_menu_scene = preload ("res://GUI/pause_menu/pause_menu.tscn")
 
 export var rabbibranch_count = 0
 export var cuttledog_count = 0
@@ -128,7 +128,9 @@ func _ready():
 func _process(_delta):
 	
 	if Input.is_action_just_pressed('pause'):
-		get_tree().paused = true
+		var pause_menu = pause_menu_scene.instance()
+		
+		get_tree().root.get_node("Game/game_start/CanvasLayer").add_child(pause_menu)
 		
 	
 func make_water_map():

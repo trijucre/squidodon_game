@@ -6,3 +6,8 @@ func _ready():
 	var start = start_screen.instance()
 	
 	self.add_child(start)
+	
+func _on_quit_to_title_screen():
+	var start = start_screen.instance()
+	
+	self.add_child(start)

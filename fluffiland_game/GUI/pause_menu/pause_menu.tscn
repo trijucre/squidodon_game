@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=1]
+[ext_resource path="res://GUI/pause_menu/pause_menu.gd" type="Script" id=2]
+
+[node name="pause_menu" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="return" type="TextureButton" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Label" type="Label" parent="return"]
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0.764706, 0.329412, 0.329412, 1 )
+text = "return"
+
+[node name="quit" type="TextureButton" parent="."]
+margin_left = 16.0
+margin_top = 32.0
+margin_right = 56.0
+margin_bottom = 72.0
+
+[node name="Label" type="Label" parent="quit"]
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0.764706, 0.329412, 0.329412, 1 )
+text = "quit"
+[connection signal="pressed" from="return" to="." method="_on_return_pressed"]
+[connection signal="pressed" from="quit" to="." method="_on_quit_pressed"]

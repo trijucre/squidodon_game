@@ -43,7 +43,7 @@ onready var bigbush_icon = load("res://GUI/items_tree/information_item/eat_and_p
 # Called when the node enters the scene tree for the first time.
 func _ready():
 		self.connect("item_bought", get_tree().root.get_node("Game/game_start"), "_on_item_bought")
-
+		get_tree().paused = true
 
 func _on_buy_button_pressed():
 	
