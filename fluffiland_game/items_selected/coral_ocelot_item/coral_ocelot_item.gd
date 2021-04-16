@@ -4,7 +4,7 @@ signal instance_tree
 
 func _ready() :
 
-	self.connect("instance_ctree", get_tree().root.get_node("Game"), "_on_tree_item_pressed")
+	self.connect("instance_coral_ocelot", get_tree().root.get_node("Game/game_start"), "_on_coral_ocelot_item_pressed")
 
 
 func _process(delta):
@@ -13,7 +13,7 @@ func _process(delta):
 	self.set_position(mouse_position + Vector2(-50, -50))
 	
 	if self.pressed == true :
-		emit_signal("instance_tree")
+		emit_signal("instance_coral_ocelot")
 		self.queue_free()
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.

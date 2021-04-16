@@ -11,7 +11,7 @@ func _ready():
 func _on_hatching_timeout():
 	
 	var child = child_scene.instance()
-	get_tree().root.get_node("Game/YSort").add_child(child)
+	get_tree().root.get_node("Game/game_start/YSort").add_child(child)
 	
 	child.position.x = self.position.x
 	child.position.y = self.position.y

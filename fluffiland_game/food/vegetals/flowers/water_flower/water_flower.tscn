@@ -6,10 +6,10 @@
 [ext_resource path="res://food/vegetals/flowers/water_flower/sprites/water_flower_closed_thirsty.png" type="Texture" id=4]
 [ext_resource path="res://food/vegetals/flowers/water_flower/sprites/water_flower_open_thirsty.png" type="Texture" id=5]
 
-[sub_resource type="CircleShape2D" id=4]
+[sub_resource type="CircleShape2D" id=1]
 radius = 100.0
 
-[sub_resource type="SpriteFrames" id=5]
+[sub_resource type="SpriteFrames" id=2]
 animations = [ {
 "frames": [ ExtResource( 2 ) ],
 "loop": true,
@@ -21,14 +21,14 @@ animations = [ {
 "name": "closed",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 5 ) ],
-"loop": true,
-"name": "open_thirsty",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 4 ) ],
 "loop": true,
 "name": "closed_thirsty",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 5 ) ],
+"loop": true,
+"name": "open_thirsty",
 "speed": 5.0
 } ]
 
@@ -45,11 +45,11 @@ collision_layer = 12
 collision_mask = 12
 
 [node name="area" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 4 )
+shape = SubResource( 1 )
 
 [node name="flower_sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -117 )
-frames = SubResource( 5 )
+frames = SubResource( 2 )
 animation = "open_thirsty"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -29,8 +29,8 @@ var tree_id = str(self.get_instance_id())
 func _ready():
 	randomize()
 	
-	self.connect("water_earned", get_tree().root.get_node("Game"), "_on_water_earned")
-	self.connect("strength_spend", get_tree().root.get_node("Game"), "_on_strength_spend")
+	self.connect("water_earned", get_tree().root.get_node("Game/game_start"), "_on_water_earned")
+	self.connect("strength_spend", get_tree().root.get_node("Game/game_start"), "_on_strength_spend")
 	
 	
 	pearl_timer.start()
@@ -65,7 +65,7 @@ func _on_pearl_generation_timeout():
 
 	
 	pearl_generated = false
-	if 	get_tree().root.get_node("Game").strength_count > 0 :
+	if 	get_tree().root.get_node("Game/game_start").strength_count > 0 :
 		emit_signal("strength_spend")
 		nutrient = 2
 		
@@ -109,4 +109,4 @@ func _on_water_button_pressed():
 	info_panel.pv_max = health_max
 	info_panel.id = tree_id
 		
-	get_tree().root.get_node("Game/CanvasLayer").add_child(info_panel)
+	get_tree().root.get_node("Game/game_start/CanvasLayer").add_child(info_panel)

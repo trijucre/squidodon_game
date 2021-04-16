@@ -9,6 +9,10 @@
 [ext_resource path="res://GUI/start_game/sprites/start_game_quit_button_unclicked.png" type="Texture" id=8]
 
 [node name="start_game" type="Control"]
+margin_left = -624.918
+margin_top = -438.269
+margin_right = -624.918
+margin_bottom = -438.269
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false

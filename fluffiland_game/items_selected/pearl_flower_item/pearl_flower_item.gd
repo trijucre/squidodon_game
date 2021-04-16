@@ -10,9 +10,9 @@ onready var circle_area = $Area2D
 
 func _ready() :
 	red_circle = 0
-	self.connect("instance_pearl_flower", get_tree().root.get_node("Game"), "_on_pearl_flower_item_pressed")
-	self.connect("show_area", get_tree().root.get_node("Game/areas"), "_on_show_areas")
-	self.connect("hide_area", get_tree().root.get_node("Game/areas"), "_on_hide_areas")
+	self.connect("instance_pearl_flower", get_tree().root.get_node("Game/game_start/"), "_on_pearl_flower_item_pressed")
+	self.connect("show_area", get_tree().root.get_node("Game/game_start/areas"), "_on_show_areas")
+	self.connect("hide_area", get_tree().root.get_node("Game/game_start/areas"), "_on_hide_areas")
 	emit_signal("show_area")
 
 func _process(_delta):
@@ -26,7 +26,7 @@ func _on_TextureButton_pressed():
 		self.queue_free()
 	else : 
 		pass
-	print ("button_clicked")
+
 
 func _draw() :
 	

@@ -49,7 +49,7 @@ func _on_bush_timer_timeout():
 		rngy.randomize()
 		var tree_bush = bush_scene.instance()
 		tree_bush.id = tree_id
-		get_tree().root.get_node("Game/YSort").add_child(tree_bush)
+		get_tree().root.get_node("Game/game_start/YSort").add_child(tree_bush)
 
 		tree_bush.position.x = self.position.x - 125 + rngx.randf_range(0, spawn_area.size.x)
 		tree_bush.position.y = self.position.y - 125 + rngy.randf_range(0, spawn_area.size.x)
@@ -60,7 +60,7 @@ func _on_bush_timer_timeout():
 
 
 func _on_health_timeout():
-	if 	get_tree().root.get_node("Game").water_count > 1 :
+	if 	get_tree().root.get_node("Game/game_start").water_count > 1 :
 		emit_signal("water_spend")
 		emit_signal("water_spend")
 		nutrient += 2
@@ -72,7 +72,7 @@ func _on_health_timeout():
 		self.add_child(used)
 		used.position = used_position
 		
-	elif 	get_tree().root.get_node("Game").water_count == 1 :
+	elif 	get_tree().root.get_node("Game/game_start").water_count == 1 :
 		emit_signal("water_spend")
 		nutrient += 1
 		if nutrient > nutrient_max :
@@ -110,4 +110,4 @@ func _on_info_panel_pressed():
 	info_panel.pv_max = health_max
 	info_panel.id = tree_id
 
-	get_tree().root.get_node("Game/CanvasLayer").add_child(info_panel)
+	get_tree().root.get_node("Game/game_start/CanvasLayer").add_child(info_panel)

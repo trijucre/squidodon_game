@@ -4,7 +4,7 @@ signal instance_bush
 
 func _ready() :
 
-	self.connect("instance_bush", get_tree().root.get_node("Game"), "_on_bush_item_pressed")
+	self.connect("instance_bush", get_tree().root.get_node("Game/game_start"), "_on_bush_item_pressed")
 	
 
 func _process(delta):

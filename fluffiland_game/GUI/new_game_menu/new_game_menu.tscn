@@ -1,0 +1,100 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://GUI/new_game_menu/sprite/new_game_name.png" type="Texture" id=1]
+[ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=2]
+[ext_resource path="res://GUI/new_game_menu/sprite/new_ame_background.png" type="Texture" id=3]
+[ext_resource path="res://GUI/new_game_menu/sprite/new_game_button_size_tiny.png" type="Texture" id=4]
+[ext_resource path="res://GUI/new_game_menu/sprite/new_game_button_size_middle.png" type="Texture" id=5]
+[ext_resource path="res://GUI/new_game_menu/sprite/new_game_button_size_big.png" type="Texture" id=6]
+[ext_resource path="res://GUI/new_game_menu/new_game_menu.gd" type="Script" id=7]
+
+[node name="new_game_menu" type="Control"]
+anchor_left = -0.505
+anchor_top = -0.43
+anchor_right = 0.495
+anchor_bottom = 0.57
+margin_left = 0.518616
+margin_top = -0.0445251
+margin_right = 0.518555
+margin_bottom = -0.0445557
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="background" type="TextureRect" parent="."]
+margin_left = 880.162
+margin_top = 365.41
+margin_right = 1022.16
+margin_bottom = 546.41
+texture = ExtResource( 3 )
+
+[node name="new_game_name" type="TextureRect" parent="."]
+margin_left = 896.07
+margin_top = 384.744
+margin_right = 1004.07
+margin_bottom = 424.744
+texture = ExtResource( 1 )
+
+[node name="size_1" type="TextureButton" parent="."]
+margin_left = 896.0
+margin_top = 440.0
+margin_right = 914.0
+margin_bottom = 457.0
+texture_normal = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="size_2" type="TextureButton" parent="."]
+margin_left = 920.0
+margin_top = 440.0
+margin_right = 938.0
+margin_bottom = 477.0
+texture_normal = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="size_3" type="TextureButton" parent="."]
+margin_left = 944.0
+margin_top = 440.0
+margin_right = 962.0
+margin_bottom = 477.0
+texture_normal = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="size_4" type="TextureButton" parent="."]
+margin_left = 968.0
+margin_top = 440.0
+margin_right = 1010.0
+margin_bottom = 482.0
+texture_normal = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="new_game_create" type="TextureButton" parent="."]
+margin_left = 896.0
+margin_top = 488.0
+margin_right = 938.0
+margin_bottom = 530.0
+texture_normal = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 910.0
+margin_top = 493.0
+margin_right = 992.0
+margin_bottom = 521.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.380392, 0.0431373, 0.247059, 1 )
+text = "create"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="new_game_create" to="." method="_on_new_game_create_pressed"]

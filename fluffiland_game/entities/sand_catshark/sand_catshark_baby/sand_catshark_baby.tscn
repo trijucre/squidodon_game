@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://entities/fluffilus/fluffilus_baby/sprite/side_default/fluiffilus_baby_side_default.png" type="Texture" id=1]
-[ext_resource path="res://entities/fluffilus/fluffilus_baby/fluffilus_baby.gd" type="Script" id=2]
+[ext_resource path="res://entities/sand_catshark/sand_catshark_baby/sand_catshark_baby.gd" type="Script" id=2]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -13,7 +13,7 @@ animations = [ {
 
 [sub_resource type="CircleShape2D" id=2]
 
-[node name="fluffilus_baby" type="KinematicBody2D"]
+[node name="sand_catshark_baby" type="KinematicBody2D"]
 script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]

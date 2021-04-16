@@ -29,7 +29,7 @@ func _ready():
 	
 	self.position = Vector2(1635, 325)
 	
-	self.connect("tree_watered", get_tree().root.get_node("Game"), "_on_tree_watered")
+	self.connect("tree_watered", get_tree().root.get_node("Game/game_start"), "_on_tree_watered")
 	
 	health_visual = ( float (pv)/ float (pv_max) )
 
@@ -65,7 +65,7 @@ func _ready():
 
 
 func _on_water_button_pressed():
-	if health_bar.texture != health_full and get_tree().root.get_node("Game").water_count > 0 :
+	if health_bar.texture != health_full and get_tree().root.get_node("Game/game_start").water_count > 0 :
 		for node in get_tree().get_nodes_in_group("tree") :
 			if node.tree_id == self.id :
 					

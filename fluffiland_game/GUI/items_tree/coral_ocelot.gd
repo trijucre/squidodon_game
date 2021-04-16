@@ -11,7 +11,7 @@ func _ready():
 	add_to_group("coral_ocelot")
 func _process(_delta):
 	
-	if get_tree().root.get_node("Game/CanvasLayer/animal_counter").animal_diversity >= 3 :
+	if get_tree().root.get_node("Game/game_start/CanvasLayer/animal_counter").animal_diversity >= 3 :
 
 		self.set_normal_texture(animal_texture_clicked)
 		self.set_normal_texture(animal_texture_unclicked)

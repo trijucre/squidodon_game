@@ -4,7 +4,7 @@ signal instance_coral_ocelot
 
 func _ready() :
 
-	self.connect("instance_berry_bush", get_tree().root.get_node("Game"), "_on_berry_bush_item_pressed")
+	self.connect("instance_berry_bush", get_tree().root.get_node("Game/game_start"), "_on_berry_bush_item_pressed")
 
 
 func _process(delta):

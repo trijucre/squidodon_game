@@ -25,7 +25,7 @@ var bounce_countdown = 0
 
 func _ready() :
 	
-	add_to_group("fluffilus")
+	add_to_group("sand_catshark")
 	add_to_group("baby")
 	
 	rng.randomize()
@@ -133,9 +133,9 @@ func _on_AnimatedSprite_animation_finished():
 func _on_Adulthood_timeout():
 		
 	
-	var adult_scene = load("res://entities/fluffilus/fluffilus_adult/fluffilus.tscn")
+	var adult_scene = load("res://entities/sand_catshark/sand_catshark_adult/sand_catshark.tscn")
 	var adult = adult_scene.instance()
-	get_tree().root.get_node("Game/YSort").add_child(adult)
+	get_tree().root.get_node("Game/game_startYSort").add_child(adult)
 
 	adult.position.x = self.position.x 
 	adult.position.y = self.position.y 

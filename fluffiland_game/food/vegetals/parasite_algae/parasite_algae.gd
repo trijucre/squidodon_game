@@ -22,7 +22,7 @@ func _ready():
 	add_to_group("parasite", true)
 	add_to_group("parasite_algae", true)
 	
-	self.connect("algae_cut", get_tree().root.get_node("Game"), "_on_algae_cut")
+	self.connect("algae_cut", get_tree().root.get_node("Game/game_start"), "_on_algae_cut")
 	
 	ray_directions.resize(num_rays)
 	algae_presence.resize(num_rays)
@@ -63,7 +63,7 @@ func _on_reproduction_timeout():
 	
 	if (algae_presence[0]) == 0 :
 		var child_1 = child_scene.instance()
-		get_tree().root.get_node("Game/YSort").add_child(child_1)
+		get_tree().root.get_node("Game/game_start/YSort").add_child(child_1)
 		child_1.position.x = self.position.x + 100
 		child_1.position.y = self.position.y
 	else :
@@ -71,7 +71,7 @@ func _on_reproduction_timeout():
 		
 	if (algae_presence[1]) == 0 :
 		var child_2 = child_scene.instance()
-		get_tree().root.get_node("Game/YSort").add_child(child_2)
+		get_tree().root.get_node("Game/game_start/YSort").add_child(child_2)
 		child_2.position.x = self.position.x 
 		child_2.position.y = self.position.y + 100
 	else :
@@ -79,7 +79,7 @@ func _on_reproduction_timeout():
 	
 	if (algae_presence[2]) == 0 :
 		var child_3 = child_scene.instance()
-		get_tree().root.get_node("Game/YSort").add_child(child_3)
+		get_tree().root.get_node("Game/game_start/YSort").add_child(child_3)
 		child_3.position.x = self.position.x - 100
 		child_3.position.y = self.position.y 
 	else :
@@ -87,7 +87,7 @@ func _on_reproduction_timeout():
 	
 	if (algae_presence[3]) == 0 :
 		var child_4 = child_scene.instance()
-		get_tree().root.get_node("Game/YSort").add_child(child_4)
+		get_tree().root.get_node("Game/game_start/YSort").add_child(child_4)
 		child_4.position.x = self.position.x
 		child_4.position.y = self.position.y - 100
 	else :
@@ -99,7 +99,7 @@ func _on_reproduction_timeout():
 
 
 func _on_TextureButton_pressed():
-	if get_tree().root.get_node("Game").strength_count > 1 :
+	if get_tree().root.get_node("Gamegame_start/").strength_count > 1 :
 		emit_signal("algae_cut")
 		emit_signal("algae_cut")
 		self.queue_free()

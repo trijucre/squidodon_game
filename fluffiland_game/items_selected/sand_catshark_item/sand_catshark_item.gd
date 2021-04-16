@@ -1,14 +1,14 @@
 extends TextureButton
 
 var counter_created = false
-onready var counter_text_1 = get_tree().root.get_node("Game/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box1/animal_counter_text_1")
-onready var counter_text_2 = get_tree().root.get_node("Game/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box2/animal_counter_text_2")
+onready var counter_text_1 = get_tree().root.get_node("Game/game_start/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box1/animal_counter_text_1")
+onready var counter_text_2 = get_tree().root.get_node("Game/game_start/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box2/animal_counter_text_2")
 
 signal instance_sand_catshark
 
 func _ready() :
 
-	self.connect("instance_sand_catshark", get_tree().root.get_node("Game"), "_on_sand_catshark_item_pressed")
+	self.connect("instance_sand_catshark", get_tree().root.get_node("Game/game_start"), "_on_sand_catshark_item_pressed")
 
 
 func _process(delta):

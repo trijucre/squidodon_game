@@ -163,8 +163,8 @@ func _ready():
 	add_to_group("animal", true)
 	add_to_group(specie, true)
 	
-	self.connect("rabbibranch_birth", get_tree().root.get_node("Game"), "_on_rabbibranch_birth")
-	self.connect("rabbibranch_death", get_tree().root.get_node("Game"), "_on_rabbibranch_death")
+	self.connect("rabbibranch_birth", get_tree().root.get_node("Game/game_start"), "_on_rabbibranch_birth")
+	self.connect("rabbibranch_death", get_tree().root.get_node("Game/game_start"), "_on_rabbibranch_death")
 	
 	
 	
@@ -297,7 +297,7 @@ func _physics_process(delta):
 	#set collision
 	collision = move_and_collide(movement)
 	
-	var sleep = get_tree().root.get_node("Game/daylight").get_color().r
+	var sleep = get_tree().root.get_node("Game/game_start/daylight").get_color().r
 	
 
 	if sleep > sleep_hour  and hurt == false :
@@ -521,7 +521,7 @@ func produce_meat() :
 	
 	for i in meat_number :
 		var meat = meat_scene.instance()
-		get_tree().root.add_child(meat)
+		get_tree().root.get_node("Game/game_start/YSort").add_child(meat)
 
 		meat.position.x = self.position.x + rng.randf_range(0, spawn_area.size.x)
 		meat.position.y = self.position.y + rng.randf_range(0, spawn_area.size.y)
@@ -540,7 +540,7 @@ func _on_pregnancy_timeout():
 	for i in egg_number :
 		randomize()
 		var egg = egg_scene.instance()
-		get_tree().root.get_node("Game/YSort").add_child(egg)
+		get_tree().root.get_node("Game/game_start/YSort").add_child(egg)
 		
 		if sprite_direction == "right" :
 			egg.position.x = self.position.x - 50 + randi () % -70 + 70
@@ -556,7 +556,7 @@ func _on_pregnancy_timeout():
 func _on_poop_timeout():
 	if food_eaten == true :
 		var poop = poop_scene.instance()
-		get_tree().root.get_node("Game/YSort").add_child(poop)
+		get_tree().root.get_node("Game/game_start/YSort").add_child(poop)
 		
 		if sprite_direction == "right" :
 			poop.position.x = self.position.x - 50
@@ -664,7 +664,7 @@ func _on_info_button_pressed():
 	info_panel.love_happiness = love_happiness
 	info_panel.pregnancy = pregnant
 	
-	get_tree().root.get_node("Game/CanvasLayer").add_child(info_panel)
+	get_tree().root.get_node("Game/game_start/CanvasLayer").add_child(info_panel)
 	
 
 #func _draw():

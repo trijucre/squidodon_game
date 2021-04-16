@@ -14,7 +14,7 @@ func _ready():
 	add_to_group("big_tree")
 	
 func _process(delta):
-	if get_tree().root.get_node("Game/CanvasLayer/animal_counter").animal_diversity >= 4 :
+	if get_tree().root.get_node("Game/game_start/CanvasLayer/animal_counter").animal_diversity >= 4 :
 		self.set_normal_texture(vegetal_texture_unclicked)
 		self.set_pressed_texture(vegetal_texture_clicked)
 		self.set_disabled_texture(vegetal_texture_clicked)

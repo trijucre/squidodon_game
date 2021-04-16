@@ -27,31 +27,30 @@
 [ext_resource path="res://entities/fluffilus/fluffilus_adult/sprites/side_walk/side_walk_fluffilus_0010.png" type="Texture" id=28]
 [ext_resource path="res://entities/fluffilus/fluffilus_adult/sprites/side_walk/side_walk_fluffilus_0011.png" type="Texture" id=29]
 
-
 [sub_resource type="CircleShape2D" id=1]
 radius = 49.5591
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
-"frames": [ ExtResource( 19 ), ExtResource( 21 ), ExtResource( 20 ), ExtResource( 25 ), ExtResource( 22 ), ExtResource( 27 ), ExtResource( 23 ), ExtResource( 26 ) ],
-"loop": false,
-"name": "side_attack",
-"speed": 8.0
-}, {
 "frames": [ ExtResource( 8 ) ],
 "loop": true,
 "name": "side_sleep",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 10 ), ExtResource( 9 ), ExtResource( 15 ), ExtResource( 13 ), ExtResource( 12 ), ExtResource( 16 ), ExtResource( 14 ), ExtResource( 11 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 28 ), ExtResource( 29 ) ],
-"loop": true,
-"name": "side_walk",
-"speed": 8.0
-}, {
 "frames": [ ExtResource( 24 ) ],
 "loop": true,
 "name": "side_default",
 "speed": 5.0
+}, {
+"frames": [ ExtResource( 19 ), ExtResource( 21 ), ExtResource( 20 ), ExtResource( 25 ), ExtResource( 22 ), ExtResource( 27 ), ExtResource( 23 ), ExtResource( 26 ) ],
+"loop": false,
+"name": "side_attack",
+"speed": 8.0
+}, {
+"frames": [ ExtResource( 10 ), ExtResource( 9 ), ExtResource( 15 ), ExtResource( 13 ), ExtResource( 12 ), ExtResource( 16 ), ExtResource( 14 ), ExtResource( 11 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 28 ), ExtResource( 29 ) ],
+"loop": true,
+"name": "side_walk",
+"speed": 8.0
 }, {
 "frames": [ ExtResource( 2 ) ],
 "loop": true,

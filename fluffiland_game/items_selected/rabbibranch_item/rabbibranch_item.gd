@@ -1,14 +1,14 @@
 extends TextureButton
 
 var counter_created = false
-onready var counter_text_1 = get_tree().root.get_node("Game/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box1/animal_counter_text_1")
-onready var counter_text_2 = get_tree().root.get_node("Game/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box2/animal_counter_text_2")
+onready var counter_text_1 = get_tree().root.get_node("Game/game_start/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box1/animal_counter_text_1")
+onready var counter_text_2 = get_tree().root.get_node("Game/game_start/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box2/animal_counter_text_2")
 
 signal instance_rabbibranch
 
 func _ready() :
 
-	self.connect("instance_rabbibranch", get_tree().root.get_node("Game"), "_on_rabbibranch_item_pressed")
+	self.connect("instance_rabbibranch", get_tree().root.get_node("Game/game_start"), "_on_rabbibranch_item_pressed")
 	
  
 

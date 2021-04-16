@@ -18,11 +18,11 @@ var rabbibranch_diversity = 0
 var orca_bear_diversity = 0
 
 onready var diversity = $diversity
-onready var button_1 = get_tree().root.get_node("Game/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box1/animal_counter_text_1")
-onready var button_2 = get_tree().root.get_node("Game/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box2/animal_counter_text_2")
-onready var button_3 = get_tree().root.get_node("Game/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box3/animal_counter_text_3")
-onready var button_4 = get_tree().root.get_node("Game/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box4/animal_counter_text_4")
-onready var button_5 = get_tree().root.get_node("Game/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box5/animal_counter_text_5")
+onready var button_1 = get_tree().root.get_node("Game/game_start/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box1/animal_counter_text_1")
+onready var button_2 = get_tree().root.get_node("Game/game_start/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box2/animal_counter_text_2")
+onready var button_3 = get_tree().root.get_node("Game/game_start/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box3/animal_counter_text_3")
+onready var button_4 = get_tree().root.get_node("Game/game_start/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box4/animal_counter_text_4")
+onready var button_5 = get_tree().root.get_node("Game/game_start/CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box5/animal_counter_text_5")
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"

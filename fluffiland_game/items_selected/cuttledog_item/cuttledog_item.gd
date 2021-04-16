@@ -4,7 +4,7 @@ signal instance_cuttledog
 
 func _ready() :
 
-	self.connect("instance_cuttledog", get_tree().root.get_node("Game"), "_on_cuttledog_item_pressed")
+	self.connect("instance_cuttledog", get_tree().root.get_node("Game/game_start"), "_on_cuttledog_item_pressed")
 
 
 func _process(delta):

@@ -29,8 +29,8 @@ func _ready():
 	#move_and_collide()
 	randomize()
 
-	self.connect("pearl_earned", get_tree().root.get_node("Game"), "_on_pearl_earned")
-	self.connect("water_spend", get_tree().root.get_node("Game"), "_on_water_spend")
+	self.connect("pearl_earned", get_tree().root.get_node("Game/game_start"), "_on_pearl_earned")
+	self.connect("water_spend", get_tree().root.get_node("Game/game_start"), "_on_water_spend")
 		
 	pearl_timer.start()
 	
@@ -92,12 +92,12 @@ func _on_pearl_button_pressed():
 		info_panel.pv_max = health_max
 		info_panel.id = tree_id
 		
-		get_tree().root.get_node("Game/CanvasLayer").add_child(info_panel)
+		get_tree().root.get_node("Game/game_start/CanvasLayer").add_child(info_panel)
 
 
 func _on_health_timeout():
 	
-	if 	get_tree().root.get_node("Game").water_count > 0 :
+	if 	get_tree().root.get_node("Game/game_start").water_count > 0 :
 		emit_signal("water_spend")
 		nutrient = 2
 		

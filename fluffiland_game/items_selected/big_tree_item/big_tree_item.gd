@@ -4,7 +4,7 @@ signal instance_big_tree
 
 func _ready() :
 
-	self.connect("instance_big_tree", get_tree().root.get_node("Game"), "_on_big_tree_item_pressed")
+	self.connect("instance_big_tree", get_tree().root.get_node("Game/game_start"), "_on_big_tree_item_pressed")
 
 
 func _process(delta):

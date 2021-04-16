@@ -21,14 +21,14 @@ animations = [ {
 "name": "closed",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 4 ) ],
-"loop": true,
-"name": "open_thirsty",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 5 ) ],
 "loop": true,
 "name": "closed_thirsty",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ) ],
+"loop": true,
+"name": "open_thirsty",
 "speed": 5.0
 } ]
 

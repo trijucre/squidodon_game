@@ -1,0 +1,595 @@
+[gd_scene load_steps=38 format=2]
+
+[ext_resource path="res://Ground.tres" type="TileSet" id=1]
+[ext_resource path="res://Grass.tres" type="TileSet" id=2]
+[ext_resource path="res://animal_counter_text_2.gd" type="Script" id=3]
+[ext_resource path="res://GUI/user_interface/background/diversity_background.png" type="Texture" id=4]
+[ext_resource path="res://GUI/user_interface/entities_counter/button_show_item_tree/show_item_tree_button.png" type="Texture" id=5]
+[ext_resource path="res://GUI/strength_logo.png" type="Texture" id=6]
+[ext_resource path="res://GUI/water_logo.png" type="Texture" id=7]
+[ext_resource path="res://item_2.gd" type="Script" id=8]
+[ext_resource path="res://item_3.gd" type="Script" id=9]
+[ext_resource path="res://item_6.gd" type="Script" id=10]
+[ext_resource path="res://animal_counter_text_3.gd" type="Script" id=11]
+[ext_resource path="res://animal_counter_text_6.gd" type="Script" id=12]
+[ext_resource path="res://GUI/user_interface/background/UI_background.png" type="Texture" id=13]
+[ext_resource path="res://GUI/user_interface/entities_counter/entitie_box_background/entities_box_background.png" type="Texture" id=14]
+[ext_resource path="res://item_5.gd" type="Script" id=15]
+[ext_resource path="res://item_4.gd" type="Script" id=16]
+[ext_resource path="res://diversity.gd" type="Script" id=17]
+[ext_resource path="res://Camera2D.gd" type="Script" id=18]
+[ext_resource path="res://animal_counter.gd" type="Script" id=19]
+[ext_resource path="res://areas.gd" type="Script" id=20]
+[ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=21]
+[ext_resource path="res://Water.tres" type="TileSet" id=22]
+[ext_resource path="res://day_counter.gd" type="Script" id=23]
+[ext_resource path="res://Ground.gd" type="Script" id=24]
+[ext_resource path="res://font/font.tres" type="DynamicFont" id=25]
+[ext_resource path="res://game_start.gd" type="Script" id=26]
+[ext_resource path="res://GUI/user_interface/entities_counter/background/entitie_background.png" type="Texture" id=27]
+[ext_resource path="res://GUI/items_tree/information_item/pearl.png" type="Texture" id=28]
+[ext_resource path="res://pearl_counter.gd" type="Script" id=29]
+[ext_resource path="res://animal_counter_text_5.gd" type="Script" id=30]
+[ext_resource path="res://item_1.gd" type="Script" id=31]
+[ext_resource path="res://GUI/user_interface/entities_counter/button_show_item_tree/show_item_tree_button_clicked.png" type="Texture" id=32]
+[ext_resource path="res://strength_counter.gd" type="Script" id=33]
+[ext_resource path="res://water_counter.gd" type="Script" id=34]
+[ext_resource path="res://GUI/clock/clock_top.png" type="Texture" id=35]
+[ext_resource path="res://GUI/clock/clock.tscn" type="PackedScene" id=36]
+
+[sub_resource type="Animation" id=1]
+resource_name = "day_and_night"
+length = 60.0
+loop = true
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("daylight:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 3, 8, 25, 30, 35, 39, 60 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.611765, 0.564706, 0.996078, 1 ), Color( 0.752941, 0.886275, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.807843, 0.756863, 1 ), Color( 1, 0.807843, 0.756863, 1 ), Color( 0.611765, 0.564706, 0.996078, 1 ), Color( 0.611765, 0.564706, 0.996078, 1 ) ]
+}
+
+[node name="game_start" type="Node2D"]
+script = ExtResource( 26 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 0, 25 )
+current = true
+smoothing_enabled = true
+script = ExtResource( 18 )
+
+[node name="daylight" type="CanvasModulate" parent="."]
+color = Color( 0.611765, 0.564706, 0.996078, 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "day_and_night"
+anims/day_and_night = SubResource( 1 )
+
+[node name="Water" type="TileMap" parent="."]
+tile_set = ExtResource( 22 )
+cell_size = Vector2( 100, 100 )
+collision_mask = 3
+format = 1
+
+[node name="Ground" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 100, 100 )
+cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
+collision_mask = 3
+format = 1
+script = ExtResource( 24 )
+
+[node name="Grass" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 100, 100 )
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+collision_mask = 3
+format = 1
+
+[node name="areas" type="Node2D" parent="."]
+script = ExtResource( 20 )
+
+[node name="YSort" type="YSort" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="animal_counter" type="Control" parent="CanvasLayer"]
+margin_left = -25.0
+margin_top = 69.0
+margin_right = 173.0
+margin_bottom = 1149.0
+script = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_counter_background" type="TextureRect" parent="CanvasLayer/animal_counter"]
+anchor_top = 0.152
+anchor_right = 0.943
+anchor_bottom = 1.006
+margin_left = -66.0
+margin_top = -0.160004
+margin_right = 28.286
+margin_bottom = -6.4801
+texture = ExtResource( 27 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_container_boxes" type="VBoxContainer" parent="CanvasLayer/animal_counter"]
+anchor_top = 0.152
+anchor_right = 0.538
+anchor_bottom = 1.006
+margin_left = 33.0
+margin_top = 47.84
+margin_right = 88.476
+margin_bottom = 0.519897
+rect_min_size = Vector2( 0, 500 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_counter_box1" type="Control" parent="CanvasLayer/animal_counter/animal_container_boxes"]
+margin_right = 162.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 0, 120 )
+
+[node name="animal_counter_box_background" type="TextureRect" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box1"]
+margin_right = 166.0
+margin_bottom = 102.0
+texture = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_counter_text_1" type="Label" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box1"]
+margin_left = 13.0
+margin_top = 32.0
+margin_right = 177.0
+margin_bottom = 77.0
+rect_min_size = Vector2( 80, 45 )
+custom_fonts/font = ExtResource( 25 )
+custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
+custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_counter_box2" type="Control" parent="CanvasLayer/animal_counter/animal_container_boxes"]
+margin_top = 124.0
+margin_right = 162.0
+margin_bottom = 244.0
+rect_min_size = Vector2( 0, 120 )
+
+[node name="animal_counter_box_background" type="TextureRect" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box2"]
+margin_right = 162.0
+margin_bottom = 102.0
+texture = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_counter_text_2" type="Label" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box2"]
+margin_left = 13.0
+margin_top = 32.0
+margin_right = 177.0
+margin_bottom = 77.0
+rect_min_size = Vector2( 80, 45 )
+custom_fonts/font = ExtResource( 25 )
+custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
+custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
+align = 1
+valign = 1
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_counter_box3" type="Control" parent="CanvasLayer/animal_counter/animal_container_boxes"]
+margin_top = 248.0
+margin_right = 162.0
+margin_bottom = 368.0
+rect_min_size = Vector2( 0, 120 )
+
+[node name="animal_counter_box_background" type="TextureRect" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box3"]
+margin_right = 281.0
+margin_bottom = 102.0
+texture = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_counter_text_3" type="Label" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box3"]
+margin_left = 13.0
+margin_top = 32.0
+margin_right = 177.0
+margin_bottom = 77.0
+rect_min_size = Vector2( 80, 45 )
+custom_fonts/font = ExtResource( 25 )
+custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
+custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
+align = 1
+valign = 1
+script = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_counter_box4" type="Control" parent="CanvasLayer/animal_counter/animal_container_boxes"]
+margin_top = 372.0
+margin_right = 162.0
+margin_bottom = 492.0
+rect_min_size = Vector2( 0, 120 )
+
+[node name="animal_counter_box_background" type="TextureRect" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box4"]
+margin_right = 281.0
+margin_bottom = 102.0
+texture = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_counter_text_4" type="Label" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box4"]
+margin_left = 13.0
+margin_top = 32.0
+margin_right = 177.0
+margin_bottom = 77.0
+rect_min_size = Vector2( 80, 45 )
+custom_fonts/font = ExtResource( 25 )
+custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
+custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
+align = 1
+valign = 1
+script = ExtResource( 30 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_counter_box5" type="Control" parent="CanvasLayer/animal_counter/animal_container_boxes"]
+margin_top = 496.0
+margin_right = 162.0
+margin_bottom = 616.0
+rect_min_size = Vector2( 0, 120 )
+
+[node name="animal_counter_box_background" type="TextureRect" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box5"]
+margin_right = 281.0
+margin_bottom = 102.0
+texture = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="animal_counter_text_5" type="Label" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box5"]
+margin_left = 13.0
+margin_top = 32.0
+margin_right = 162.0
+margin_bottom = 77.0
+custom_fonts/font = ExtResource( 25 )
+custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
+custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
+align = 1
+valign = 1
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="clock" parent="CanvasLayer" instance=ExtResource( 36 )]
+position = Vector2( 1820.44, 760.005 )
+
+[node name="ui_background" type="TextureRect" parent="CanvasLayer"]
+anchor_top = 0.82
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 189.0
+margin_top = -4.0
+margin_right = 189.0
+margin_bottom = 89.6
+texture = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="clock_top" type="TextureRect" parent="CanvasLayer"]
+margin_left = 1713.0
+margin_top = 795.0
+margin_right = 1902.0
+margin_bottom = 915.0
+texture = ExtResource( 35 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="strength_logo" type="TextureRect" parent="CanvasLayer"]
+margin_left = 1835.0
+margin_top = 961.0
+margin_right = 1873.0
+margin_bottom = 1004.0
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="strength_counter" type="Label" parent="CanvasLayer"]
+anchor_left = 0.949
+anchor_top = 0.937
+anchor_right = 0.981
+anchor_bottom = 0.979
+margin_left = -0.0800781
+margin_top = 0.039978
+margin_right = -0.520142
+margin_bottom = -0.320068
+custom_fonts/font = ExtResource( 21 )
+custom_colors/font_color = Color( 0.764706, 0.235294, 0.0823529, 1 )
+custom_colors/font_outline_modulate = Color( 0.764706, 0.235294, 0.0823529, 1 )
+align = 1
+valign = 1
+script = ExtResource( 33 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="water_logo" type="TextureRect" parent="CanvasLayer"]
+margin_left = 1750.0
+margin_top = 961.0
+margin_right = 1787.0
+margin_bottom = 1004.0
+texture = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="water_counter" type="Label" parent="CanvasLayer"]
+anchor_left = 0.906
+anchor_top = 0.937
+anchor_right = 0.937
+anchor_bottom = 0.979
+margin_left = -0.52002
+margin_top = 0.039978
+margin_right = -0.0400391
+margin_bottom = -0.320068
+custom_fonts/font = ExtResource( 21 )
+custom_colors/font_color = Color( 0.054902, 0.396078, 0.584314, 1 )
+custom_colors/font_outline_modulate = Color( 0.054902, 0.396078, 0.584314, 1 )
+align = 1
+valign = 1
+script = ExtResource( 34 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="day_counter" type="Label" parent="CanvasLayer"]
+margin_left = 1569.0
+margin_top = 1012.0
+margin_right = 1629.0
+margin_bottom = 1057.0
+custom_fonts/font = ExtResource( 21 )
+custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
+custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
+align = 1
+valign = 1
+script = ExtResource( 23 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="day_text" type="Label" parent="CanvasLayer"]
+margin_left = 1569.0
+margin_top = 959.0
+margin_right = 1629.0
+margin_bottom = 1004.0
+custom_fonts/font = ExtResource( 21 )
+custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
+custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
+text = "Day"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pearl_sprite" type="TextureRect" parent="CanvasLayer"]
+anchor_right = 0.027
+anchor_bottom = 0.048
+margin_left = 1655.83
+margin_top = 956.05
+margin_right = 1655.99
+margin_bottom = 956.21
+texture = ExtResource( 28 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pearl_counter" type="Label" parent="CanvasLayer"]
+anchor_left = 0.906
+anchor_top = 0.937
+anchor_right = 0.934
+anchor_bottom = 0.983
+margin_left = -87.52
+margin_top = 0.0401001
+margin_right = -80.28
+margin_bottom = -4.64001
+custom_fonts/font = ExtResource( 21 )
+custom_colors/font_color = Color( 0.345098, 0.72549, 0.788235, 1 )
+custom_colors/font_outline_modulate = Color( 0.345098, 0.72549, 0.788235, 1 )
+align = 1
+valign = 1
+script = ExtResource( 29 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="item_tree_button" type="TextureButton" parent="CanvasLayer"]
+anchor_left = 0.831
+anchor_top = 0.685
+anchor_right = 0.968
+anchor_bottom = 0.796
+margin_left = -64.7582
+margin_top = -14.795
+margin_right = -185.798
+margin_bottom = 8.32501
+texture_normal = ExtResource( 5 )
+texture_pressed = ExtResource( 32 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="item_stock" type="Control" parent="CanvasLayer"]
+margin_left = 560.0
+margin_top = 913.0
+margin_right = 1359.0
+margin_bottom = 1006.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="item_stock_container" type="HBoxContainer" parent="CanvasLayer/item_stock"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -11.0
+margin_bottom = -3.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="item_1" type="TextureButton" parent="CanvasLayer/item_stock/item_stock_container"]
+margin_right = 102.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 102, 102 )
+script = ExtResource( 31 )
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/item_stock/item_stock_container"]
+margin_left = 106.0
+margin_right = 136.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 30, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="item_2" type="TextureButton" parent="CanvasLayer/item_stock/item_stock_container"]
+margin_left = 140.0
+margin_right = 242.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 102, 102 )
+script = ExtResource( 8 )
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/item_stock/item_stock_container"]
+margin_left = 246.0
+margin_right = 276.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 30, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="item_3" type="TextureButton" parent="CanvasLayer/item_stock/item_stock_container"]
+margin_left = 280.0
+margin_right = 382.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 102, 102 )
+script = ExtResource( 9 )
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/item_stock/item_stock_container"]
+margin_left = 386.0
+margin_right = 416.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 30, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="item_4" type="TextureButton" parent="CanvasLayer/item_stock/item_stock_container"]
+margin_left = 420.0
+margin_right = 522.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 102, 102 )
+script = ExtResource( 16 )
+
+[node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/item_stock/item_stock_container"]
+margin_left = 526.0
+margin_right = 556.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 30, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="item_5" type="TextureButton" parent="CanvasLayer/item_stock/item_stock_container"]
+margin_left = 560.0
+margin_right = 662.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 102, 102 )
+script = ExtResource( 15 )
+
+[node name="MarginContainer5" type="MarginContainer" parent="CanvasLayer/item_stock/item_stock_container"]
+margin_left = 666.0
+margin_right = 696.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 30, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="item_6" type="TextureButton" parent="CanvasLayer/item_stock/item_stock_container"]
+margin_left = 700.0
+margin_right = 802.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 102, 102 )
+script = ExtResource( 10 )
+
+[node name="diversity_node" type="Control" parent="CanvasLayer"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="diversity_background" type="TextureRect" parent="CanvasLayer/diversity_node"]
+margin_left = 230.0
+margin_top = 823.0
+margin_right = 530.0
+margin_bottom = 1006.0
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="diversity" type="Label" parent="CanvasLayer/diversity_node"]
+margin_left = 293.0
+margin_top = 875.0
+margin_right = 469.0
+margin_bottom = 947.0
+custom_fonts/font = ExtResource( 21 )
+custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
+align = 1
+valign = 1
+script = ExtResource( 17 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="end_of_day" type="Timer" parent="."]
+wait_time = 60.0
+autostart = true
+[connection signal="day_number" from="." to="CanvasLayer/day_counter" method="_on_Game_day_number"]
+[connection signal="number_of_pearls" from="." to="CanvasLayer/pearl_counter" method="_on_Game_number_of_pearls"]
+[connection signal="number_of_strength" from="." to="CanvasLayer/strength_counter" method="_on_Game_number_of_strength"]
+[connection signal="number_of_water" from="." to="CanvasLayer/water_counter" method="_on_Game_number_of_water"]
+[connection signal="diversity_counter" from="CanvasLayer/animal_counter" to="CanvasLayer/diversity_node/diversity" method="_on_animal_counter_diversity_counter"]
+[connection signal="pressed" from="CanvasLayer/item_tree_button" to="." method="_on_item_tree_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/item_stock/item_stock_container/item_1" to="." method="_on_item_1_pressed"]
+[connection signal="pressed" from="CanvasLayer/item_stock/item_stock_container/item_2" to="." method="_on_item_2_pressed"]
+[connection signal="pressed" from="CanvasLayer/item_stock/item_stock_container/item_3" to="." method="_on_item_3_pressed"]
+[connection signal="pressed" from="CanvasLayer/item_stock/item_stock_container/item_4" to="." method="_on_item_4_pressed"]
+[connection signal="pressed" from="CanvasLayer/item_stock/item_stock_container/item_5" to="." method="_on_item_5_pressed"]
+[connection signal="pressed" from="CanvasLayer/item_stock/item_stock_container/item_6" to="." method="_on_item_6_pressed"]
+[connection signal="timeout" from="end_of_day" to="." method="_on_end_of_day_timeout"]

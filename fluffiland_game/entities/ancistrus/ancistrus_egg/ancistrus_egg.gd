@@ -1,7 +1,6 @@
 extends KinematicBody2D
 
-
-var child_scene = preload("res://entities/fluffilus/fluffilus_baby/fluffilus_baby.tscn")# Declare member variables here. Examples:
+var child_scene = preload("res://entities/ancistrus/ancistrus_baby/ancistrus_baby.tscn")# Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
 # Called when the node enters the scene tree for the first time.

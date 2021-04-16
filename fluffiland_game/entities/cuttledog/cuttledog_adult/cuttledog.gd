@@ -59,8 +59,8 @@ func _ready() :
 	add_to_group("animal", true)
 	add_to_group("cuttledog", true)
 	
-	self.connect("cuttledog_birth", get_tree().root.get_node("Game"), "_on_cuttledog_cuttledog_birth")
-	self.connect("cuttledog_death", get_tree().root.get_node("Game"), "_on_cuttledog_cuttledog_death")
+	self.connect("cuttledog_birth", get_tree().root.get_node("Game/game_start"), "_on_cuttledog_cuttledog_birth")
+	self.connect("cuttledog_death", get_tree().root.get_node("Game/game_start"), "_on_cuttledog_cuttledog_death")
 	
 	emit_signal("cuttledog_birth")
 	
@@ -269,7 +269,7 @@ func _on_AnimatedSprite_animation_finished():
 
 func _on_childbirth_timeout():
 	var child = child_scene.instance()
-	get_tree().root.get_node("Game/YSort").add_child(child)
+	get_tree().root.get_node("Game/game_start/YSort").add_child(child)
 
 	child.position.x = self.position.x 
 	child.position.y = self.position.y 
@@ -279,7 +279,7 @@ func _on_childbirth_timeout():
 func _on_poop_timeout():
 	if food_eaten == true :
 		var poop = poop_scene.instance()
-		get_tree().root.get_node("Game/YSort").add_child(poop)
+		get_tree().root.get_node("Game/game_start/YSort").add_child(poop)
 
 		poop.position.x = self.position.x - 50
 		poop.position.y = self.position.y

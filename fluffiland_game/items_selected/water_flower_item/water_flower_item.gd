@@ -12,9 +12,9 @@ onready var circle_area = $Area2D
 func _ready() :
 
 	red_circle = 0
-	self.connect("instance_water_flower", get_tree().root.get_node("Game"), "_on_water_flower_item_pressed")
-	self.connect("show_area", get_tree().root.get_node("Game/areas"), "_on_show_areas")
-	self.connect("hide_area", get_tree().root.get_node("Game/areas"), "_on_hide_areas")
+	self.connect("instance_water_flower", get_tree().root.get_node("Game/game_start"), "_on_water_flower_item_pressed")
+	self.connect("show_area", get_tree().root.get_node("Game/game_start/areas"), "_on_show_areas")
+	self.connect("hide_area", get_tree().root.get_node("Game/game_start/areas"), "_on_hide_areas")
 	emit_signal("show_area")
 
 func _process(_delta):

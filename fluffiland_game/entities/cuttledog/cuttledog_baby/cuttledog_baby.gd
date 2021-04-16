@@ -111,7 +111,7 @@ func hit(attack_damage) :
 func produce_meat() :
 	
 	var meat = meat_scene.instance()
-	get_tree().root.add_child(meat)
+	get_tree().root.get_node("Game/game_start/YSort").add_child(meat)
 	
 	
 	meat.position.x = self.position.x + rng.randf_range(0, spawn_area.size.x)
@@ -154,7 +154,7 @@ func _on_Adulthood_timeout():
 	
 	var adult_scene = load("res://entities/cuttledog/cuttledog_adult/cuttledog.tscn")
 	var adult = adult_scene.instance()
-	get_tree().root.get_node("Game/YSort").add_child(adult)
+	get_tree().root.get_node("Game/game_start/YSort").add_child(adult)
 
 	adult.position.x = self.position.x 
 	adult.position.y = self.position.y 

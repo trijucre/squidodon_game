@@ -42,7 +42,7 @@ onready var bigbush_icon = load("res://GUI/items_tree/information_item/eat_and_p
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-		self.connect("item_bought", get_tree().root.get_node("Game"), "_on_item_bought")
+		self.connect("item_bought", get_tree().root.get_node("Game/game_start"), "_on_item_bought")
 
 
 func _on_buy_button_pressed():
@@ -50,37 +50,37 @@ func _on_buy_button_pressed():
 	if cost_item == null :
 		pass
 		
-	elif  get_tree().root.get_node("Game").pearl_count >= cost_item :
-		var item_1 = get_tree().root.get_node("Game/CanvasLayer/item_stock/item_stock_container/item_1")
-		var item_2 = get_tree().root.get_node("Game/CanvasLayer/item_stock/item_stock_container/item_2")
-		var item_3 = get_tree().root.get_node("Game/CanvasLayer/item_stock/item_stock_container/item_3")
-		var item_4 = get_tree().root.get_node("Game/CanvasLayer/item_stock/item_stock_container/item_4")
-		var item_5 = get_tree().root.get_node("Game/CanvasLayer/item_stock/item_stock_container/item_5")
-		var item_6 = get_tree().root.get_node("Game/CanvasLayer/item_stock/item_stock_container/item_6")
+	elif  get_tree().root.get_node("Game/game_start").pearl_count >= cost_item :
+		var item_1 = get_tree().root.get_node("Game/game_start/CanvasLayer/item_stock/item_stock_container/item_1")
+		var item_2 = get_tree().root.get_node("Game/game_start/CanvasLayer/item_stock/item_stock_container/item_2")
+		var item_3 = get_tree().root.get_node("Game/game_start/CanvasLayer/item_stock/item_stock_container/item_3")
+		var item_4 = get_tree().root.get_node("Game/game_start/CanvasLayer/item_stock/item_stock_container/item_4")
+		var item_5 = get_tree().root.get_node("Game/game_start/CanvasLayer/item_stock/item_stock_container/item_5")
+		var item_6 = get_tree().root.get_node("Game/game_start/CanvasLayer/item_stock/item_stock_container/item_6")
 
 		if item_1.empty == true :
 			spot_allowance(item_1)
-			get_tree().root.get_node("Game").pearl_count -= cost_item
+			get_tree().root.get_node("Game/game_start").pearl_count -= cost_item
 			
 		elif item_2.empty == true :
 			spot_allowance(item_2)
-			get_tree().root.get_node("Game").pearl_count -= cost_item
+			get_tree().root.get_node("Game/game_start").pearl_count -= cost_item
 			
 		elif item_3.empty == true :
 			spot_allowance(item_3)
-			get_tree().root.get_node("Game").pearl_count -= cost_item
+			get_tree().root.get_node("Game/game_start").pearl_count -= cost_item
 			
 		elif item_4.empty == true :
 			spot_allowance(item_4)
-			get_tree().root.get_node("Game").pearl_count -= cost_item
+			get_tree().root.get_node("Game/game_start").pearl_count -= cost_item
 			
 		elif item_5.empty == true :
 			spot_allowance(item_5)
-			get_tree().root.get_node("Game").pearl_count -= cost_item
+			get_tree().root.get_node("Game/game_start").pearl_count -= cost_item
 			
 		elif item_6.empty == true :
 			spot_allowance(item_6)
-			get_tree().root.get_node("Game").pearl_count -= cost_item
+			get_tree().root.get_node("Game/game_start").pearl_count -= cost_item
 			
 		else :
 			pass

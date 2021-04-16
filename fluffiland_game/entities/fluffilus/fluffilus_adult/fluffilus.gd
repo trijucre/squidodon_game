@@ -163,8 +163,8 @@ func _ready():
 	add_to_group("animal", true)
 	add_to_group(specie, true)
 	
-	self.connect("fluffilus_birth", get_tree().root.get_node("Game"), "_on_fluffilus_fluffilus_birth")
-	self.connect("fluffilus_death", get_tree().root.get_node("Game"), "_on_fluffilus_fluffilus_death")
+	self.connect("fluffilus_birth", get_tree().root.get_node("Game/game_start"), "_on_fluffilus_fluffilus_birth")
+	self.connect("fluffilus_death", get_tree().root.get_node("Game/game_start"), "_on_fluffilus_fluffilus_death")
 	
 	
 	
@@ -297,7 +297,7 @@ func _physics_process(delta):
 	#set collision
 	collision = move_and_collide(movement)
 	
-	var sleep = get_tree().root.get_node("Game/daylight").get_color().r
+	var sleep = get_tree().root.get_node("Game//game_start/daylight").get_color().r
 	
 
 	if sleep < sleep_hour  and hurt == false :
@@ -538,7 +538,7 @@ func _on_pregnancy_timeout():
 	for i in egg_number :
 		
 		var egg = egg_scene.instance()
-		get_tree().root.get_node("Game/YSort").add_child(egg)
+		get_tree().root.get_node("Game//game_start/YSort").add_child(egg)
 		
 		if sprite_direction == "right" :
 			egg.position.x = self.position.x - 50
@@ -554,7 +554,7 @@ func _on_pregnancy_timeout():
 func _on_poop_timeout():
 	if food_eaten == true :
 		var poop = poop_scene.instance()
-		get_tree().root.get_node("Game/YSort").add_child(poop)
+		get_tree().root.get_node("Game//game_startYSort").add_child(poop)
 		
 		if sprite_direction == "right" :
 			poop.position.x = self.position.x - 70
@@ -662,7 +662,7 @@ func _on_info_button_pressed():
 	info_panel.love_happiness = love_happiness
 	info_panel.pregnancy = pregnant
 	
-	get_tree().root.get_node("Game/CanvasLayer").add_child(info_panel)
+	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
 	
 
 #func _draw():
