@@ -51,7 +51,7 @@ var center_x = self.position.x - 125
 var center_y = self.position.y - 125
 var spawn_area : Rect2 = Rect2(center_x, center_y, 250, 250)
 
-var tree_id = str(self.get_instance_id())
+var tree_id
 var rngx = RandomNumberGenerator.new()
 var rngy = RandomNumberGenerator.new()
 
@@ -85,6 +85,9 @@ func _ready():
 		gender = "neutral"
 
 	emit_signal("gender",self)
+	
+	if tree_id == null :
+		tree_id = str(self.get_instance_id())
 #generate name :
 	
 func load_file(file_path):
@@ -210,6 +213,7 @@ func save():
 		"bush_time" : bush_time,
 		"health_time" : health_time,
 		"happiness" : happiness,
-		"creature_name" : creature_name
+		"creature_name" : creature_name,
+		"tree_id" : tree_id
 	}
 	return save

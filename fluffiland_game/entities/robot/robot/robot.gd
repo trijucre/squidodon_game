@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 signal water_earned
 signal strength_earned
-signal poop_recolted
+signal object_recolted
 
 signal stat_changed
 
@@ -20,10 +20,11 @@ var resistance = 20
 var attack_damage = 30
 var save_value = "Persist_child"
 onready var sprite = $sprite
+onready var container_node = $container
 
-var bush = preload("res://food/vegetals/bush/bush.tscn")
-var clover = null
-var fruit = null
+var bush = preload("res://entities/tree_produced_bush/tree_produced_bush.tscn")
+var clover = preload("res://entities/tree_produced-clover/tree_produced_clover.tscn")
+var fruit = preload ("res://entities/tree_produced-fruit/tree_produced_fruit.tscn")
 
 var option_1_bought = false
 var option_2_bought = false
@@ -34,15 +35,19 @@ var option_6_bought = false
 var option_7_bought = false
 
 var container
+var container_id
+var fertilizer_quality
 
+var popup_scene = preload ("res://popup/popup_robot/popup_robot.tscn")
+var popup_position = Vector2 (0, - 75)
 func _ready():
 	
 	add_to_group("robot", true)
 	add_to_group ("Persist", true)
 	add_to_group("Persist_child", true)
 
-	self.connect("poop_recolted", get_tree().root.get_node("Game/game_start/CanvasLayer/info_robot"), "_on_poop_recolted")
-
+	self.connect("object_recolted", get_tree().root.get_node("Game/game_start"), "_on_object_recolted")
+	
 	
 	self.connect("stat_changed", get_tree().root.get_node("Game/game_start/CanvasLayer/robot_life_and_energy"), "_on_stats_changed")
 	emit_signal("stat_changed")
@@ -130,34 +135,65 @@ func _input(event):
 					happy_popup.position = target.popup_position
 					self.energy -= 1
 					emit_signal("stat_changed", "strength", 1)		
+					
+					var popup = popup_scene.instance()
+					self.add_child(popup)
+					popup.position = popup_position
 			
 			if target.is_in_group("parasite") :
 				target.health -= attack_damage
 				self.energy -= 1
 				emit_signal("stat_changed", "strength", 1)		
 				
-			if target.is_in_group("poop") :
+				var popup = popup_scene.instance()
+				popup.sprite_text = "angry"
+				self.add_child(popup)
+				popup.position = popup_position
+				
+			if target.is_in_group("poop") and (container == null or container == "poop")  :
 				target.queue_free()
 				self.energy -= 1
-				emit_signal("poop_recolted", 1)
+				emit_signal("object_recolted","poop", target.quality, 1)
 				emit_signal("stat_changed", "strength", 1)		
 								
-			if target.is_in_group("bush") :
-				target.queue_free()
-				self.energy -= 1
+			if target.is_in_group("bush") and container == null :
+				print ("bush taken by robot")
 				container = target.specie
-				emit_signal("stat_changed", "strength", 1)		
+				container_id = target.id
+				target.queue_free()
+				var bush_container = bush.instance()
+				self.energy -= 1
+				bush_container.id = container_id
+				bush_container.position = Vector2(0, -100)
+				print ("container name ,", container)
+				container_node.add_child(bush_container)
+			
+				emit_signal("stat_changed", "strength", 1)	
+
+		
+			if target.is_in_group("tree") and container == "fertilizer" :
+				target.happiness += fertilizer_quality
+					
+				var popup = popup_scene.instance()
+				popup.sprite_text = "fertilizer"
+				self.add_child(popup)
+				popup.position = popup_position
+				container = null
 
 		else :
 
 			if container != null :
 				print ("robot container is full")
 				if container == "bush" :
+					get_node("container/tree_produced_bush").queue_free()
 					print ("robot contains a bush")
 					var bush_container = bush.instance()
+					bush_container.id = container_id
 					get_tree().root.get_node("Game//game_start/YSort").add_child(bush_container)
 					bush_container.position = self.position+ last_direction.normalized() * 75
 					container = null
+					
+				
 	#	if (energy >= 2 and !attack_playing ) :
 	#		energy = energy - 2
 	#		emit_signal("squidodon_stats_changed", self)
@@ -181,30 +217,14 @@ func _input(event):
 			#var animation = get_animation_direction(last_direction) + "_special"
 			sprite.play(animation) 
 	
-	if Input.is_action_pressed("interact"):
-		var target = $RayCast2D.get_collider()
-		if target != null and target.is_in_group("bush") :
-			eat(target)
-				
-
 signal squidodon_stats_changed()
 
-func eat(target) :
-	
-	health += target.health/10
-	
-	if health > health_max :
-			health = health_max
-	emit_signal("squidodon_stats_changed", self)
-	
-	energy += target.energy/10
-	
-	if energy > energy_max :
-			energy = energy_max
-	emit_signal("squidodon_stats_changed", self)
-	
-	target.energy = 0
-	target.health = 0
+func _on_fertilizer_created(quality):
+	for node in container_node.get_children() :
+		container_node.remove_child(node)
+	container = "fertilizer"
+	fertilizer_quality = quality
+	print (container, " created in robot  ", fertilizer_quality)
 	
 	
 

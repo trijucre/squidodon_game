@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://GUI/close_icon.png" type="Texture" id=1]
 [ext_resource path="res://GUI/close_icon_clicked.png" type="Texture" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=5]
 [ext_resource path="res://GUI/strength_logo.png" type="Texture" id=6]
 [ext_resource path="res://GUI/water_logo.png" type="Texture" id=7]
+[ext_resource path="res://icon.png" type="Texture" id=8]
 
 [node name="info_robot" type="Control"]
 pause_mode = 2
@@ -16,8 +17,10 @@ __meta__ = {
 }
 
 [node name="background" type="TextureRect" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_left = -0.850952
+margin_top = -0.850922
+margin_right = 1919.15
+margin_bottom = 1079.15
 texture = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -401,6 +404,37 @@ margin_right = 560.0
 margin_bottom = 37.0
 texture_normal = ExtResource( 7 )
 texture_pressed = ExtResource( 6 )
+
+[node name="make_fertilizer" type="TextureButton" parent="."]
+margin_left = 291.1
+margin_top = 291.405
+margin_right = 338.1
+margin_bottom = 339.405
+texture_normal = ExtResource( 6 )
+texture_pressed = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="make_fertilizer"]
+margin_left = -32.0
+margin_top = -16.0
+margin_right = 63.0
+margin_bottom = -2.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "make_fertilizer"
+
+[node name="container_product" type="TextureButton" parent="."]
+margin_left = 374.993
+margin_top = 353.415
+margin_right = 421.993
+margin_bottom = 401.415
+texture_normal = ExtResource( 1 )
+texture_pressed = ExtResource( 2 )
+texture_disabled = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="close_button" to="." method="_on_close_button_pressed"]
 [connection signal="pressed" from="texts/HBoxContainer/buy_1" to="." method="_on_buy_1_pressed"]
 [connection signal="pressed" from="texts/HBoxContainer2/buy_2" to="." method="_on_buy_2_pressed"]
@@ -409,3 +443,5 @@ texture_pressed = ExtResource( 6 )
 [connection signal="pressed" from="texts/HBoxContainer5/buy_5" to="." method="_on_buy_5_pressed"]
 [connection signal="pressed" from="texts/HBoxContainer6/buy_6" to="." method="_on_buy_6_pressed"]
 [connection signal="pressed" from="texts/HBoxContainer7/buy_7" to="." method="_on_buy_7_pressed"]
+[connection signal="pressed" from="make_fertilizer" to="." method="_on_make_fertilizer_pressed"]
+[connection signal="pressed" from="container_product" to="." method="_on_container_product_pressed"]

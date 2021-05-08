@@ -31,6 +31,10 @@ var diversity_level_2 = 0
 var diversity_level_3 = 0
 
 var robot_repaired
+var robot_container
+var poop_number = 0
+var poop_quality = 0
+var fertilizer_quality = 0
 onready var robot_button = $CanvasLayer/robot_button
 
 var tree_hidden = false
@@ -191,6 +195,8 @@ func _ready():
 	print (robot_repaired)
 	if robot_repaired == false :
 		robot_button.set_disabled(true)
+	if saved == false :
+		import_parasite_algae()
 	
 	saved = true
 	
@@ -347,6 +353,25 @@ func _on_item_bought_pearl():
 func _on_item_bought_strength():
 	emit_signal("number_of_strength", self)
 
+func import_parasite_algae():
+	for x in map_size.x:
+			for y in map_size.y:
+				var data = custom_gradient.get_data()
+				data.lock()
+				var gradient_value = data.get_pixel(x + xmap * 0.5 , y + ymap * 0.5).r * size_gradient
+				
+				var a = noise.get_noise_2d(x,y)
+				data.unlock()
+				a -= gradient_value
+				
+				if a < tree_caps.x and a > tree_caps.y and x > 1 and y > 1 :
+					var chance = randi() % 1000
+					
+					if chance >= 995:
+						var make_parasite_algae = parasite_algae.instance()
+						#var num = randi() % tilesize/8 + tilesize/10
+						make_parasite_algae.position = Vector2(x*tilesize, y*tilesize)
+						$YSort.add_child(make_parasite_algae)
 
 func import_fluffilus():
 	var valid_position = false
@@ -650,27 +675,7 @@ func _on_end_of_day_timeout():
 
 	#save game every day
 	#parasites grow every day
-	var number_of_parasite_algae = get_tree().get_nodes_in_group("parasite").size()
-	if number_of_parasite_algae <= 0 :
-		randomize()
-		for x in map_size.x:
-			for y in map_size.y:
-				var data = custom_gradient.get_data()
-				data.lock()
-				var gradient_value = data.get_pixel(x + xmap * 0.5 , y + ymap * 0.5).r * size_gradient
-				
-				var a = noise.get_noise_2d(x,y)
-				data.unlock()
-				a -= gradient_value
-				
-				if a < tree_caps.x and a > tree_caps.y and x > 1 and y > 1 :
-					var chance = randi() % 1000
-					
-					if chance >= 995:
-						var make_parasite_algae = parasite_algae.instance()
-						#var num = randi() % tilesize/8 + tilesize/10
-						make_parasite_algae.position = Vector2(x*tilesize, y*tilesize)
-						$YSort.add_child(make_parasite_algae)
+	
 
 	emit_signal("end_of_day")
 
@@ -736,6 +741,9 @@ func _on_robot_updated(option_number):
 		option_7_bought = true
 	
 	print ("option 1 bought", option_1_bought)
+
+func _on_fertilizer_created(quality):
+	fertilizer_quality = quality
 	
 func _on_robot_button_pressed():
 	var info_robot = infos_robot_scene.instance()
@@ -748,8 +756,25 @@ func _on_robot_button_pressed():
 	info_robot.option_6_bought = option_6_bought
 	info_robot.option_7_bought = option_7_bought
 	
+	info_robot.poop_number = poop_number
+	info_robot.poop_quality = poop_quality
+	info_robot.container = robot_container
+
+	info_robot.fertilizer = 0
+	info_robot.fertilizer_quality = 0
+	
 	get_tree().root.get_node("Game/game_start/CanvasLayer").add_child(info_robot)
 	get_tree().paused = true
+	
+func _on_object_recolted(object, quality, number_of_object):
+	
+	robot_container = object
+	
+	if robot_container == "poop" :
+		poop_number += number_of_object
+		poop_quality += quality
+		print ("poop quality", poop_quality)
+
 
 func _on_evolution_1_selected(text_1, id, cost_text_1):
 

@@ -46,4 +46,6 @@ position = Vector2( 0, -29 )
 enabled = true
 cast_to = Vector2( 75, 0 )
 collision_mask = 15
+
+[node name="container" type="Node2D" parent="."]
 [connection signal="pressed" from="infos_button" to="." method="_on_infos_button_pressed"]

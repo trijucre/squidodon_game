@@ -3,6 +3,7 @@ extends Control
 
 signal robot_updated
 signal strength_spend
+signal fertilizer_created
 
 var option_1_bought = false
 var option_2_bought = false
@@ -28,6 +29,8 @@ onready var cost_text_5 = $texts/HBoxContainer5/price_5
 onready var cost_text_6 = $texts/HBoxContainer6/price_6
 onready var cost_text_7 = $texts/HBoxContainer7/price_7
 
+onready var container_product_button = $make_fertilizer
+onready var poop_texture = load("res://food/poop/medium_poop/sprite/poop.png")
 
 var cost_1 = 500
 var cost_2 = 250
@@ -38,11 +41,20 @@ var cost_6 = 250
 var cost_7 = 500
 
 var poop_number = 0
+var poop_quality = 0
+
+var container = "empty"
+
+var fertilizer = 0
+var fertilizer_quality = 0
+
 
 func _ready():
 	self.connect("strength", get_tree().root.get_node("Game/game_start"), "_on_strength_spend")
 	self.connect("robot_updated", get_tree().root.get_node("Game/game_start/YSort/robot"), "_on_robot_updated")
 	self.connect("robot_updated", get_tree().root.get_node("Game/game_start"), "_on_robot_updated")
+	self.connect("fertilizer_created", get_tree().root.get_node("Game/game_start"), "_on_fertilizer_created")
+	self.connect("fertilizer_created", get_tree().root.get_node("Game/game_start/YSort/robot"), "_on_fertilizer_created")
 	
 	cost_text_1.text = str(cost_1)
 	cost_text_2.text = str(cost_2)
@@ -72,7 +84,17 @@ func _ready():
 		
 	if option_7_bought == true :
 		buy_button_7.queue_free()		
+	
+	if container == "empty" :
+		container_product_button.queue_free()
 		
+	elif container == "poop" :
+		container_product_button.set_normal_texture(poop_texture)
+	
+	else :
+		pass
+	print ("poop info robot : ", poop_number)
+	print ("poop quality info robot : ", poop_quality)
 func _on_buy_1_pressed():
 	if get_tree().root.get_node("Game/game_start").strength_count > cost_1 :
 		emit_signal("strength_spend", cost_1)
@@ -123,12 +145,70 @@ func _on_buy_7_pressed():
 		emit_signal("robot_updated", 7)
 		option_7_bought = true
 		update()
-func _on_poop_recolted():
-	poop_number += 1
 
+
+
+func _on_make_fertilizer_pressed():
+	if container != "empty" :
+		fertilizer = 1
+
+	if container == "poop" :
+		if poop_quality <= 10 :
+			fertilizer_quality = 1
+		
+		elif poop_quality <= 20 :
+			fertilizer_quality = 2
+		
+		elif poop_quality <= 40 :
+			fertilizer_quality = 3
+
+		elif poop_quality <= 80 :
+			fertilizer_quality = 4
+
+		elif poop_quality <= 160 :
+			fertilizer_quality = 5
+
+		elif poop_quality <= 320 :
+			fertilizer_quality = 6
+
+		elif poop_quality <= 640 :
+			fertilizer_quality = 7
+
+		elif poop_quality <= 1280 :
+			fertilizer_quality = 8
+
+		elif poop_quality <= 2560 :
+			fertilizer_quality = 9
+			
+		elif poop_quality >=2560 :
+			fertilizer_quality = 10
+		
+		container = "fertilizer"	
+		poop_number = 0
+		poop_quality = 0
+		
+	emit_signal("fertilizer_created", fertilizer_quality)
+	print ("fertilizer  ,", fertilizer, "quality, ", fertilizer_quality)
+
+		
+func _on_container_product_pressed():
+	print ("fertilizer  ,", fertilizer, "quality, ", fertilizer_quality)
+
+
+			
+		
+	
+
+		
 
 func _on_close_button_pressed():
 	get_tree().paused = false
 	self.queue_free()
+
+
+
+
+
+
 
 

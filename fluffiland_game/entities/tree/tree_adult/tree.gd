@@ -51,7 +51,7 @@ var center_x = self.position.x - 125
 var center_y = self.position.y - 125
 var spawn_area : Rect2 = Rect2(center_x, center_y, 250, 250)
 
-var tree_id = str(self.get_instance_id())
+var tree_id
 var rngx = RandomNumberGenerator.new()
 var rngy = RandomNumberGenerator.new()
 
@@ -69,7 +69,7 @@ func _ready():
 		
 	add_to_group("tree")
 	add_to_group("vegetals")
-	add_to_group(tree_id)
+
 	add_to_group("Persist", true)
 	add_to_group("persist_child", true)
 
@@ -82,7 +82,12 @@ func _ready():
 	print ("post randomisation tree name",creature_name)
 	if gender == null :
 		gender = "neutral"
-
+		
+	if tree_id == null :
+		tree_id = str(self.get_instance_id())
+	
+	add_to_group(tree_id)
+		
 	emit_signal("gender",self)
 #generate name :
 	print ("tree identity  ", tree_id)
@@ -211,7 +216,8 @@ func save():
 		"bush_time" : bush_time,
 		"health_time" : health_time,
 		"happiness" : happiness,
-		"creature_name" : creature_name
+		"creature_name" : creature_name,
+		"tree_id" : tree_id
 	}
 	print ("save tree", save)
 	return save
