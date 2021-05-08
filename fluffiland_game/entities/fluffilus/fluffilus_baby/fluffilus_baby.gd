@@ -2,6 +2,8 @@ extends KinematicBody2D
 
 var speed = 25
 
+
+var save_value = "Persist_child"
 var gender = "none"
 var health = 1
 var energy = 1
@@ -22,11 +24,15 @@ var direction : Vector2
 var last_direction = Vector2(0, 1)
 var bounce_countdown = 0
 
+var adulthood = 0
 
 func _ready() :
 	
 	add_to_group("fluffilus")
 	add_to_group("baby")
+	
+	add_to_group ("Persist", true)
+	add_to_group("Persist_child", true)
 	
 	rng.randomize()
 	
@@ -120,7 +126,9 @@ func _on_Timer_timeout():
 	if bounce_countdown > 0:
 		bounce_countdown = bounce_countdown - 1
 	
-	
+	adulthood += 1
+	if adulthood >= 420 :
+		adulthood_time()
 
 
 func _on_AnimatedSprite_animation_finished():
@@ -130,7 +138,7 @@ func _on_AnimatedSprite_animation_finished():
 	#get_tree().queue_delete(self)
 	pass
 
-func _on_Adulthood_timeout():
+func adulthood_time():
 		
 	
 	var adult_scene = load("res://entities/fluffilus/fluffilus_adult/fluffilus.tscn")
@@ -144,3 +152,14 @@ func _on_Adulthood_timeout():
 	direction = Vector2.ZERO
 	set_process(false)
 	get_tree().queue_delete(self)
+	
+func save():
+	var save = {
+		"filename" : get_filename(),
+		#"parent" : get_parent().get_path(),
+		"position" : get_global_position(),
+		"pos_y" : get_position(),
+		"adulthood" : adulthood
+
+	}
+	return save

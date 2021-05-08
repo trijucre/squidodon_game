@@ -1,18 +1,26 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://GUI/info_panel_vegetals/info_panel_vegetals_strength/info_panel_vegetals_strength.gd" type="Script" id=1]
 [ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=2]
-[ext_resource path="res://GUI/info_panel_vegetals/info_panel_vegetals_base.png" type="Texture" id=3]
+[ext_resource path="res://GUI/info_panel_vegetals/info_panel_vegetals_water/info_panel_vegetals_base.png" type="Texture" id=3]
 [ext_resource path="res://GUI/info_panel_vegetals/info_panel_vegetals_water/water_button_clicked.png" type="Texture" id=4]
 [ext_resource path="res://GUI/info_panel_vegetals/info_panel_vegetals_water/water_button.png" type="Texture" id=5]
 [ext_resource path="res://GUI/close_icon.png" type="Texture" id=6]
 [ext_resource path="res://GUI/close_icon_clicked.png" type="Texture" id=7]
+[ext_resource path="res://GUI/info_panel_vegetals/info_panel_vegetals_water/info_panel_vegetals_water_empty.png" type="Texture" id=8]
+[ext_resource path="res://popup/Illustration2.png" type="Texture" id=9]
+[ext_resource path="res://icon.png" type="Texture" id=10]
 
 [node name="info_panel_vegetals" type="Node2D"]
 script = ExtResource( 1 )
 
-[node name="info_panel_backgroubd" type="Sprite" parent="."]
+[node name="evolution_spot" type="Node2D" parent="."]
+
+[node name="info_panel_backgroubd" type="TextureRect" parent="."]
 texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="info_panel_text" type="Control" parent="."]
 margin_left = -251.0
@@ -24,29 +32,136 @@ __meta__ = {
 }
 
 [node name="specie_name" type="Label" parent="info_panel_text"]
-margin_left = 36.0
-margin_top = 21.0
-margin_right = 469.0
-margin_bottom = 74.0
+margin_left = 316.288
+margin_top = 164.978
+margin_right = 644.288
+margin_bottom = 217.978
 custom_fonts/font = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="health_bar" type="TextureRect" parent="."]
-margin_left = -170.146
-margin_top = -53.511
-margin_right = -130.146
-margin_bottom = -13.511
+[node name="VBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 14.0
+margin_top = 96.0
+margin_right = 430.0
+margin_bottom = 157.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="water_container_1" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 70.0
+margin_bottom = 61.0
+
+[node name="water_indicator_1" type="TextureRect" parent="VBoxContainer/water_container_1"]
+margin_right = 46.0
+margin_bottom = 61.0
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer1" type="MarginContainer" parent="VBoxContainer/water_container_1"]
+margin_left = 50.0
+margin_right = 70.0
+margin_bottom = 61.0
+rect_min_size = Vector2( 20, 0 )
+
+[node name="water_container_2" type="HBoxContainer" parent="VBoxContainer"]
+margin_left = 74.0
+margin_right = 144.0
+margin_bottom = 61.0
+
+[node name="water_indicator_2" type="TextureRect" parent="VBoxContainer/water_container_2"]
+margin_right = 46.0
+margin_bottom = 61.0
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/water_container_2"]
+margin_left = 50.0
+margin_right = 70.0
+margin_bottom = 61.0
+rect_min_size = Vector2( 20, 0 )
+
+[node name="water_container_3" type="HBoxContainer" parent="VBoxContainer"]
+margin_left = 148.0
+margin_right = 218.0
+margin_bottom = 61.0
+
+[node name="water_indicator_3" type="TextureRect" parent="VBoxContainer/water_container_3"]
+margin_right = 46.0
+margin_bottom = 61.0
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/water_container_3"]
+margin_left = 50.0
+margin_right = 70.0
+margin_bottom = 61.0
+rect_min_size = Vector2( 20, 0 )
+
+[node name="water_container_4" type="HBoxContainer" parent="VBoxContainer"]
+margin_left = 222.0
+margin_right = 292.0
+margin_bottom = 61.0
+
+[node name="water_indicator_4" type="TextureRect" parent="VBoxContainer/water_container_4"]
+margin_right = 46.0
+margin_bottom = 61.0
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer/water_container_4"]
+margin_left = 50.0
+margin_right = 70.0
+margin_bottom = 61.0
+rect_min_size = Vector2( 20, 0 )
+
+[node name="water_container_5" type="HBoxContainer" parent="VBoxContainer"]
+margin_left = 296.0
+margin_right = 366.0
+margin_bottom = 61.0
+
+[node name="water_indicator_5" type="TextureRect" parent="VBoxContainer/water_container_5"]
+margin_right = 46.0
+margin_bottom = 61.0
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer5" type="MarginContainer" parent="VBoxContainer/water_container_5"]
+margin_left = 50.0
+margin_right = 70.0
+margin_bottom = 61.0
+rect_min_size = Vector2( 20, 0 )
+
+[node name="water_container_6" type="HBoxContainer" parent="VBoxContainer"]
+margin_left = 370.0
+margin_right = 416.0
+margin_bottom = 61.0
+
+[node name="water_indicator_6" type="TextureRect" parent="VBoxContainer/water_container_6"]
+margin_right = 46.0
+margin_bottom = 61.0
+texture = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="water_button" type="TextureButton" parent="."]
-margin_left = 74.1843
-margin_top = 22.1108
-margin_right = 169.184
-margin_bottom = 117.111
+margin_left = 330.24
+margin_top = 183.372
+margin_right = 425.24
+margin_bottom = 278.373
 texture_normal = ExtResource( 5 )
 texture_pressed = ExtResource( 4 )
 __meta__ = {
@@ -54,14 +169,26 @@ __meta__ = {
 }
 
 [node name="close_button" type="TextureButton" parent="."]
-margin_left = 188.566
-margin_top = -127.73
-margin_right = 235.566
-margin_bottom = -79.73
+margin_left = 376.004
+margin_top = 24.1875
+margin_right = 423.004
+margin_bottom = 72.1875
 texture_normal = ExtResource( 6 )
 texture_pressed = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="evolution_button" type="TextureButton" parent="."]
+margin_left = -134.164
+margin_top = -1.45044
+margin_right = -6.16376
+margin_bottom = 126.55
+texture_normal = ExtResource( 10 )
+texture_pressed = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="water_button" to="." method="_on_water_button_pressed"]
 [connection signal="pressed" from="close_button" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="evolution_button" to="." method="_on_evolution_button_pressed"]

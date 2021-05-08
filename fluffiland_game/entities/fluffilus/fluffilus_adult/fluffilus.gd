@@ -1,9 +1,25 @@
 extends KinematicBody2D
+#save variables
+
+
+
 
 signal ai_stats_changed
 signal fluffilus_birth
 signal fluffilus_death
 signal gender
+
+var save_value = "Persist_child"
+
+var evolution_1 = "cuttledog"
+var evolution_1_text = "squid_path"
+var cost_text_1 = 50
+var evolution_2 = "ammoneep"
+var evolution_2_text = "shell_path"
+var cost_text_2 = 50
+var evolution_3 = "null"
+var evolution_3_text = "null"
+var cost_text_3 = 0
 
 var other_animation_playing = false
 
@@ -41,16 +57,17 @@ var change_direction_counter = 10
 #var bounce_countdown = 0
 var collision
 #name
-var random_noun
-var random_adjective
+export(String) var random_noun
+export(String) var random_adjective
 var creature_name 
+
 #animal state
 var specie = "fluffilus"
 var gender 
 var opposite_gender
 var pregnant = false
 var size = 1
-var cost = 3
+var cost = 20
 var resistance = 2
 var health = 65
 var health_max = 65
@@ -58,7 +75,7 @@ var energy = 70
 var energy_max = 70
 var attack_distance = 50
 var sleeping = false
-
+var id = str(self.get_instance_id())
 #hunger
 var hunger = 35
 
@@ -82,7 +99,7 @@ var attack_damage = 50
 #variables death
 export var spawn_area : Rect2 = Rect2(self.position.x, self.position.y, 50, 50)
 onready var meat_scene = load("res://food/meat/Squid_meat/squid_meat.tscn")
-onready var pregnancy = $pregnancy
+var pregnancy_time = 0
 export var meat_number = 1
 var dead = false
 
@@ -91,8 +108,10 @@ var egg_scene = preload("res://entities/fluffilus/fluffilus_egg/fluffilus_egg.ts
 var egg_number = 1
 
 #variables poop
+
 var food_eaten = false
 onready var poop_scene = load("res://food/poop/medium_poop/poop.tscn")
+var poop_time = 0
 
 #variable popup
 var love_bubble = preload("res://popup/love_bubble.tscn")
@@ -125,19 +144,24 @@ var food_found = false
 var creature_size_choose = randi()% 100 + 1
 var creature_size
 
+
+
 func _ready():
 	
 
+	
+	
 	randomize()
 	#size of the creature
-	if creature_size_choose < 23 :
-		creature_size = 0.9
+	if creature_size == null :
+		if creature_size_choose < 23 :
+			creature_size = 0.9
 
-	elif creature_size_choose >= 76 :
-		creature_size = 1.2
-	
-	else :
-		creature_size = 1
+		elif creature_size_choose >= 76 :
+			creature_size = 1.2
+		
+		else :
+			creature_size = 1
 		
 	$CollisionShape2D.scale = Vector2(creature_size, creature_size)
 	$AnimatedSprite.scale = Vector2(creature_size, creature_size)
@@ -146,22 +170,27 @@ func _ready():
 	sleep_hour = 0.7 + (randf() * 0.2 + 0.05)
 	
 	#name of the creature
-	random_noun = str(get_random_word_from_file("res://other/nounlist.txt"))
-	random_adjective = get_random_word_from_file("res://other/adjectiveslist.txt")
-	creature_name = str(random_adjective," ", random_noun)
+	if creature_name == null :
+		random_noun = str(get_random_word_from_file("res://other/nounlist.txt"))
+		random_adjective = str(get_random_word_from_file("res://other/adjectiveslist.txt"))
+		creature_name = str(random_adjective," ", random_noun)
 	
-	var gender_choice = randi()%100 + 1
-	if gender_choice > 33 :
-		gender = "female"
-		opposite_gender = "male"
-	else :
-		gender = "male"
-		opposite_gender = "female"
+	if gender == null or gender == "neutral" :
+		var gender_choice = randi()%100 + 1
+		if gender_choice > 33 :
+			gender = "female"
+			opposite_gender = "male"
+		else :
+			gender = "male"
+			opposite_gender = "female"
 
 	emit_signal("gender",self)
 	
 	add_to_group("animal", true)
 	add_to_group(specie, true)
+	add_to_group(id, true)
+	add_to_group ("Persist", true)
+	add_to_group("Persist_child", true)
 	
 	self.connect("fluffilus_birth", get_tree().root.get_node("Game/game_start"), "_on_fluffilus_fluffilus_birth")
 	self.connect("fluffilus_death", get_tree().root.get_node("Game/game_start"), "_on_fluffilus_fluffilus_death")
@@ -203,7 +232,7 @@ func _ready():
 		friend[i]= 0.0
 
 #generate name :
-
+	
 func load_file(file_path):
 	var file = File.new()
 	file.open(file_path, file.READ)
@@ -239,7 +268,7 @@ func animates_animal() :
 			sprite_direction = "left"
 			change_direction_counter = 0
 		else : 
-				pass
+			pass
 	
 	
 	if chosen_dir != Vector2.ZERO and collision == null :
@@ -250,7 +279,8 @@ func animates_animal() :
 	else:
 		# Play idle animatio
 		$AnimatedSprite.play("side_default")
-
+		
+	
 
 func _physics_process(delta):
 
@@ -297,7 +327,7 @@ func _physics_process(delta):
 	#set collision
 	collision = move_and_collide(movement)
 	
-	var sleep = get_tree().root.get_node("Game//game_start/daylight").get_color().r
+	var sleep = get_tree().root.get_node("Game/game_start/daylight").get_color().r
 	
 
 	if sleep < sleep_hour  and hurt == false :
@@ -355,7 +385,7 @@ func set_interest():
 					love[i] = 0.0
 					
 
-			elif energy < hunger and target.is_in_group("clover") and not predator_here and not love_here :
+			elif energy < hunger and target.is_in_group("bush") and not predator_here and not love_here :
 					
 				interest[i] = 0.1 + (randi()*1.0 + 0.1 + 2.0) * ((look_ahead+100 - distance)/(look_ahead+100))
 				something_interresting[i] = 1.0
@@ -520,7 +550,7 @@ func produce_meat() :
 	
 	for i in meat_number :
 		var meat = meat_scene.instance()
-		get_tree().root.add_child(meat)
+		get_tree().root.get_node("Game//game_start/YSort").add_child(meat)
 
 		meat.position.x = self.position.x + rng.randf_range(0, spawn_area.size.x)
 		meat.position.y = self.position.y + rng.randf_range(0, spawn_area.size.y)
@@ -532,9 +562,10 @@ func pregnancy_true() :
 	love_popup.position = popup_position
 	
 	emit_signal("gender",self)
-	pregnancy.start()
 
-func _on_pregnancy_timeout():
+
+func pregnancy_end():
+	
 	for i in egg_number :
 		
 		var egg = egg_scene.instance()
@@ -548,27 +579,23 @@ func _on_pregnancy_timeout():
 			egg.position.x = self.position.x + 50
 			egg.position.y = self.position.y + randi () % -50 + 50
 
-		pregnant = false
-		emit_signal("gender",self) 
 
-func _on_poop_timeout():
-	if food_eaten == true :
-		var poop = poop_scene.instance()
-		get_tree().root.get_node("Game//game_startYSort").add_child(poop)
+func poop() :
+	var poop = poop_scene.instance()
+	get_tree().root.get_node("Game/game_start/YSort").add_child(poop)
 		
-		if sprite_direction == "right" :
-			poop.position.x = self.position.x - 70
+	if sprite_direction == "right" :
+		poop.position.x = self.position.x - 70
+		poop.position.y = self.position.y - 15
+		
+	if sprite_direction == "left" :
+			poop.position.x = self.position.x + 70
 			poop.position.y = self.position.y - 15
-		
-		if sprite_direction == "left" :
-				poop.position.x = self.position.x + 70
-				poop.position.y = self.position.y - 15
-		food_eaten = false
-	else :
-		pass
+
+
 
 func death():
-	$poop.stop()
+	$energyandlife.stop()
 	chosen_dir = Vector2.ZERO
 	set_process(false)
 	dead = true
@@ -585,6 +612,21 @@ func _on_AnimatedSprite_animation_finished():
 
 
 func _on_energyandlife_timeout():
+	if food_eaten == true :
+		poop_time += 1
+		if poop_time >= 60 :
+			poop()
+			poop_time = 0
+			food_eaten = false
+		
+	if pregnant == true :
+		pregnancy_time += 1
+		if pregnancy_time >= 180 :
+			pregnancy_end()
+			pregnancy_time = 0
+			pregnant = false
+			
+
 	
 	if sleeping == false :
 		if energy > 0 :
@@ -593,6 +635,8 @@ func _on_energyandlife_timeout():
 			health -= 1
 	else :
 		pass	
+	
+
 
 	
 	#happiness per second :
@@ -661,12 +705,44 @@ func _on_info_button_pressed():
 	info_panel.mood = relative_happiness
 	info_panel.love_happiness = love_happiness
 	info_panel.pregnancy = pregnant
-	
+	info_panel.id = id
+	info_panel.evolution_1 = evolution_1
+	info_panel.evolution_2 = evolution_2
+	info_panel.evolution_3 = evolution_3
+	info_panel.evolution_1_text = evolution_1_text	
+	info_panel.evolution_2_text = evolution_2_text
+	info_panel.evolution_3_text = evolution_3_text
+	info_panel.cost_text_1 = cost_text_1
+	info_panel.cost_text_2 = cost_text_2
+	info_panel.cost_text_3 = cost_text_3
 	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
 	
-
+func save():
+	var save = {
+		"filename" : get_filename(),
+		#"parent" : get_parent().get_path(),
+		"position" : get_global_position(),
+		"pos_y" : get_position(),
+		"save_value" : save_value,
+		"gender" : str(gender),
+		"health" : health,
+		"energy" : energy,
+		"creature_name" : creature_name,
+		"creature_size" : creature_size,
+		"pregnant" : pregnant,
+		"healed" : healed,
+		"poop_time" : poop_time,
+		"pregnancy_time" : pregnancy_time,
+		"alert" : alert,
+		"sleep_time" : sleep_time,
+		"food_eaten" :  food_eaten,
+		"attack_cooldown_time" : attack_cooldown_time,
+		"happiness" : happiness,
+		"sleep_hour" : sleep_hour
+	}
+	return save
 #func _draw():
-	#for i in num_rays:
+	#for in num_rays:
 		#draw_line(Vector2(0,0), Vector2(0,0) + ray_directions[i] * look_ahead, Color(255, 255, 0), 5)
 	#	draw_line(Vector2(0,0), Vector2(0,0) + ray_directions[i]  * look_ahead * interest[i], Color(255, 0, 0), 5)
 		#draw_line(Vector2(0,0), Vector2(0,0) + chosen_dir * look_ahead, Color(0, 255, 0), 5)

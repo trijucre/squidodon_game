@@ -23,12 +23,7 @@ frames = SubResource( 1 )
 scale = Vector2( 3, 3 )
 shape = SubResource( 2 )
 
-[node name="Adulthood" type="Timer" parent="."]
-wait_time = 180.0
-autostart = true
-
 [node name="Timer" type="Timer" parent="."]
 autostart = true
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
-[connection signal="timeout" from="Adulthood" to="." method="_on_Adulthood_timeout"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

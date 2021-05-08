@@ -10,6 +10,8 @@ signal tree_watered
 onready var specie_name = $info_panel_text/specie_name
 onready var health_bar = $health_bar
 
+onready var evolution_panel_scene = preload("res://GUI/evolution_panel/evolution_panel.tscn")
+
 onready var health_full = load ("res://GUI/info_panel_vegetals/info_panel_vegetals_water/water_bar_7.png")
 onready var health_6 = load ("res://GUI/info_panel_vegetals/info_panel_vegetals_water/water_bar_6.png")
 onready var health_5 = load ("res://GUI/info_panel_vegetals/info_panel_vegetals_water/water_bar_5.png")
@@ -81,3 +83,9 @@ func _on_water_button_pressed():
 
 func _on_close_button_pressed():
 	self.queue_free()
+
+
+func _on_evolution_button_pressed():
+	var evolution_panel = evolution_panel_scene.instance()
+	$evolution_spot.add_child(evolution_panel)
+	evolution_panel.position = Vector2 (- 750, - 200 )

@@ -1,8 +1,8 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://Ground.tres" type="TileSet" id=1]
 [ext_resource path="res://Grass.tres" type="TileSet" id=2]
-[ext_resource path="res://animal_counter_text_2.gd" type="Script" id=3]
+[ext_resource path="res://icon.png" type="Texture" id=3]
 [ext_resource path="res://GUI/user_interface/background/diversity_background.png" type="Texture" id=4]
 [ext_resource path="res://GUI/user_interface/entities_counter/button_show_item_tree/show_item_tree_button.png" type="Texture" id=5]
 [ext_resource path="res://GUI/strength_logo.png" type="Texture" id=6]
@@ -10,10 +10,10 @@
 [ext_resource path="res://item_2.gd" type="Script" id=8]
 [ext_resource path="res://item_3.gd" type="Script" id=9]
 [ext_resource path="res://item_6.gd" type="Script" id=10]
-[ext_resource path="res://animal_counter_text_3.gd" type="Script" id=11]
-[ext_resource path="res://animal_counter_text_6.gd" type="Script" id=12]
+[ext_resource path="res://popup/Illustration2.png" type="Texture" id=11]
+[ext_resource path="res://number_of_fluffisprout.gd" type="Script" id=12]
 [ext_resource path="res://GUI/user_interface/background/UI_background.png" type="Texture" id=13]
-[ext_resource path="res://GUI/user_interface/entities_counter/entitie_box_background/entities_box_background.png" type="Texture" id=14]
+[ext_resource path="res://GUI/user_interface/robot_button/sprites/robot_button_pressed.png" type="Texture" id=14]
 [ext_resource path="res://item_5.gd" type="Script" id=15]
 [ext_resource path="res://item_4.gd" type="Script" id=16]
 [ext_resource path="res://diversity.gd" type="Script" id=17]
@@ -24,18 +24,24 @@
 [ext_resource path="res://Water.tres" type="TileSet" id=22]
 [ext_resource path="res://day_counter.gd" type="Script" id=23]
 [ext_resource path="res://Ground.gd" type="Script" id=24]
-[ext_resource path="res://font/font.tres" type="DynamicFont" id=25]
+[ext_resource path="res://GUI/user_interface/robot_button/sprites/robot_button_disabled.png" type="Texture" id=25]
 [ext_resource path="res://game_start.gd" type="Script" id=26]
-[ext_resource path="res://GUI/user_interface/entities_counter/background/entitie_background.png" type="Texture" id=27]
+[ext_resource path="res://GUI/user_interface/robot_button/sprites/robot_button.png" type="Texture" id=27]
 [ext_resource path="res://GUI/items_tree/information_item/pearl.png" type="Texture" id=28]
 [ext_resource path="res://pearl_counter.gd" type="Script" id=29]
-[ext_resource path="res://animal_counter_text_5.gd" type="Script" id=30]
+[ext_resource path="res://GUI/close_icon.png" type="Texture" id=30]
 [ext_resource path="res://item_1.gd" type="Script" id=31]
 [ext_resource path="res://GUI/user_interface/entities_counter/button_show_item_tree/show_item_tree_button_clicked.png" type="Texture" id=32]
 [ext_resource path="res://strength_counter.gd" type="Script" id=33]
 [ext_resource path="res://water_counter.gd" type="Script" id=34]
 [ext_resource path="res://GUI/clock/clock_top.png" type="Texture" id=35]
 [ext_resource path="res://GUI/clock/clock.tscn" type="PackedScene" id=36]
+[ext_resource path="res://Water.gd" type="Script" id=37]
+[ext_resource path="res://Grass.gd" type="Script" id=38]
+[ext_resource path="res://YSort.gd" type="Script" id=39]
+[ext_resource path="res://end_of_day.gd" type="Script" id=40]
+[ext_resource path="res://GUI/close_icon_clicked.png" type="Texture" id=41]
+[ext_resource path="res://font/font.tres" type="DynamicFont" id=42]
 
 [sub_resource type="Animation" id=1]
 resource_name = "day_and_night"
@@ -76,6 +82,7 @@ tile_set = ExtResource( 22 )
 cell_size = Vector2( 100, 100 )
 collision_mask = 3
 format = 1
+script = ExtResource( 37 )
 
 [node name="Ground" type="TileMap" parent="."]
 tile_set = ExtResource( 1 )
@@ -91,11 +98,13 @@ cell_size = Vector2( 100, 100 )
 cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 collision_mask = 3
 format = 1
+script = ExtResource( 38 )
 
 [node name="areas" type="Node2D" parent="."]
 script = ExtResource( 20 )
 
 [node name="YSort" type="YSort" parent="."]
+script = ExtResource( 39 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -105,179 +114,6 @@ margin_top = 69.0
 margin_right = 173.0
 margin_bottom = 1149.0
 script = ExtResource( 19 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="animal_counter_background" type="TextureRect" parent="CanvasLayer/animal_counter"]
-anchor_top = 0.152
-anchor_right = 0.943
-anchor_bottom = 1.006
-margin_left = -66.0
-margin_top = -0.160004
-margin_right = 28.286
-margin_bottom = -6.4801
-texture = ExtResource( 27 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="animal_container_boxes" type="VBoxContainer" parent="CanvasLayer/animal_counter"]
-anchor_top = 0.152
-anchor_right = 0.538
-anchor_bottom = 1.006
-margin_left = 33.0
-margin_top = 47.84
-margin_right = 88.476
-margin_bottom = 0.519897
-rect_min_size = Vector2( 0, 500 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="animal_counter_box1" type="Control" parent="CanvasLayer/animal_counter/animal_container_boxes"]
-margin_right = 162.0
-margin_bottom = 120.0
-rect_min_size = Vector2( 0, 120 )
-
-[node name="animal_counter_box_background" type="TextureRect" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box1"]
-margin_right = 166.0
-margin_bottom = 102.0
-texture = ExtResource( 14 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="animal_counter_text_1" type="Label" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box1"]
-margin_left = 13.0
-margin_top = 32.0
-margin_right = 177.0
-margin_bottom = 77.0
-rect_min_size = Vector2( 80, 45 )
-custom_fonts/font = ExtResource( 25 )
-custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
-custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="animal_counter_box2" type="Control" parent="CanvasLayer/animal_counter/animal_container_boxes"]
-margin_top = 124.0
-margin_right = 162.0
-margin_bottom = 244.0
-rect_min_size = Vector2( 0, 120 )
-
-[node name="animal_counter_box_background" type="TextureRect" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box2"]
-margin_right = 162.0
-margin_bottom = 102.0
-texture = ExtResource( 14 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="animal_counter_text_2" type="Label" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box2"]
-margin_left = 13.0
-margin_top = 32.0
-margin_right = 177.0
-margin_bottom = 77.0
-rect_min_size = Vector2( 80, 45 )
-custom_fonts/font = ExtResource( 25 )
-custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
-custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
-align = 1
-valign = 1
-script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="animal_counter_box3" type="Control" parent="CanvasLayer/animal_counter/animal_container_boxes"]
-margin_top = 248.0
-margin_right = 162.0
-margin_bottom = 368.0
-rect_min_size = Vector2( 0, 120 )
-
-[node name="animal_counter_box_background" type="TextureRect" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box3"]
-margin_right = 281.0
-margin_bottom = 102.0
-texture = ExtResource( 14 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="animal_counter_text_3" type="Label" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box3"]
-margin_left = 13.0
-margin_top = 32.0
-margin_right = 177.0
-margin_bottom = 77.0
-rect_min_size = Vector2( 80, 45 )
-custom_fonts/font = ExtResource( 25 )
-custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
-custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
-align = 1
-valign = 1
-script = ExtResource( 11 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="animal_counter_box4" type="Control" parent="CanvasLayer/animal_counter/animal_container_boxes"]
-margin_top = 372.0
-margin_right = 162.0
-margin_bottom = 492.0
-rect_min_size = Vector2( 0, 120 )
-
-[node name="animal_counter_box_background" type="TextureRect" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box4"]
-margin_right = 281.0
-margin_bottom = 102.0
-texture = ExtResource( 14 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="animal_counter_text_4" type="Label" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box4"]
-margin_left = 13.0
-margin_top = 32.0
-margin_right = 177.0
-margin_bottom = 77.0
-rect_min_size = Vector2( 80, 45 )
-custom_fonts/font = ExtResource( 25 )
-custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
-custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
-align = 1
-valign = 1
-script = ExtResource( 30 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="animal_counter_box5" type="Control" parent="CanvasLayer/animal_counter/animal_container_boxes"]
-margin_top = 496.0
-margin_right = 162.0
-margin_bottom = 616.0
-rect_min_size = Vector2( 0, 120 )
-
-[node name="animal_counter_box_background" type="TextureRect" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box5"]
-margin_right = 281.0
-margin_bottom = 102.0
-texture = ExtResource( 14 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="animal_counter_text_5" type="Label" parent="CanvasLayer/animal_counter/animal_container_boxes/animal_counter_box5"]
-margin_left = 13.0
-margin_top = 32.0
-margin_right = 162.0
-margin_bottom = 77.0
-custom_fonts/font = ExtResource( 25 )
-custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
-custom_colors/font_outline_modulate = Color( 0.690196, 0.384314, 0.356863, 1 )
-align = 1
-valign = 1
-script = ExtResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -547,27 +383,29 @@ rect_min_size = Vector2( 102, 102 )
 script = ExtResource( 10 )
 
 [node name="diversity_node" type="Control" parent="CanvasLayer"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_left = 121.0
+margin_top = 862.0
+margin_right = 598.0
+margin_bottom = 1086.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="diversity_background" type="TextureRect" parent="CanvasLayer/diversity_node"]
-margin_left = 230.0
-margin_top = 823.0
-margin_right = 530.0
-margin_bottom = 1006.0
+margin_left = 110.0
+margin_top = -37.0
+margin_right = 410.0
+margin_bottom = 146.0
 texture = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="diversity" type="Label" parent="CanvasLayer/diversity_node"]
-margin_left = 293.0
-margin_top = 875.0
-margin_right = 469.0
-margin_bottom = 947.0
+margin_left = 173.0
+margin_top = 15.0
+margin_right = 349.0
+margin_bottom = 87.0
 custom_fonts/font = ExtResource( 21 )
 custom_colors/font_color = Color( 0.690196, 0.384314, 0.356863, 1 )
 align = 1
@@ -577,11 +415,136 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="entities_button" type="Control" parent="CanvasLayer"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="fluffisprout" type="TextureButton" parent="CanvasLayer/entities_button"]
+margin_left = 1386.25
+margin_top = 877.059
+margin_right = 1514.25
+margin_bottom = 1005.06
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="number_of_fluffisprout" type="Label" parent="CanvasLayer/entities_button/fluffisprout"]
+margin_top = -65.0
+margin_right = 125.0
+margin_bottom = -10.0
+custom_fonts/font = ExtResource( 21 )
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pond" type="TextureButton" parent="CanvasLayer/entities_button"]
+margin_left = 29.561
+margin_top = 663.491
+margin_right = 157.561
+margin_bottom = 791.491
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/entities_button/pond"]
+margin_left = 24.0
+margin_right = 121.0
+margin_bottom = 21.0
+custom_fonts/font = ExtResource( 42 )
+text = "cost 50 str"
+
+[node name="hill" type="TextureButton" parent="CanvasLayer/entities_button"]
+margin_left = 28.4661
+margin_top = 524.445
+margin_right = 156.466
+margin_bottom = 652.445
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="CanvasLayer/entities_button/hill"]
+margin_left = 14.0949
+margin_top = 3.04602
+margin_right = 111.095
+margin_bottom = 24.046
+custom_fonts/font = ExtResource( 42 )
+text = "cost 50 str"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="robot_button" type="TextureButton" parent="CanvasLayer"]
+margin_top = 900.0
+margin_right = 192.0
+margin_bottom = 1083.0
+texture_normal = ExtResource( 27 )
+texture_pressed = ExtResource( 14 )
+texture_disabled = ExtResource( 25 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hide_tree_button" type="TextureButton" parent="CanvasLayer"]
+margin_left = 16.0
+margin_top = 440.0
+margin_right = 63.0
+margin_bottom = 488.0
+texture_normal = ExtResource( 30 )
+texture_pressed = ExtResource( 41 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/hide_tree_button"]
+margin_left = 56.0
+margin_top = 8.0
+margin_right = 256.0
+margin_bottom = 36.0
+custom_fonts/font = ExtResource( 21 )
+text = "hide trees"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="show tree" type="TextureButton" parent="CanvasLayer"]
+margin_left = 20.0
+margin_top = 380.0
+margin_right = 60.0
+margin_bottom = 420.0
+texture_normal = ExtResource( 30 )
+texture_pressed = ExtResource( 41 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="CanvasLayer/show tree"]
+margin_left = 52.0
+margin_right = 252.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 21 )
+text = "show tree"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="end_of_day" type="Timer" parent="."]
 wait_time = 60.0
 autostart = true
+script = ExtResource( 40 )
 [connection signal="day_number" from="." to="CanvasLayer/day_counter" method="_on_Game_day_number"]
+[connection signal="number_of_fluffilus" from="." to="CanvasLayer/animal_counter" method="_on_game_start_number_of_fluffilus"]
 [connection signal="number_of_pearls" from="." to="CanvasLayer/pearl_counter" method="_on_Game_number_of_pearls"]
+[connection signal="number_of_pearls" from="." to="CanvasLayer/entities_button/fluffisprout/number_of_fluffisprout" method="_on_game_start_number_of_pearls"]
 [connection signal="number_of_strength" from="." to="CanvasLayer/strength_counter" method="_on_Game_number_of_strength"]
 [connection signal="number_of_water" from="." to="CanvasLayer/water_counter" method="_on_Game_number_of_water"]
 [connection signal="diversity_counter" from="CanvasLayer/animal_counter" to="CanvasLayer/diversity_node/diversity" method="_on_animal_counter_diversity_counter"]
@@ -592,4 +555,10 @@ autostart = true
 [connection signal="pressed" from="CanvasLayer/item_stock/item_stock_container/item_4" to="." method="_on_item_4_pressed"]
 [connection signal="pressed" from="CanvasLayer/item_stock/item_stock_container/item_5" to="." method="_on_item_5_pressed"]
 [connection signal="pressed" from="CanvasLayer/item_stock/item_stock_container/item_6" to="." method="_on_item_6_pressed"]
+[connection signal="pressed" from="CanvasLayer/entities_button/fluffisprout" to="." method="_on_fluffisprout_pressed"]
+[connection signal="pressed" from="CanvasLayer/entities_button/pond" to="." method="_on_pond_pressed"]
+[connection signal="pressed" from="CanvasLayer/entities_button/hill" to="." method="_on_hill_pressed"]
+[connection signal="pressed" from="CanvasLayer/robot_button" to="." method="_on_robot_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/hide_tree_button" to="." method="_on_hide_tree_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/show tree" to="." method="_on_show_tree_pressed"]
 [connection signal="timeout" from="end_of_day" to="." method="_on_end_of_day_timeout"]

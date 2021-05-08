@@ -1,4 +1,4 @@
-extends Control
+extends CanvasLayer
 
 onready var game_scene = preload("res://game_start.tscn")
 

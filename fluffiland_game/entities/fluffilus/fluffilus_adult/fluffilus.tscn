@@ -32,9 +32,19 @@ radius = 49.5591
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
+"frames": [ ExtResource( 19 ), ExtResource( 21 ), ExtResource( 20 ), ExtResource( 25 ), ExtResource( 22 ), ExtResource( 27 ), ExtResource( 23 ), ExtResource( 26 ) ],
+"loop": false,
+"name": "side_attack",
+"speed": 8.0
+}, {
 "frames": [ ExtResource( 8 ) ],
 "loop": true,
 "name": "side_sleep",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "side_hurt",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 24 ) ],
@@ -42,20 +52,10 @@ animations = [ {
 "name": "side_default",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 19 ), ExtResource( 21 ), ExtResource( 20 ), ExtResource( 25 ), ExtResource( 22 ), ExtResource( 27 ), ExtResource( 23 ), ExtResource( 26 ) ],
-"loop": false,
-"name": "side_attack",
-"speed": 8.0
-}, {
 "frames": [ ExtResource( 10 ), ExtResource( 9 ), ExtResource( 15 ), ExtResource( 13 ), ExtResource( 12 ), ExtResource( 16 ), ExtResource( 14 ), ExtResource( 11 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 28 ), ExtResource( 29 ) ],
 "loop": true,
 "name": "side_walk",
 "speed": 8.0
-}, {
-"frames": [ ExtResource( 2 ) ],
-"loop": true,
-"name": "side_hurt",
-"speed": 5.0
 } ]
 
 [node name="fluffilus" type="KinematicBody2D"]
@@ -85,16 +85,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="poop" type="Timer" parent="."]
-wait_time = 60.0
-autostart = true
-
 [node name="energyandlife" type="Timer" parent="."]
 autostart = true
-
-[node name="pregnancy" type="Timer" parent="."]
-wait_time = 120.0
-one_shot = true
 
 [node name="info_button" type="TextureButton" parent="."]
 margin_left = -39.0
@@ -106,7 +98,5 @@ __meta__ = {
 }
 [connection signal="gender" from="." to="name" method="_on_fluffilus_gender"]
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
-[connection signal="timeout" from="poop" to="." method="_on_poop_timeout"]
 [connection signal="timeout" from="energyandlife" to="." method="_on_energyandlife_timeout"]
-[connection signal="timeout" from="pregnancy" to="." method="_on_pregnancy_timeout"]
 [connection signal="pressed" from="info_button" to="." method="_on_info_button_pressed"]

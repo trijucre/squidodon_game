@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=2]
+[gd_scene load_steps=65 format=2]
 
 [ext_resource path="res://GUI/items_tree/background/items_tree_background.png" type="Texture" id=1]
 [ext_resource path="res://GUI/items_tree/information_item/info_panel_base.png" type="Texture" id=2]
@@ -49,11 +49,21 @@
 [ext_resource path="res://GUI/items_tree/vegetal_tree/button/clover_tree_button/clover_tree_unclicked.png" type="Texture" id=47]
 [ext_resource path="res://GUI/items_tree/clover_tree_button.gd" type="Script" id=48]
 [ext_resource path="res://GUI/items_tree/vegetal_tree/button/clover_tree_button/clover_tree_clicked.png" type="Texture" id=49]
+[ext_resource path="res://GUI/items_tree/environment_tree/environment_tree_background/evenments_tree_background.png" type="Texture" id=50]
 [ext_resource path="res://GUI/items_tree/vegetal_tree/button/bush_button/bush_button_unclicked.png" type="Texture" id=51]
 [ext_resource path="res://GUI/items_tree/tree_button2.gd" type="Script" id=52]
+[ext_resource path="res://GUI/items_tree/fruit_tree.gd" type="Script" id=53]
+[ext_resource path="res://GUI/items_tree/pound_button.gd" type="Script" id=54]
 [ext_resource path="res://GUI/items_tree/berry_bush_button.gd" type="Script" id=55]
+[ext_resource path="res://GUI/items_tree/lake_button.gd" type="Script" id=56]
+[ext_resource path="res://GUI/items_tree/mountain_button.gd" type="Script" id=57]
+[ext_resource path="res://GUI/items_tree/B_water_flower.gd" type="Script" id=58]
+[ext_resource path="res://GUI/items_tree/str_water_flower.gd" type="Script" id=59]
 [ext_resource path="res://GUI/items_tree/rabbibranch_button.gd" type="Script" id=60]
 [ext_resource path="res://GUI/close_icon.png" type="Texture" id=61]
+[ext_resource path="res://GUI/items_tree/hill_button.gd" type="Script" id=62]
+[ext_resource path="res://GUI/items_tree/B_str_flower.gd" type="Script" id=63]
+[ext_resource path="res://GUI/items_tree/statue_button.gd" type="Script" id=64]
 
 [node name="Items_tree" type="Control"]
 pause_mode = 2
@@ -349,27 +359,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button_container" type="HBoxContainer" parent="trees/animal_tree/buttons"]
+[node name="Button_container" type="VBoxContainer" parent="trees/animal_tree/buttons"]
 margin_right = 106.0
 margin_bottom = 848.0
 rect_min_size = Vector2( 106, 848 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="column_1" type="VBoxContainer" parent="trees/animal_tree/buttons/Button_container"]
-margin_right = 106.0
-margin_bottom = 848.0
+[node name="column_1" type="HBoxContainer" parent="trees/animal_tree/buttons/Button_container"]
+margin_right = 326.0
+margin_bottom = 106.0
 rect_min_size = Vector2( 106, 106 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="fluffilus_button" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_1"]
 margin_right = 106.0
 margin_bottom = 106.0
 focus_mode = 1
-toggle_mode = true
 action_mode = 0
 enabled_focus_mode = 1
 texture_normal = ExtResource( 11 )
@@ -380,68 +383,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="column_2" type="VBoxContainer" parent="trees/animal_tree/buttons/Button_container"]
+[node name="rabbibranch_button" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_1"]
 margin_left = 110.0
 margin_right = 216.0
-margin_bottom = 848.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="catshark" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_2"]
-margin_right = 106.0
 margin_bottom = 106.0
 focus_mode = 1
-toggle_mode = true
-action_mode = 0
-enabled_focus_mode = 1
-texture_normal = ExtResource( 13 )
-texture_pressed = ExtResource( 23 )
-script = ExtResource( 33 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="cuttledog" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_2"]
-margin_top = 110.0
-margin_right = 106.0
-margin_bottom = 216.0
-focus_mode = 1
-toggle_mode = true
-action_mode = 0
-enabled_focus_mode = 1
-texture_normal = ExtResource( 13 )
-script = ExtResource( 38 )
-
-[node name="column_3" type="VBoxContainer" parent="trees/animal_tree/buttons/Button_container"]
-margin_left = 220.0
-margin_right = 326.0
-margin_bottom = 848.0
-rect_min_size = Vector2( 106, 106 )
-
-[node name="coral_ocelot" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_3"]
-margin_right = 106.0
-margin_bottom = 106.0
-focus_mode = 1
-toggle_mode = true
-action_mode = 0
-enabled_focus_mode = 1
-texture_normal = ExtResource( 13 )
-script = ExtResource( 35 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="column_4" type="VBoxContainer" parent="trees/animal_tree/buttons/Button_container"]
-margin_left = 330.0
-margin_right = 436.0
-margin_bottom = 848.0
-
-[node name="rabbibranch_button" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_4"]
-margin_right = 106.0
-margin_bottom = 106.0
-focus_mode = 1
-toggle_mode = true
 action_mode = 0
 enabled_focus_mode = 1
 texture_normal = ExtResource( 14 )
@@ -453,18 +399,73 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="column_5" type="VBoxContainer" parent="trees/animal_tree/buttons/Button_container"]
-margin_left = 440.0
-margin_right = 546.0
-margin_bottom = 848.0
-
-[node name="ancistrus_button" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_5"]
-margin_right = 106.0
+[node name="ancistrus_button" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_1"]
+margin_left = 220.0
+margin_right = 326.0
 margin_bottom = 106.0
 texture_normal = ExtResource( 13 )
 script = ExtResource( 25 )
 
+[node name="column_2" type="HBoxContainer" parent="trees/animal_tree/buttons/Button_container"]
+margin_top = 110.0
+margin_right = 326.0
+margin_bottom = 216.0
+
+[node name="catshark" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_2"]
+margin_right = 106.0
+margin_bottom = 106.0
+focus_mode = 1
+action_mode = 0
+enabled_focus_mode = 1
+texture_normal = ExtResource( 13 )
+texture_pressed = ExtResource( 23 )
+texture_disabled = ExtResource( 13 )
+script = ExtResource( 33 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="coral_ocelot" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_2"]
+margin_left = 110.0
+margin_right = 216.0
+margin_bottom = 106.0
+focus_mode = 1
+action_mode = 0
+enabled_focus_mode = 1
+texture_normal = ExtResource( 13 )
+script = ExtResource( 35 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="column_3" type="HBoxContainer" parent="trees/animal_tree/buttons/Button_container"]
+margin_top = 220.0
+margin_right = 326.0
+margin_bottom = 326.0
+rect_min_size = Vector2( 106, 106 )
+
+[node name="cuttledog" type="TextureButton" parent="trees/animal_tree/buttons/Button_container/column_3"]
+margin_right = 106.0
+margin_bottom = 106.0
+focus_mode = 1
+action_mode = 0
+enabled_focus_mode = 1
+texture_normal = ExtResource( 13 )
+texture_disabled = ExtResource( 13 )
+script = ExtResource( 38 )
+
+[node name="column_4" type="HBoxContainer" parent="trees/animal_tree/buttons/Button_container"]
+margin_top = 330.0
+margin_right = 326.0
+margin_bottom = 330.0
+
+[node name="column_5" type="HBoxContainer" parent="trees/animal_tree/buttons/Button_container"]
+margin_top = 334.0
+margin_right = 326.0
+margin_bottom = 334.0
+
 [node name="vegetal_tree" type="Control" parent="trees"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 161.0
@@ -476,9 +477,9 @@ __meta__ = {
 [node name="vegetal_tree_background" type="NinePatchRect" parent="trees/vegetal_tree"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 266.0
+margin_left = 268.0
 margin_top = 66.0
-margin_right = 60.0
+margin_right = 62.0
 margin_bottom = 33.0
 texture = ExtResource( 21 )
 region_rect = Rect2( 266, 66, 980, 1021 )
@@ -511,47 +512,58 @@ margin_right = 844.0
 margin_bottom = 106.0
 rect_min_size = Vector2( 106, 106 )
 
-[node name="bush_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_1"]
+[node name="pearl_flower_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_1"]
 margin_right = 106.0
 margin_bottom = 106.0
-toggle_mode = true
-texture_normal = ExtResource( 51 )
-texture_pressed = ExtResource( 51 )
-texture_disabled = ExtResource( 46 )
-script = ExtResource( 44 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="pearl_flower_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_1"]
-margin_left = 110.0
-margin_right = 216.0
-margin_bottom = 106.0
-toggle_mode = true
 texture_normal = ExtResource( 26 )
 texture_pressed = ExtResource( 27 )
 texture_disabled = ExtResource( 26 )
 script = ExtResource( 28 )
 
 [node name="water_flower_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_1"]
-margin_left = 220.0
-margin_right = 326.0
+margin_left = 110.0
+margin_right = 216.0
 margin_bottom = 106.0
-toggle_mode = true
 texture_normal = ExtResource( 30 )
 texture_pressed = ExtResource( 31 )
 texture_disabled = ExtResource( 30 )
 script = ExtResource( 29 )
 
 [node name="strength_flower_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_1"]
-margin_left = 330.0
-margin_right = 436.0
+margin_left = 220.0
+margin_right = 326.0
 margin_bottom = 106.0
-toggle_mode = true
 texture_normal = ExtResource( 37 )
 texture_pressed = ExtResource( 32 )
 texture_disabled = ExtResource( 37 )
 script = ExtResource( 36 )
+
+[node name="B_str_flower" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_1"]
+margin_left = 330.0
+margin_right = 436.0
+margin_bottom = 106.0
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 24 )
+texture_disabled = ExtResource( 24 )
+script = ExtResource( 63 )
+
+[node name="B_water_flower" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_1"]
+margin_left = 440.0
+margin_right = 546.0
+margin_bottom = 106.0
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 24 )
+texture_disabled = ExtResource( 24 )
+script = ExtResource( 58 )
+
+[node name="str_water_flower" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_1"]
+margin_left = 550.0
+margin_right = 656.0
+margin_bottom = 106.0
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 24 )
+texture_disabled = ExtResource( 24 )
+script = ExtResource( 59 )
 
 [node name="column_2" type="HBoxContainer" parent="trees/vegetal_tree/buttons/Button_container"]
 margin_top = 110.0
@@ -562,7 +574,6 @@ rect_min_size = Vector2( 106, 106 )
 [node name="tree_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_2"]
 margin_right = 106.0
 margin_bottom = 106.0
-toggle_mode = true
 texture_normal = ExtResource( 24 )
 texture_pressed = ExtResource( 24 )
 texture_disabled = ExtResource( 24 )
@@ -575,7 +586,6 @@ __meta__ = {
 margin_left = 110.0
 margin_right = 216.0
 margin_bottom = 106.0
-toggle_mode = true
 texture_normal = ExtResource( 24 )
 texture_pressed = ExtResource( 24 )
 texture_disabled = ExtResource( 24 )
@@ -588,11 +598,21 @@ __meta__ = {
 margin_left = 220.0
 margin_right = 326.0
 margin_bottom = 106.0
-toggle_mode = true
 texture_normal = ExtResource( 47 )
 texture_pressed = ExtResource( 49 )
 texture_disabled = ExtResource( 49 )
 script = ExtResource( 48 )
+
+[node name="fruit_tree" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_2"]
+margin_left = 330.0
+margin_right = 436.0
+margin_bottom = 106.0
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 24 )
+script = ExtResource( 53 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="column_3" type="HBoxContainer" parent="trees/vegetal_tree/buttons/Button_container"]
 margin_top = 220.0
@@ -600,10 +620,21 @@ margin_right = 844.0
 margin_bottom = 326.0
 rect_min_size = Vector2( 106, 106 )
 
-[node name="berry_bush_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_3"]
+[node name="bush_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_3"]
 margin_right = 106.0
 margin_bottom = 106.0
-toggle_mode = true
+texture_normal = ExtResource( 51 )
+texture_pressed = ExtResource( 51 )
+texture_disabled = ExtResource( 46 )
+script = ExtResource( 44 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="berry_bush_button" type="TextureButton" parent="trees/vegetal_tree/buttons/Button_container/column_3"]
+margin_left = 110.0
+margin_right = 216.0
+margin_bottom = 106.0
 texture_normal = ExtResource( 24 )
 texture_pressed = ExtResource( 24 )
 script = ExtResource( 55 )
@@ -618,6 +649,136 @@ margin_bottom = 436.0
 rect_min_size = Vector2( 106, 106 )
 
 [node name="column_5" type="HBoxContainer" parent="trees/vegetal_tree/buttons/Button_container"]
+margin_top = 440.0
+margin_right = 844.0
+margin_bottom = 440.0
+
+[node name="environment_tree" type="Control" parent="trees"]
+visible = false
+margin_right = 1221.0
+margin_bottom = 1023.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="NinePatchRect" parent="trees/environment_tree"]
+margin_left = 268.0
+margin_top = 66.0
+margin_right = 1255.0
+margin_bottom = 1053.0
+texture = ExtResource( 50 )
+region_rect = Rect2( 266, 66, 980, 1021 )
+patch_margin_left = 50
+patch_margin_top = 50
+patch_margin_right = 50
+patch_margin_bottom = 50
+
+[node name="buttons" type="Control" parent="trees/environment_tree"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="environment_Button_container" type="VBoxContainer" parent="trees/environment_tree/buttons"]
+margin_left = 321.0
+margin_top = 151.0
+margin_right = 1165.0
+margin_bottom = 999.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="column_1" type="HBoxContainer" parent="trees/environment_tree/buttons/environment_Button_container"]
+margin_right = 844.0
+margin_bottom = 106.0
+rect_min_size = Vector2( 106, 106 )
+
+[node name="pound_button" type="TextureButton" parent="trees/environment_tree/buttons/environment_Button_container/column_1"]
+margin_right = 106.0
+margin_bottom = 106.0
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 24 )
+texture_disabled = ExtResource( 24 )
+script = ExtResource( 54 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lake_button" type="TextureButton" parent="trees/environment_tree/buttons/environment_Button_container/column_1"]
+margin_left = 110.0
+margin_right = 216.0
+margin_bottom = 106.0
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 24 )
+texture_disabled = ExtResource( 24 )
+script = ExtResource( 56 )
+
+[node name="button3" type="TextureButton" parent="trees/environment_tree/buttons/environment_Button_container/column_1"]
+margin_left = 220.0
+margin_right = 326.0
+margin_bottom = 106.0
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 24 )
+texture_disabled = ExtResource( 24 )
+
+[node name="button4" type="TextureButton" parent="trees/environment_tree/buttons/environment_Button_container/column_1"]
+margin_left = 330.0
+margin_right = 436.0
+margin_bottom = 106.0
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 24 )
+texture_disabled = ExtResource( 24 )
+
+[node name="column_2" type="HBoxContainer" parent="trees/environment_tree/buttons/environment_Button_container"]
+margin_top = 110.0
+margin_right = 844.0
+margin_bottom = 216.0
+rect_min_size = Vector2( 106, 106 )
+
+[node name="hill_button" type="TextureButton" parent="trees/environment_tree/buttons/environment_Button_container/column_2"]
+margin_right = 106.0
+margin_bottom = 106.0
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 24 )
+texture_disabled = ExtResource( 24 )
+script = ExtResource( 62 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="mountain_button" type="TextureButton" parent="trees/environment_tree/buttons/environment_Button_container/column_2"]
+margin_left = 110.0
+margin_right = 216.0
+margin_bottom = 106.0
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 24 )
+texture_disabled = ExtResource( 24 )
+script = ExtResource( 57 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="column_3" type="HBoxContainer" parent="trees/environment_tree/buttons/environment_Button_container"]
+margin_top = 220.0
+margin_right = 844.0
+margin_bottom = 326.0
+rect_min_size = Vector2( 106, 106 )
+
+[node name="statue_button" type="TextureButton" parent="trees/environment_tree/buttons/environment_Button_container/column_3"]
+margin_right = 106.0
+margin_bottom = 106.0
+texture_normal = ExtResource( 24 )
+texture_pressed = ExtResource( 24 )
+script = ExtResource( 64 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="column_4" type="HBoxContainer" parent="trees/environment_tree/buttons/environment_Button_container"]
+margin_top = 330.0
+margin_right = 844.0
+margin_bottom = 436.0
+rect_min_size = Vector2( 106, 106 )
+
+[node name="column_5" type="HBoxContainer" parent="trees/environment_tree/buttons/environment_Button_container"]
 margin_top = 440.0
 margin_right = 844.0
 margin_bottom = 440.0
@@ -689,7 +850,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="envenments_button" type="TextureButton" parent="menu_buttons"]
+[node name="environment_button" type="TextureButton" parent="menu_buttons"]
 margin_left = 284.926
 margin_top = 58.7406
 margin_right = 428.926
@@ -697,12 +858,16 @@ margin_bottom = 126.741
 toggle_mode = true
 texture_normal = ExtResource( 8 )
 texture_pressed = ExtResource( 9 )
+texture_disabled = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="evenments" type="Label" parent="menu_buttons/envenments_button"]
+[node name="environment_text" type="Label" parent="menu_buttons/environment_button"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_fonts/font = ExtResource( 3 )
-text = "evenments"
+text = "environment"
 align = 1
 valign = 1
 __meta__ = {
@@ -725,26 +890,27 @@ __meta__ = {
 }
 [connection signal="pressed" from="item_information/buy_button" to="." method="_on_buy_button_pressed"]
 [connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_1/fluffilus_button" to="." method="_on_fluffilus_button_pressed"]
+[connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_1/rabbibranch_button" to="." method="_on_rabbibranch_button_pressed"]
+[connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_1/ancistrus_button" to="." method="_on_ancistrus_button_pressed"]
 [connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_2/catshark" to="." method="_on_catshark_pressed"]
-[connection signal="unmasked" from="trees/animal_tree/buttons/Button_container/column_2/catshark" to="." method="_on_catshark_unmasked"]
-[connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_2/cuttledog" to="." method="_on_cuttledog_pressed"]
-[connection signal="unmasked" from="trees/animal_tree/buttons/Button_container/column_2/cuttledog" to="." method="_on_cuttledog_unmasked"]
-[connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_3/coral_ocelot" to="." method="_on_coral_ocelot_pressed"]
-[connection signal="unmasked" from="trees/animal_tree/buttons/Button_container/column_3/coral_ocelot" to="." method="_on_coral_ocelot_unmasked"]
-[connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_4/rabbibranch_button" to="." method="_on_rabbibranch_button_pressed"]
-[connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_5/ancistrus_button" to="." method="_on_ancistrus_button_pressed"]
-[connection signal="unmasked" from="trees/animal_tree/buttons/Button_container/column_5/ancistrus_button" to="." method="_on_ancistrus_button_unmasked"]
-[connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_1/bush_button" to="." method="_on_bush_button_pressed"]
+[connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_2/coral_ocelot" to="." method="_on_coral_ocelot_pressed"]
+[connection signal="pressed" from="trees/animal_tree/buttons/Button_container/column_3/cuttledog" to="." method="_on_cuttledog_pressed"]
 [connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_1/pearl_flower_button" to="." method="_on_pearl_flower_button_pressed"]
 [connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_1/water_flower_button" to="." method="_on_water_flower_button_pressed"]
 [connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_1/strength_flower_button" to="." method="_on_strength_flower_button_pressed"]
+[connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_1/B_str_flower" to="." method="_on_B_str_flower_pressed"]
+[connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_1/B_water_flower" to="." method="_on_B_water_flower_pressed"]
+[connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_1/str_water_flower" to="." method="_on_str_water_flower_pressed"]
 [connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_2/tree_button" to="." method="_on_tree_button_pressed"]
 [connection signal="unmasked" from="trees/vegetal_tree/buttons/Button_container/column_2/tree_button" to="." method="_on_tree_button_unmasked"]
 [connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_2/big_tree_button" to="." method="_on_big_tree_button_pressed"]
-[connection signal="unmasked" from="trees/vegetal_tree/buttons/Button_container/column_2/big_tree_button" to="." method="_on_big_tree_button_unmasked"]
 [connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_2/clover_tree_button" to="." method="_on_clover_tree_button_pressed"]
+[connection signal="unmasked" from="trees/vegetal_tree/buttons/Button_container/column_2/fruit_tree" to="." method="_on_berry_bush_button_unmasked"]
+[connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_3/bush_button" to="." method="_on_bush_button_pressed"]
 [connection signal="pressed" from="trees/vegetal_tree/buttons/Button_container/column_3/berry_bush_button" to="." method="_on_berry_bush_button_pressed"]
-[connection signal="unmasked" from="trees/vegetal_tree/buttons/Button_container/column_3/berry_bush_button" to="." method="_on_berry_bush_button_unmasked"]
+[connection signal="pressed" from="trees/environment_tree/buttons/environment_Button_container/column_1/pound_button" to="." method="_on_pound_button_pressed"]
+[connection signal="pressed" from="trees/environment_tree/buttons/environment_Button_container/column_2/hill_button" to="." method="_on_hill_button_pressed"]
 [connection signal="pressed" from="menu_buttons/animals_button" to="." method="_on_animals_button_pressed"]
 [connection signal="pressed" from="menu_buttons/vegetals_button" to="." method="_on_vegetals_button_pressed"]
+[connection signal="pressed" from="menu_buttons/environment_button" to="." method="_on_environment_button_pressed"]
 [connection signal="pressed" from="close_item_tree" to="." method="_on_close_item_tree_pressed"]

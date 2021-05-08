@@ -1,6 +1,6 @@
 extends TextureButton
 
-var masked = false
+
 
 
 func _ready():

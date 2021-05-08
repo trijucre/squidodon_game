@@ -1,24 +1,37 @@
 extends Node2D
 
 var specie_text 
-var pv 
-var pv_max
+var nutrient
+var nutrient_max
 var id
 
 signal tree_energized
 
+onready var water_texture = load("res://GUI/info_panel_vegetals/info_panel_vegetals_water/info_panel_vegetals_water_full.png")
+onready var evolution_panel_scene = preload("res://GUI/evolution_panel/evolution_panel.tscn")
+
 onready var specie_name = $info_panel_text/specie_name
-onready var health_bar = $health_bar
 
-onready var health_full = load ("res://GUI/info_panel_vegetals/info_panel_vegetals_strength/strength_bar_7.png")
-onready var health_6 = load ("res://GUI/info_panel_vegetals/info_panel_vegetals_strength/strength_bar_6.png")
-onready var health_5 = load ("res://GUI/info_panel_vegetals/info_panel_vegetals_strength/strength_bar_5.png")
-onready var health_4 = load ("res://GUI/info_panel_vegetals/info_panel_vegetals_strength/strength_bar_4.png")
-onready var health_3 = load ("res://GUI/info_panel_vegetals/info_panel_vegetals_strength/strength_bar_3.png")
-onready var health_2 = load ("res://GUI/info_panel_vegetals/info_panel_vegetals_strength/strength_bar_2.png")
-onready var health_1 = load ("res://GUI/info_panel_vegetals/info_panel_vegetals_strength/strength_bar_1.png")
+onready var water_indicator_1 = $VBoxContainer/water_container_1
+onready var water_indicator_2 = $VBoxContainer/water_container_2
+onready var water_indicator_3 = $VBoxContainer/water_container_3
+onready var water_indicator_4 = $VBoxContainer/water_container_4
+onready var water_indicator_5 = $VBoxContainer/water_container_5
+onready var water_indicator_6 = $VBoxContainer/water_container_6
 
-var health_visual 
+var number_of_nutrient
+
+#onready var water_logo = get_node("VBoxContainer/water_container_" + str(number_of_nutrient) + "/water_indicator_" + str(number_of_nutrient))
+
+
+#onready var water_1 = $VBoxContainer/water_container_1/water_indicator_1
+#onready var water_2 = $VBoxContainer/water_container_2/water_indicator_2
+#onready var water_3 = $VBoxContainer/water_container_3/water_indicator_3
+#onready var water_4 = $VBoxContainer/water_container_4/water_indicator_4
+#onready var water_5 = $VBoxContainer/water_container_5/water_indicator_5
+#onready var water_6 = $VBoxContainer/water_container_6/water_indicator_6
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 
@@ -27,57 +40,67 @@ func _ready():
 	
 	add_to_group("info_panel")
 	
-	self.position = Vector2(1635, 325)
+	self.position = Vector2(1400, 70)
 	
 	self.connect("tree_energized", get_tree().root.get_node("Game/game_start"), "_on_tree_energized")
 	
-	health_visual = ( float (pv)/ float (pv_max) )
+	set_water_container()
+	
+	set_remaining_water()
+		
 
-	if health_visual >= 0.86 :
-			health_bar.set_texture(health_full)
-			
-	elif health_visual >= 0.72 :
-			health_bar.set_texture(health_6)
-			
-	elif health_visual >= 0.58 :
-			health_bar.set_texture(health_5)
-		
-	elif health_visual >= 0.44 :
-			health_bar.set_texture(health_4)
-			
-	elif health_visual >= 0.30 :
-			health_bar.set_texture(health_3)
-		
-	elif health_visual >= 0.16 :
-			health_bar.set_texture(health_2)
-		
-	elif health_visual > 0 :
-			health_bar.set_texture(health_1)
-		
-	else :
-			health_bar.set_texture(null)
 		
 	specie_name.text = str (specie_text)	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+func set_water_container():
+	if nutrient_max == 5 :
+		water_indicator_6.queue_free()
+	
+	elif nutrient_max == 4 :
+		water_indicator_6.queue_free()
+		water_indicator_5.queue_free()
+	
+	elif nutrient_max  == 3 :
+		water_indicator_6.queue_free()
+		water_indicator_5.queue_free()
+		water_indicator_4.queue_free()
+	
+	elif nutrient_max == 2 :
+		water_indicator_6.queue_free()
+		water_indicator_5.queue_free()
+		water_indicator_4.queue_free()
+		water_indicator_2.queue_free()
+		
+	elif nutrient_max == 2 :
+		water_indicator_6.queue_free()
+		water_indicator_5.queue_free()
+		water_indicator_4.queue_free()
+		water_indicator_2.queue_free()
+		water_indicator_1.queue_free()
 
+func set_remaining_water():
+	number_of_nutrient = 0
+	for i in nutrient :
+		number_of_nutrient += 1
+		print ("nimberof nutrient  ",number_of_nutrient)
+		var water_logo = get_node("VBoxContainer/water_container_" + str(number_of_nutrient) + "/water_indicator_" + str(number_of_nutrient))
+		water_logo.set_texture(water_texture)
 
 func _on_water_button_pressed():
-	if health_bar.texture != health_full and get_tree().root.get_node("Game/game_start").water_count > 0 :
-		for node in get_tree().get_nodes_in_group("tree") :
-			if node.tree_id == self.id :
-					
-				emit_signal("tree_energized")
+	for node in get_tree().get_nodes_in_group("tree") :
+		if node.tree_id == self.id :					
+			emit_signal("tree_energized")
 
-				node.health = node.health_max
-
-				health_bar.set_texture(health_full)
-			else :
-				pass
-	else :
-		pass
+			node.health = node.health_max
+			
+func _on_evolution_button_pressed():
+	var evolution_panel = evolution_panel_scene.instance()
+	$evolution_spot.add_child(evolution_panel)
+	evolution_panel.position = Vector2 (- 750, 0 )
+	
 
 func _on_close_button_pressed():
 	self.queue_free()

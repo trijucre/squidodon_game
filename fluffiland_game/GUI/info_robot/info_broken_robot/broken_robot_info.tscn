@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://GUI/info_robot/info_broken_robot/broken_robot_info.gd" type="Script" id=3]
+[ext_resource path="res://GUI/close_icon_clicked.png" type="Texture" id=4]
+[ext_resource path="res://GUI/close_icon.png" type="Texture" id=5]
+
+[node name="broken_robot_info" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = 90.187
+margin_top = -29.338
+margin_right = 451.187
+margin_bottom = 159.662
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureButton" type="TextureButton" parent="."]
+margin_left = 22.8927
+margin_top = 10.3226
+margin_right = 150.893
+margin_bottom = 138.323
+texture_normal = ExtResource( 2 )
+texture_pressed = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="TextureButton"]
+margin_left = 11.0737
+margin_top = 13.645
+margin_right = 90.0737
+margin_bottom = 41.645
+custom_fonts/font = ExtResource( 1 )
+text = "repair"
+
+[node name="close_button" type="TextureButton" parent="."]
+margin_left = 199.389
+margin_top = -19.0154
+margin_right = 246.389
+margin_bottom = 28.9846
+texture_normal = ExtResource( 5 )
+texture_pressed = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="TextureButton" to="." method="_on_TextureButton_pressed"]
+[connection signal="pressed" from="close_button" to="." method="_on_close_button_pressed"]

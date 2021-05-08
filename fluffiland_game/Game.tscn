@@ -1,5 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
+[ext_resource path="res://popup/surprise.png" type="Texture" id=1]
+[ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
 [ext_resource path="res://Game.gd" type="Script" id=98]
 [ext_resource path="res://Camera2D.gd" type="Script" id=104]
 
@@ -10,3 +13,71 @@ script = ExtResource( 98 )
 current = true
 smoothing_enabled = true
 script = ExtResource( 104 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="quit_to_menu" type="TextureButton" parent="CanvasLayer"]
+margin_left = 325.508
+margin_top = 22.9644
+margin_right = 453.508
+margin_bottom = 150.964
+action_mode = 0
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/quit_to_menu"]
+margin_left = 34.6682
+margin_top = 54.669
+margin_right = 91.6682
+margin_bottom = 82.669
+custom_fonts/font = ExtResource( 2 )
+text = "quit
+"
+
+[node name="load2" type="TextureButton" parent="CanvasLayer"]
+margin_left = 173.508
+margin_top = 22.9644
+margin_right = 301.508
+margin_bottom = 150.964
+action_mode = 0
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/load2"]
+margin_left = 34.6682
+margin_top = 54.669
+margin_right = 91.6682
+margin_bottom = 82.669
+custom_fonts/font = ExtResource( 2 )
+text = "load
+"
+
+[node name="save" type="TextureButton" parent="CanvasLayer"]
+visible = false
+margin_left = 29.5084
+margin_top = 22.9644
+margin_right = 157.508
+margin_bottom = 150.964
+action_mode = 0
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/save"]
+margin_left = 34.6682
+margin_top = 54.669
+margin_right = 91.6682
+margin_bottom = 82.669
+custom_fonts/font = ExtResource( 2 )
+text = "save"
+[connection signal="pressed" from="CanvasLayer/quit_to_menu" to="." method="_on_quit_to_menu_pressed"]
+[connection signal="pressed" from="CanvasLayer/load2" to="." method="_on_load_pressed"]
+[connection signal="pressed" from="CanvasLayer/save" to="." method="_on_save_pressed"]

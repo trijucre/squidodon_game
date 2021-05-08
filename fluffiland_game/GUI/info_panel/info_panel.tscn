@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://font/font.tres" type="DynamicFont" id=1]
 [ext_resource path="res://info_panel.gd" type="Script" id=2]
@@ -8,18 +8,14 @@
 [ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=6]
 [ext_resource path="res://GUI/items_tree/information_item/health.png" type="Texture" id=7]
 [ext_resource path="res://GUI/items_tree/information_item/energy.png" type="Texture" id=8]
+[ext_resource path="res://popup/Illustration2.png" type="Texture" id=9]
+[ext_resource path="res://icon.png" type="Texture" id=10]
+[ext_resource path="res://GUI/strength_logo.png" type="Texture" id=11]
 
 [node name="info_panel" type="Node2D"]
 script = ExtResource( 2 )
 
-[node name="animal_picture" type="TextureRect" parent="."]
-margin_left = -235.0
-margin_top = 2.0
-margin_right = -195.0
-margin_bottom = 42.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="evolution_spot" type="Node2D" parent="."]
 
 [node name="info_panel_background" type="Sprite" parent="."]
 texture = ExtResource( 3 )
@@ -80,9 +76,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="mood" type="Sprite" parent="."]
-position = Vector2( 188, 40 )
-
 [node name="close_button" type="TextureButton" parent="."]
 margin_left = 193.0
 margin_top = -296.0
@@ -93,6 +86,18 @@ texture_pressed = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="mood" type="ColorRect" parent="."]
+margin_left = 192.0
+margin_top = -120.0
+margin_right = 232.0
+margin_bottom = 80.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="mood_indicator" type="Sprite" parent="mood"]
+texture = ExtResource( 11 )
 
 [node name="gender" type="Sprite" parent="."]
 position = Vector2( 206, -197 )
@@ -117,4 +122,16 @@ margin_bottom = -42.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="evolution_button" type="TextureButton" parent="."]
+margin_left = -394.91
+margin_top = -301.897
+margin_right = -266.91
+margin_bottom = -173.897
+texture_normal = ExtResource( 10 )
+texture_pressed = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="close_button" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="evolution_button" to="." method="_on_evolution_button_pressed"]

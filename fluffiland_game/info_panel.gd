@@ -3,12 +3,24 @@ extends Node2D
 
 onready var info_name = $info_panel_text/name
 onready var info_specie = $info_panel_text/specie
-onready var info_mood = $mood
+onready var info_mood = $mood/mood_indicator
 onready var gender = $gender
 onready var pregnant = $pregnant
 onready var animal_picture = $animal_picture
 onready var health_bar = $health_bar
 onready var energy_bar = $energy_bar
+onready var id
+onready var evolution_panel_scene = preload("res://GUI/evolution_panel/evolution_panel.tscn")
+
+onready var evolution_1
+onready var evolution_2
+onready var evolution_3
+onready var evolution_1_text
+onready var evolution_2_text
+onready var evolution_3_text
+onready var cost_text_1 
+onready var cost_text_2 
+onready var cost_text_3
 
 var name_text 
 var specie_text 
@@ -49,7 +61,7 @@ onready var health_1 = load ("res://GUI/info_panel/health_and_energy_bar/health_
 var health_visual 
 var energy_visual
 
-onready var painting = load ("res://GUI/info_panel/info_panel_picture/" + specie_text + "_picture.png")
+
 
 
 # Called when the node enters the scene tree for the first time.
@@ -66,15 +78,8 @@ func _ready():
 	info_name.text = str(name_text)
 	info_specie.text = str(specie_text)
 
-	
-	if mood > love_happiness :
-		info_mood.set_texture(mood_texture_happy)
-		
-	elif mood < 0.25 :
-		info_mood.set_texture(mood_texture_sad)
-		
-	else :
-		info_mood.set_texture(mood_texture_meh)
+	info_mood.position.y = (200 -float(200 * mood))
+
 	
 	if gender_text  == "female" :
 		gender.set_texture(female_logo)
@@ -82,10 +87,13 @@ func _ready():
 	elif gender_text == "male" :
 		gender.set_texture(male_logo)
 	
+	elif gender_text == "neutral" :
+		gender.set_texture(null)
+	
 	if pregnancy == true :
 		pregnant.set_texture(pregnant_logo)
 		
-	animal_picture.set_texture(painting)
+
 	
 	#set helth and energy texture depending of stats
 	if health_visual >= 0.86 :
@@ -140,6 +148,25 @@ func _ready():
 #func _process(delta):
 #	pass
 
-
+	print ("info panel evolution 3   ", evolution_1_text)
 func _on_close_button_pressed():
 	self.queue_free()
+
+
+func _on_evolution_button_pressed():
+	var evolution_panel = evolution_panel_scene.instance()
+	evolution_panel.id = id
+	evolution_panel.evolution_1 = evolution_1
+	evolution_panel.evolution_2 = evolution_2
+	evolution_panel.evolution_3 = evolution_3
+	evolution_panel.evolution_1_text = evolution_1_text
+	evolution_panel.evolution_2_text = evolution_2_text
+	evolution_panel.evolution_3_text = evolution_3_text	
+	evolution_panel.cost_text_1 = cost_text_1
+	evolution_panel.cost_text_2 = cost_text_2
+	evolution_panel.cost_text_3 = cost_text_3
+		
+	$evolution_spot.add_child(evolution_panel)
+	evolution_panel.position = Vector2 (- 750, - 200 )
+	
+	#evolution_panel.position.y = self.position.y 

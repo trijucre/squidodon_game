@@ -13,10 +13,11 @@ func _ready():
 	add_to_group("vegetal_button")
 	add_to_group("tree")
 	
-func _process(delta):
-	if get_tree().root.get_node("Game/game_start/CanvasLayer/animal_counter").animal_diversity >= 0 :
+
+	if get_tree().root.get_node("Game/game_start").diversity_level_1 >= 0 :
 		self.set_normal_texture(vegetal_texture_unclicked)
 		self.set_pressed_texture(vegetal_texture_clicked)
 		self.set_disabled_texture(vegetal_texture_clicked)
-		
-		emit_signal("unmasked")
+	
+	else :
+		self.set_disabled(true)
