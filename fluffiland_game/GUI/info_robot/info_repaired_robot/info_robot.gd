@@ -29,16 +29,28 @@ onready var cost_text_5 = $texts/HBoxContainer5/price_5
 onready var cost_text_6 = $texts/HBoxContainer6/price_6
 onready var cost_text_7 = $texts/HBoxContainer7/price_7
 
-onready var container_product_button = $make_fertilizer
-onready var poop_texture = load("res://food/poop/medium_poop/sprite/poop.png")
+onready var container1 = $container1
+onready var container2 = $container2
+onready var container3 = $container3
+onready var container4 = $container4
+onready var container5 = $container5
+onready var container6 = $container6
 
-var cost_1 = 500
-var cost_2 = 250
-var cost_3 = 120
-var cost_4 = 60
-var cost_5 = 120
-var cost_6 = 250
-var cost_7 = 500
+onready var container_product_button = $container_product
+onready var poop_texture = load("res://GUI/info_robot/info_repaired_robot/sprites/robot_info_panel_poop_item.png")
+onready var fruit_texture = load("res://GUI/info_robot/info_repaired_robot/sprites/robot_info_panel_fruit_item.png")
+onready var clover_texture = load("res://GUI/info_robot/info_repaired_robot/sprites/robot_info_panel_clover_item.png")
+onready var bush_texture = load("res://GUI/info_robot/info_repaired_robot/sprites/robot_info_panel_bush_item.png")
+onready var fertilizer_texture = load("res://GUI/info_robot/info_repaired_robot/sprites/robot_info_panel_fertilizer_item.png")
+onready var number_of_items = $number_of_poop
+
+var cost_1 = 75
+var cost_2 = 30
+var cost_3 = 15
+var cost_4 = 10
+var cost_5 = 15
+var cost_6 = 30
+var cost_7 = 75
 
 var poop_number = 0
 var poop_quality = 0
@@ -48,14 +60,16 @@ var container = "empty"
 var fertilizer = 0
 var fertilizer_quality = 0
 
+onready var energy = get_tree().root.get_node("Game/game_start/YSort/robot").energy
+
 
 func _ready():
-	self.connect("strength", get_tree().root.get_node("Game/game_start"), "_on_strength_spend")
+	self.connect("strength_spend", get_tree().root.get_node("Game/game_start"), "_on_strength_spend")
 	self.connect("robot_updated", get_tree().root.get_node("Game/game_start/YSort/robot"), "_on_robot_updated")
 	self.connect("robot_updated", get_tree().root.get_node("Game/game_start"), "_on_robot_updated")
 	self.connect("fertilizer_created", get_tree().root.get_node("Game/game_start"), "_on_fertilizer_created")
 	self.connect("fertilizer_created", get_tree().root.get_node("Game/game_start/YSort/robot"), "_on_fertilizer_created")
-	
+
 	cost_text_1.text = str(cost_1)
 	cost_text_2.text = str(cost_2)
 	cost_text_3.text = str(cost_3)
@@ -69,78 +83,114 @@ func _ready():
 	
 	if option_2_bought == true :
 		buy_button_2.queue_free()
+		container1.queue_free()
 
 	if option_3_bought == true :
 		buy_button_3.queue_free()
+		container2.queue_free()
 		
 	if option_4_bought == true :
 		buy_button_4.queue_free()
+		container3.queue_free()
+		container4.queue_free()
 		
 	if option_5_bought == true :
 		buy_button_5.queue_free()
+		container5.queue_free()
 		
 	if option_6_bought == true :
 		buy_button_6.queue_free()
+		container6.queue_free()
 		
 	if option_7_bought == true :
-		buy_button_7.queue_free()		
+		buy_button_7.queue_free()	
+			
 	
 	if container == "empty" :
 		container_product_button.queue_free()
+
 		
 	elif container == "poop" :
 		container_product_button.set_normal_texture(poop_texture)
+
+	
+	elif container == "fruit" :
+		container_product_button.set_normal_texture(fruit_texture)
+
+		
+	elif container == "clover" :
+		container_product_button.set_normal_texture(clover_texture)
+
+
+	elif container == "bush" :
+		print ("container contains bush")
+		container_product_button.set_normal_texture(bush_texture)
+
+
+	elif container == "fertilizer" :
+		container_product_button.set_normal_texture(fertilizer_texture)
+
 	
 	else :
 		pass
+		
 	print ("poop info robot : ", poop_number)
 	print ("poop quality info robot : ", poop_quality)
+	number_of_items.text = str(poop_number)
+	
 func _on_buy_1_pressed():
-	if get_tree().root.get_node("Game/game_start").strength_count > cost_1 :
+	if get_tree().root.get_node("Game/game_start").strength_count >= cost_1 :
 		emit_signal("strength_spend", cost_1)
 		emit_signal("robot_updated", 1)
 		option_1_bought = true
+
 		update()
 	else : 
 		pass
 
 func _on_buy_2_pressed():
-	if get_tree().root.get_node("Game/game_start").strength_count > cost_2 :
+	if get_tree().root.get_node("Game/game_start").strength_count >= cost_2 :
 		emit_signal("strength_spend", cost_2)
 		emit_signal("robot_updated", 2)
 		option_2_bought = true
+		container1.queue_free()
 		update()
 
 func _on_buy_3_pressed():
-	if get_tree().root.get_node("Game/game_start").strength_count > cost_3 :
+	if get_tree().root.get_node("Game/game_start").strength_count >= cost_3 :
 		emit_signal("strength_spend", cost_3)
 		emit_signal("robot_updated", 3)
 		option_3_bought = true
+		container2.queue_free()
 		update()
 
 func _on_buy_4_pressed():
-	if get_tree().root.get_node("Game/game_start").strength_count > cost_4 :
+	if get_tree().root.get_node("Game/game_start").strength_count >= cost_4 :
 		emit_signal("strength_spend", cost_4)
 		emit_signal("robot_updated", 4)
 		option_4_bought = true
+		container3.queue_free()
+		container4.queue_free()
 		update()
 
 func _on_buy_5_pressed():
-	if get_tree().root.get_node("Game/game_start").strength_count > cost_5 :
+	if get_tree().root.get_node("Game/game_start").strength_count >= cost_5 :
 		emit_signal("strength_spend", cost_5)
 		emit_signal("robot_updated", 5)
 		option_5_bought = true
+		container5.queue_free()
 		update()
 
 func _on_buy_6_pressed():
-	if get_tree().root.get_node("Game/game_start").strength_count > cost_6 :
+	if get_tree().root.get_node("Game/game_start").strength_count >= cost_6 :
 		emit_signal("strength_spend", cost_6)
 		emit_signal("robot_updated", 6)
 		option_6_bought = true
+		container6.queue_free()
 		update()
 
 func _on_buy_7_pressed():
-	if get_tree().root.get_node("Game/game_start").strength_count > cost_7:
+	if get_tree().root.get_node("Game/game_start").strength_count >= cost_7:
 		emit_signal("strength_spend", cost_7)
 		emit_signal("robot_updated", 7)
 		option_7_bought = true
@@ -149,47 +199,23 @@ func _on_buy_7_pressed():
 
 
 func _on_make_fertilizer_pressed():
-	if container != "empty" :
+	print("make_fertilizer_pressed")
+	if container != "empty" and energy >= 1 :
+
 		fertilizer = 1
+	
 
 	if container == "poop" :
-		if poop_quality <= 10 :
-			fertilizer_quality = 1
 		
-		elif poop_quality <= 20 :
-			fertilizer_quality = 2
-		
-		elif poop_quality <= 40 :
-			fertilizer_quality = 3
-
-		elif poop_quality <= 80 :
-			fertilizer_quality = 4
-
-		elif poop_quality <= 160 :
-			fertilizer_quality = 5
-
-		elif poop_quality <= 320 :
-			fertilizer_quality = 6
-
-		elif poop_quality <= 640 :
-			fertilizer_quality = 7
-
-		elif poop_quality <= 1280 :
-			fertilizer_quality = 8
-
-		elif poop_quality <= 2560 :
-			fertilizer_quality = 9
-			
-		elif poop_quality >=2560 :
-			fertilizer_quality = 10
-		
+		fertilizer_quality = poop_quality / 5
 		container = "fertilizer"	
 		poop_number = 0
 		poop_quality = 0
-		
+	
 	emit_signal("fertilizer_created", fertilizer_quality)
-	print ("fertilizer  ,", fertilizer, "quality, ", fertilizer_quality)
-
+	emit_signal("strength_spend", 1)
+	container_product_button.set_normal_texture(fertilizer_texture)
+	number_of_items.text = "1"
 		
 func _on_container_product_pressed():
 	print ("fertilizer  ,", fertilizer, "quality, ", fertilizer_quality)

@@ -100,6 +100,18 @@ func load_game():
 				#new_object.set_name()
 			new_object.position = Vector2(node_data["position"])
 		
+		
+		elif new_object.save_value == "Persist_clock" :
+			var delete_clock = get_tree().get_nodes_in_group("Persist_clock")
+			for i in node_data :
+				if i == "filename" or i == "parent" or i == "position" :#or i == "name" :
+					continue
+				new_object.set(i, node_data[i])
+				print ("clock data : ", i, node_data[i])
+			get_tree().root.get_node("Game/game_start/CanvasLayer/clock_node").add_child(new_object, true)
+				#new_object.set_name()
+			new_object.position = Vector2(node_data["position"])
+		
 		else : 
 			new_object.queue_free()
 

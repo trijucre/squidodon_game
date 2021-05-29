@@ -1,8 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://food/vegetals/tree/tree_sprout/tree_sprout.gd" type="Script" id=1]
-[ext_resource path="res://food/vegetals/tree/tree_sprout/tree_sprout_thirsty.png" type="Texture" id=2]
-[ext_resource path="res://food/vegetals/tree/tree_sprout/tree_sprout.png" type="Texture" id=3]
+[ext_resource path="res://entities/tree/tree_sprout/tree_sprout.gd" type="Script" id=1]
+[ext_resource path="res://entities/tree/tree_sprout/tree_sprout_thirsty.png" type="Texture" id=2]
+[ext_resource path="res://entities/tree/tree_sprout/tree_sprout.png" type="Texture" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 150.0
@@ -21,7 +21,10 @@ animations = [ {
 } ]
 
 [sub_resource type="CircleShape2D" id=3]
-radius = 42.79
+radius = 30.8789
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 74.0
 
 [node name="tree_sprout" type="StaticBody2D"]
 collision_layer = 12
@@ -36,7 +39,7 @@ collision_mask = 12
 shape = SubResource( 1 )
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
-position = Vector2( 40, -72 )
+position = Vector2( 0, -58 )
 frames = SubResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -54,5 +57,10 @@ margin_bottom = -1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="life_space" type="Area2D" parent="."]
+
+[node name="life_area" type="CollisionShape2D" parent="life_space"]
+shape = SubResource( 4 )
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="info_panel" to="." method="_on_info_panel_pressed"]

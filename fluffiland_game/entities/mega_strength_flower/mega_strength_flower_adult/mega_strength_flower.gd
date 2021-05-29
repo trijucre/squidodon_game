@@ -11,9 +11,9 @@ onready var light = $Light2D
 
 onready var area_radius = $Area2D/area.shape.radius
 
-onready var produced_indicator = preload("res://popup/produced_spent_indicator/strength_produced_indicator.tscn")
-onready var produced_position = Vector2(30, -120)
-onready var used_position = Vector2(-30, -120)
+onready var produced_indicator = preload("res://popup/produced_spent_indicator/strength_earned_particle.tscn")
+onready var produced_position = Vector2(0, -120)
+onready var used_position = Vector2(0, -120)
 
 var evolution_1 = "null"
 var evolution_1_text = ""
@@ -45,6 +45,7 @@ var pregnant = false
 export(String) var random_noun
 export(String) var random_adjective
 var creature_name 
+var age = 1
 
 var ressource_generation = 0
 var specie = "mega_strength_flower"# Declare member variables here. Examples:
@@ -59,6 +60,7 @@ func _ready():
 	
 	add_to_group("Persist", true)
 	add_to_group("persist_child", true)
+	add_to_group("creature", true)
 	#pearl_timer.start()
 	
 	var animation = "default"
@@ -98,10 +100,13 @@ func _on_pearl_generation_timeout():
 	
 	ressource_generation += 1
 	if ressource_generation >= 60 :
-		emit_signal("strength_earned", 20)
-		var produced = produced_indicator.instance()
-		self.add_child(produced)
-		produced.position = produced_position
+		var rain = get_tree().root.get_node("Game/game_start").rain_falling
+		if rain == false :
+			emit_signal("strength_earned", 20)
+			var produced = produced_indicator.instance()
+			self.add_child(produced)
+			produced.position = produced_position
+		age += 1
 		ressource_generation = 0
 	#produced.position.y = self.position.y 
 	#pearl_timer.start()	
@@ -136,6 +141,7 @@ func _on_water_button_pressed():
 	info_panel.cost_text_1 = cost_text_1
 	info_panel.cost_text_2 = cost_text_2
 	info_panel.cost_text_3 = cost_text_3
+	info_panel.age = age
 	
 			
 	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
@@ -150,7 +156,8 @@ func save():
 		"pos_y" : get_position(),
 		"health" : health,
 		"ressource_generation" : ressource_generation,
-		"name" : creature_name
+		"name" : creature_name,
+		"age" : age
 
 	}
 	return save

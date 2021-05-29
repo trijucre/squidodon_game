@@ -42,11 +42,11 @@ var pregnant = false
 export(String) var random_noun
 export(String) var random_adjective
 var creature_name 
+var age = 1
 
 var random_production 
 #var bush_scene = preload("res://entities/tree_produced_bush/tree_produced_bush.tscn")
-var fruit_scene = preload("res://entities/tree_produced-fruit/tree_produced_fruit.tscn")
-var clover_scene = preload ("res://entities/tree_produced-clover/tree_produced_clover.tscn")
+var fruit_scene = preload("res://entities/tree_produced-cloverfruit/tree_produced_cloverfruit.tscn")
 onready var sprite = $Sprite
 
 var center_x = self.position.x - 175
@@ -72,7 +72,7 @@ func _ready():
 	print (random_production)
 	add_to_group("tree")
 	add_to_group("vegetals")
-
+	add_to_group("creature", true)
 
 	add_to_group("Persist", true)
 	add_to_group("persist_child", true)
@@ -127,13 +127,7 @@ func _on_Timer_timeout():
 		if bush_produced <= 10 :
 			rngx.randomize()
 			rngy.randomize()
-			var tree_bush
-			var random_production = randi()% 2+ 1
-			if random_production == 1 :
-				tree_bush = fruit_scene.instance()
-				
-			if random_production == 2 :
-				tree_bush = clover_scene.instance()
+			var tree_bush = fruit_scene.instance()
 				
 			tree_bush.id = tree_id
 			get_tree().root.get_node("Game/game_start/YSort").add_child(tree_bush)
@@ -226,6 +220,7 @@ func save():
 		"health_time" : health_time,
 		"happiness" : happiness,
 		"creature_name" : creature_name,
-		"tree_id" : tree_id
+		"tree_id" : tree_id,
+		"age" : age
 	}
 	return save

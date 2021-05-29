@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://font/font.tres" type="DynamicFont" id=1]
 [ext_resource path="res://info_panel.gd" type="Script" id=2]
@@ -11,6 +11,8 @@
 [ext_resource path="res://popup/Illustration2.png" type="Texture" id=9]
 [ext_resource path="res://icon.png" type="Texture" id=10]
 [ext_resource path="res://GUI/strength_logo.png" type="Texture" id=11]
+[ext_resource path="res://GUI/info_panel/eat_and_produce_graphic/animal_eat_produce.png" type="Texture" id=12]
+[ext_resource path="res://GUI/water_logo.png" type="Texture" id=13]
 
 [node name="info_panel" type="Node2D"]
 script = ExtResource( 2 )
@@ -76,6 +78,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="age" type="Label" parent="info_panel_text"]
+margin_left = -56.0
+margin_top = -232.0
+margin_right = -16.0
+margin_bottom = -204.0
+custom_fonts/font = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="close_button" type="TextureButton" parent="."]
 margin_left = 193.0
 margin_top = -296.0
@@ -99,29 +111,46 @@ __meta__ = {
 [node name="mood_indicator" type="Sprite" parent="mood"]
 texture = ExtResource( 11 )
 
+[node name="love_happiness" type="Sprite" parent="mood"]
+position = Vector2( -16, 0 )
+texture = ExtResource( 13 )
+
 [node name="gender" type="Sprite" parent="."]
 position = Vector2( 206, -197 )
 
 [node name="pregnant" type="Sprite" parent="."]
 position = Vector2( 196, 140 )
 
-[node name="health_bar" type="TextureRect" parent="."]
+[node name="health_bar_back" type="ColorRect" parent="."]
 margin_left = -170.0
 margin_top = -158.0
 margin_right = -130.0
 margin_bottom = -118.0
+color = Color( 0.74902, 0.45098, 0.411765, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="energy_bar" type="TextureRect" parent="."]
+[node name="energy_bar_back" type="ColorRect" parent="."]
 margin_left = -170.0
 margin_top = -82.0
 margin_right = -130.0
 margin_bottom = -42.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+color = Color( 0.74902, 0.45098, 0.411765, 1 )
+
+[node name="health_bar" type="ColorRect" parent="."]
+margin_left = -170.0
+margin_top = -158.0
+margin_right = -130.0
+margin_bottom = -118.0
+color = Color( 0.392157, 0.898039, 0.756863, 1 )
+
+[node name="energy_bar" type="ColorRect" parent="."]
+margin_left = -170.0
+margin_top = -82.0
+margin_right = -130.0
+margin_bottom = -42.0
+color = Color( 1, 0.45098, 0.396078, 1 )
 
 [node name="evolution_button" type="TextureButton" parent="."]
 margin_left = -394.91
@@ -130,6 +159,56 @@ margin_right = -266.91
 margin_bottom = -173.897
 texture_normal = ExtResource( 10 )
 texture_pressed = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="eat_produce" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="creature" type="TextureRect" parent="eat_produce"]
+margin_left = -240.0
+margin_top = 112.0
+margin_right = -130.0
+margin_bottom = 172.0
+texture = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="produce_1" type="TextureRect" parent="eat_produce"]
+margin_left = -136.0
+margin_top = 152.0
+margin_right = -76.0
+margin_bottom = 212.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="produce_2" type="TextureRect" parent="eat_produce"]
+margin_left = -48.0
+margin_top = 152.0
+margin_right = 12.0
+margin_bottom = 212.0
+
+[node name="eat_1" type="TextureRect" parent="eat_produce"]
+margin_left = -136.0
+margin_top = 72.0
+margin_right = -76.0
+margin_bottom = 132.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="eat_2" type="TextureRect" parent="eat_produce"]
+margin_left = -48.0
+margin_top = 72.0
+margin_right = 12.0
+margin_bottom = 132.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

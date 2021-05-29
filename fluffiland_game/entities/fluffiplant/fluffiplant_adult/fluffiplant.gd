@@ -6,21 +6,21 @@ var save_value = "Persist_child"
 
 var evolution_1 = "tree"
 var evolution_1_text = "bush_path"
-var cost_text_1 = 50
+var cost_text_1 = 25
 
 var evolution_2 = "fruit_tree"
 var evolution_2_text = "fruit_path"
-var cost_text_2 = 50
+var cost_text_2 = 25
 
 var evolution_3 = "clover_tree"
 var evolution_3_text = "clover_path"
-var cost_text_3 = 50
+var cost_text_3 = 25
 
 
-var health = 1
-var health_max = 1
-var energy = 1
-var energy_max = 1
+var health = 5
+var health_max = 5
+var energy = 3
+var energy_max = 3
 
 var ressource_generation = 0
 
@@ -36,9 +36,16 @@ var id = str(self.get_instance_id())
 
 var gender = "neutral"
 var specie = "fluffisprout"
+var opposite_gender
+var happiness = 0
+var max_happiness = 30
+var relative_happiness = float(happiness)/float(max_happiness)
+var love_happiness = 0.8
+var age = 1
 
 onready var used_indicator = preload("res://popup/produced_spent_indicator/water_used_indicator.tscn")
 onready var used_position = Vector2(-30, -120)
+onready var seed_scene = load ("res://entities/fluffiplant/fluffiplant_egg/fluffiplant_egg.tscn")
 
 func load_file(file_path):
 	var file = File.new()
@@ -67,6 +74,7 @@ func _ready():
 	add_to_group("Persist_child", true)
 	add_to_group("tree", true)
 	add_to_group(id, true)
+	add_to_group("creature", true)
 	
 	self.connect("water_spend", get_tree().root.get_node("Game/game_start"), "_on_water_spend")
 	
@@ -110,8 +118,8 @@ func _on_info_panel_pressed():
 	info_panel.energy_max = energy_max
 	info_panel.energy_text = str (energy, "/", energy_max)
 	info_panel.name_text = creature_name
-	info_panel.mood = 50
-	info_panel.love_happiness = 50
+	info_panel.mood = relative_happiness
+	info_panel.love_happiness = love_happiness
 	info_panel.pregnancy = false
 	info_panel.id = id
 	info_panel.evolution_1 = evolution_1
@@ -123,6 +131,7 @@ func _on_info_panel_pressed():
 	info_panel.cost_text_1 = cost_text_1
 	info_panel.cost_text_2 = cost_text_2
 	info_panel.cost_text_3 = cost_text_3
+	info_panel.age = age
 	
 			
 	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
@@ -140,7 +149,23 @@ func _on_Timer_timeout():
 			used.position = used_position
 		else :
 			health -= 1
-			
+		age += 1
+
+	
+		if happiness >= love_happiness :
+			var seed_chances = randi()%100+1
+			if seed_chances >= 85 :
+				var count = rand_range(0, 2)
+				var radius = Vector2(area_radius, 0)
+				var center = self.position
+
+				var step = float(count) * PI 
+				var spawn_pos = center + radius.rotated(step)
+
+				var seed_grow = seed_scene.instance()
+				seed_grow.set_position(spawn_pos)
+				get_tree().root.get_node("Game/game_start/YSort").add_child(seed_grow)
+								
 		ressource_generation = 0
 
 func save():
@@ -152,7 +177,8 @@ func save():
 		"save_value" : save_value,
 		"creature_name" : creature_name,
 		"sleep_hour" : sleep_hour,
-		"ressource_generation" : ressource_generation
+		"ressource_generation" : ressource_generation,
+		"age" : age
 	}
 	return save
 

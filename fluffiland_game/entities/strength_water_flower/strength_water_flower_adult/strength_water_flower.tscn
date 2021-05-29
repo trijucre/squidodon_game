@@ -1,13 +1,16 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://entities/strength_water_flower/strength_water_flower_adult/strength_water_flower.gd" type="Script" id=1]
 [ext_resource path="res://entities/strength_flower/strength_flower_adult/strength_flower_light.png" type="Texture" id=2]
 [ext_resource path="res://entities/strength_water_flower/strength_water_flower_adult/sprite/strength_water_flower_sprite.png" type="Texture" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 100.0
+radius = 150.0
 
-[sub_resource type="SpriteFrames" id=2]
+[sub_resource type="CircleShape2D" id=5]
+radius = 74.0
+
+[sub_resource type="SpriteFrames" id=6]
 animations = [ {
 "frames": [ ExtResource( 3 ) ],
 "loop": true,
@@ -20,7 +23,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="CircleShape2D" id=3]
+[sub_resource type="CircleShape2D" id=4]
 radius = 29.7465
 
 [node name="strength_water_flower" type="StaticBody2D"]
@@ -35,9 +38,16 @@ collision_mask = 12
 [node name="area" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
 
+[node name="life_space" type="Area2D" parent="."]
+collision_layer = 12
+collision_mask = 12
+
+[node name="life_area" type="CollisionShape2D" parent="life_space"]
+shape = SubResource( 5 )
+
 [node name="flower_sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -97 )
-frames = SubResource( 2 )
+frames = SubResource( 6 )
 
 [node name="Light2D" type="Light2D" parent="."]
 position = Vector2( 23, -131 )
@@ -50,7 +60,7 @@ shadow_color = Color( 0.427345, 0.246672, 0.464844, 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 0.499996 )
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
 [node name="pearl_generation" type="Timer" parent="."]
 wait_time = 60.0

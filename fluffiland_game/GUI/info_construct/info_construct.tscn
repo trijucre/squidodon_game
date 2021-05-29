@@ -1,0 +1,199 @@
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://GUI/info_construct/sprite/info_construct_bg.png" type="Texture" id=1]
+[ext_resource path="res://GUI/info_construct/sprite/info_construct_bg_arrow.png" type="Texture" id=2]
+[ext_resource path="res://GUI/info_construct/sprite/info_construct_button_+_pressed.png" type="Texture" id=3]
+[ext_resource path="res://GUI/info_construct/sprite/info_construct_button_+.png" type="Texture" id=4]
+[ext_resource path="res://GUI/info_construct/sprite/info_construct_button_-_pressed.png" type="Texture" id=5]
+[ext_resource path="res://GUI/info_construct/sprite/info_construct_button_-.png" type="Texture" id=6]
+[ext_resource path="res://GUI/strength_logo.png" type="Texture" id=7]
+[ext_resource path="res://GUI/water_logo.png" type="Texture" id=8]
+[ext_resource path="res://GUI/info_construct/sprite/info_construct_button_transform.png" type="Texture" id=9]
+[ext_resource path="res://GUI/info_construct/sprite/info_construct_button_transform_pressed.png" type="Texture" id=10]
+[ext_resource path="res://GUI/close_icon_clicked.png" type="Texture" id=11]
+[ext_resource path="res://GUI/close_icon.png" type="Texture" id=12]
+[ext_resource path="res://GUI/info_construct/info_construct.gd" type="Script" id=13]
+[ext_resource path="res://font/font.tres" type="DynamicFont" id=14]
+[ext_resource path="res://GUI/info_construct/sprite/info_construct_fluffisprout_button.png" type="Texture" id=15]
+[ext_resource path="res://GUI/info_construct/sprite/info_construct_fluffisprout_button_pressed.png" type="Texture" id=16]
+[ext_resource path="res://GUI/info_construct/sprite/info_construct_fluffisprout_bg.png" type="Texture" id=17]
+[ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=18]
+[ext_resource path="res://GUI/info_construct/sprite/info_construct_evolve_button.png" type="Texture" id=19]
+[ext_resource path="res://GUI/info_construct/sprite/info_construct_evolve_button_pressed.png" type="Texture" id=20]
+[ext_resource path="res://GUI/info_construct/sprite/info_construct_evolve.png" type="Texture" id=21]
+
+[node name="info_construct" type="Node2D"]
+script = ExtResource( 13 )
+
+[node name="background" type="TextureRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="given_sprite" type="Sprite" parent="background"]
+position = Vector2( 92.8412, 47.4731 )
+texture = ExtResource( 8 )
+
+[node name="obtained_sprite" type="Sprite" parent="background"]
+position = Vector2( 192, 48 )
+texture = ExtResource( 7 )
+
+[node name="arrow" type="Sprite" parent="background"]
+position = Vector2( 144, 48 )
+texture = ExtResource( 2 )
+
+[node name="ressource_given_number" type="Label" parent="background"]
+margin_left = 74.0
+margin_top = 81.0
+margin_right = 114.0
+margin_bottom = 95.0
+custom_fonts/font = ExtResource( 14 )
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ressource_obtained_number" type="Label" parent="background"]
+margin_left = 172.0
+margin_top = 82.0
+margin_right = 212.0
+margin_bottom = 96.0
+custom_fonts/font = ExtResource( 14 )
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="background"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="retire_button" type="TextureButton" parent="."]
+margin_left = 21.0
+margin_top = 57.0
+margin_right = 63.0
+margin_bottom = 99.0
+texture_normal = ExtResource( 6 )
+texture_pressed = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="add_button" type="TextureButton" parent="."]
+margin_left = 20.0
+margin_top = 12.0
+margin_right = 62.0
+margin_bottom = 54.0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="transform_button" type="TextureButton" parent="."]
+margin_left = 20.0
+margin_top = 108.0
+margin_right = 194.0
+margin_bottom = 151.0
+texture_normal = ExtResource( 9 )
+texture_pressed = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="close_button" type="TextureButton" parent="."]
+margin_left = 247.0
+margin_top = 9.0
+margin_right = 294.0
+margin_bottom = 57.0
+texture_normal = ExtResource( 12 )
+texture_pressed = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="background_2" type="TextureRect" parent="."]
+margin_left = -24.0
+margin_top = 168.0
+margin_right = 279.0
+margin_bottom = 315.0
+texture = ExtResource( 17 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="water" type="Sprite" parent="background_2"]
+
+[node name="strength" type="Sprite" parent="background_2"]
+position = Vector2( 112, 58 )
+texture = ExtResource( 7 )
+
+[node name="fluffisprout_cost" type="Label" parent="background_2"]
+margin_left = 133.0
+margin_top = 42.0
+margin_right = 173.0
+margin_bottom = 74.0
+custom_fonts/font = ExtResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="background_3" type="TextureRect" parent="."]
+margin_top = 309.0
+margin_right = 303.0
+margin_bottom = 408.0
+texture = ExtResource( 21 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="energize_ressource" type="Sprite" parent="background_3"]
+position = Vector2( 32, 41 )
+texture = ExtResource( 7 )
+
+[node name="energize_cost" type="Label" parent="background_3"]
+margin_left = 64.0
+margin_top = 22.0
+margin_right = 104.0
+margin_bottom = 59.0
+custom_fonts/font = ExtResource( 18 )
+text = "100"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="create_fluffisprout" type="TextureButton" parent="."]
+margin_left = 151.0
+margin_top = 189.0
+margin_right = 258.0
+margin_bottom = 264.0
+texture_normal = ExtResource( 15 )
+texture_pressed = ExtResource( 16 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="energize" type="TextureButton" parent="."]
+margin_left = 116.0
+margin_top = 327.0
+margin_right = 290.0
+margin_bottom = 370.0
+texture_normal = ExtResource( 19 )
+texture_pressed = ExtResource( 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="retire_button" to="." method="_on_retire_button_pressed"]
+[connection signal="pressed" from="add_button" to="." method="_on_add_button_pressed"]
+[connection signal="pressed" from="transform_button" to="." method="_on_transform_button_pressed"]
+[connection signal="pressed" from="close_button" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="create_fluffisprout" to="." method="_on_create_fluffisprout_pressed"]
+[connection signal="pressed" from="energize" to="." method="_on_energize_pressed"]

@@ -1,11 +1,11 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://food/vegetals/bush/sprite/bush.png" type="Texture" id=1]
-[ext_resource path="res://entities/tree/tree_produced_bush/tree_produced_bush.gd" type="Script" id=2]
+[ext_resource path="res://entities/tree_produced_megabush/tree_produced_megabush.gd" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
 
-[node name="tree_produced_bush" type="KinematicBody2D"]
+[node name="tree_produced_megabush" type="KinematicBody2D"]
 collision_layer = 8
 collision_mask = 8
 script = ExtResource( 2 )

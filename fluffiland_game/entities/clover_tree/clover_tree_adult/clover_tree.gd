@@ -21,11 +21,11 @@ onready var used_position = Vector2(-30, -600)
 
 var evolution_1 = "big_clover_tree"
 var evolution_1_text = "weeds_path"
-var cost_text_1 = 200
+var cost_text_1 = 50
 
 var evolution_2 = "star_tree_2"
 var evolution_2_text = "berry_path"
-var cost_text_2 = 250
+var cost_text_2 = 65
 
 var evolution_3 = "null"
 var evolution_3_text = ""

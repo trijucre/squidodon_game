@@ -17,6 +17,9 @@ script = ExtResource( 104 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="quit_to_menu" type="TextureButton" parent="CanvasLayer"]
+anchor_left = -0.0666667
+anchor_right = -0.0666667
+anchor_bottom = 3.67341e-07
 margin_left = 325.508
 margin_top = 22.9644
 margin_right = 453.508
@@ -38,6 +41,9 @@ text = "quit
 "
 
 [node name="load2" type="TextureButton" parent="CanvasLayer"]
+anchor_left = -0.0666667
+anchor_right = -0.0666667
+anchor_bottom = 3.67341e-07
 margin_left = 173.508
 margin_top = 22.9644
 margin_right = 301.508
@@ -57,6 +63,9 @@ margin_bottom = 82.669
 custom_fonts/font = ExtResource( 2 )
 text = "load
 "
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="save" type="TextureButton" parent="CanvasLayer"]
 visible = false

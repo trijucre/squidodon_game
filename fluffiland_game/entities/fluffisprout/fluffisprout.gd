@@ -4,7 +4,7 @@ var save_value = "Persist_child"
 
 var evolution_1 = "fluffilus"
 var evolution_1_text = "animal_path"
-var cost_text_1 = 40
+var cost_text_1 = 15
 
 var evolution_2 = "fluffiplant"
 var evolution_2_text = "plant_path"
@@ -16,17 +16,23 @@ var cost_text_3 = 2
 
 
 var gender = "neutral"
-var health = 1
-var health_max = 1
+var health = 3
+var health_max = 3
 
-var energy = 1
-var energy_max = 1
+var energy = 3
+var energy_max = 3
 
 onready var sprite = $sprite
 onready var area_radius = $Area2D/area.shape.radius
 export(String) var random_noun
 export(String) var random_adjective
 var creature_name 
+var happiness = 500
+var max_happiness = 1000
+var relative_happiness = float(happiness)/float(max_happiness)
+var love_happiness = 0.8
+var time = 0
+var age = 1
 
 var sleep_hour
 var sleeping = false
@@ -58,6 +64,7 @@ func _ready():
 	
 	add_to_group(specie, true)
 	add_to_group ("Persist", true)
+	add_to_group ("creature", true)
 	add_to_group("Persist_child", true)
 	add_to_group("tree", true)
 	add_to_group(id, true)
@@ -73,7 +80,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
-func _process(delta):
+func _process(_delta):
 	
 	var sleep = get_tree().root.get_node("Game/game_start/daylight").get_color().r
 	
@@ -101,7 +108,7 @@ func _on_info_panel_pressed():
 	info_panel.energy_max = energy_max
 	info_panel.energy_text = str (energy, "/", energy_max)
 	info_panel.name_text = creature_name
-	info_panel.mood = 50
+	info_panel.mood = relative_happiness
 	info_panel.love_happiness = 50
 	info_panel.pregnancy = false
 	info_panel.id = id
@@ -114,7 +121,7 @@ func _on_info_panel_pressed():
 	info_panel.cost_text_1 = cost_text_1
 	info_panel.cost_text_2 = cost_text_2
 	info_panel.cost_text_3 = cost_text_3
-	
+	info_panel.age = age
 			
 	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
 	
@@ -127,7 +134,17 @@ func save():
 		"pos_y" : get_position(),
 		"save_value" : save_value,
 		"creature_name" : creature_name,
-		"sleep_hour" : sleep_hour
+		"sleep_hour" : sleep_hour,
+		"time" : time,
+		"age" : age
 	}
 	return save
 
+
+
+func _on_Timer_timeout():
+	time += 1
+	if time >= 60 :
+		age += 1
+		time = 0
+		

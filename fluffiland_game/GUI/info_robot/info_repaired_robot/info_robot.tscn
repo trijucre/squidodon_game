@@ -7,7 +7,7 @@
 [ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=5]
 [ext_resource path="res://GUI/strength_logo.png" type="Texture" id=6]
 [ext_resource path="res://GUI/water_logo.png" type="Texture" id=7]
-[ext_resource path="res://icon.png" type="Texture" id=8]
+[ext_resource path="res://GUI/info_robot/info_repaired_robot/sprites/robot_info_panel_masked.png" type="Texture" id=9]
 
 [node name="info_robot" type="Control"]
 pause_mode = 2
@@ -217,7 +217,7 @@ margin_right = 400.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 400, 0 )
 custom_fonts/font = ExtResource( 5 )
-text = "compost comprtment"
+text = "object compartiment"
 align = 1
 
 [node name="strength_logo4" type="TextureRect" parent="texts/HBoxContainer4"]
@@ -269,7 +269,7 @@ margin_right = 400.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 400, 0 )
 custom_fonts/font = ExtResource( 5 )
-text = "object compartment"
+text = "compost making"
 align = 1
 
 [node name="strength_logo5" type="TextureRect" parent="texts/HBoxContainer5"]
@@ -405,11 +405,71 @@ margin_bottom = 37.0
 texture_normal = ExtResource( 7 )
 texture_pressed = ExtResource( 6 )
 
+[node name="container1" type="TextureRect" parent="."]
+margin_left = 947.45
+margin_top = 144.902
+margin_right = 1561.45
+margin_bottom = 227.902
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="container2" type="TextureRect" parent="."]
+margin_left = 947.45
+margin_top = 256.902
+margin_right = 1561.45
+margin_bottom = 339.902
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="container3" type="TextureRect" parent="."]
+margin_left = 947.45
+margin_top = 369.902
+margin_right = 1561.45
+margin_bottom = 452.902
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="container4" type="TextureRect" parent="."]
+margin_left = 947.45
+margin_top = 593.902
+margin_right = 1561.45
+margin_bottom = 676.902
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="container5" type="TextureRect" parent="."]
+margin_left = 947.45
+margin_top = 705.902
+margin_right = 1561.45
+margin_bottom = 788.902
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="container6" type="TextureRect" parent="."]
+margin_left = 947.45
+margin_top = 817.902
+margin_right = 1561.45
+margin_bottom = 900.902
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="make_fertilizer" type="TextureButton" parent="."]
-margin_left = 291.1
-margin_top = 291.405
-margin_right = 338.1
-margin_bottom = 339.405
+margin_left = 247.448
+margin_top = 137.96
+margin_right = 294.448
+margin_bottom = 185.96
 texture_normal = ExtResource( 6 )
 texture_pressed = ExtResource( 7 )
 __meta__ = {
@@ -423,15 +483,27 @@ margin_right = 63.0
 margin_bottom = -2.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "make_fertilizer"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="container_product" type="TextureButton" parent="."]
-margin_left = 374.993
-margin_top = 353.415
-margin_right = 421.993
-margin_bottom = 401.415
-texture_normal = ExtResource( 1 )
-texture_pressed = ExtResource( 2 )
-texture_disabled = ExtResource( 8 )
+margin_left = 340.0
+margin_top = 318.0
+margin_right = 459.0
+margin_bottom = 440.0
+expand = true
+stretch_mode = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="number_of_poop" type="Label" parent="."]
+margin_left = 296.0
+margin_top = 320.0
+margin_right = 336.0
+margin_bottom = 334.0
+custom_fonts/font = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

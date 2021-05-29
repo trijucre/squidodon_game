@@ -35,6 +35,7 @@ var robot_container
 var poop_number = 0
 var poop_quality = 0
 var fertilizer_quality = 0
+var fertilizer = 0
 onready var robot_button = $CanvasLayer/robot_button
 
 var tree_hidden = false
@@ -44,6 +45,13 @@ var water_count = 10
 var water_max = 1000
 var strength_count = 10
 var strength_max = 1000
+var rain_falling = false
+
+onready var rain_scene = preload("res://other/rain_scene/rain_scene.tscn")
+onready var rain_ground_scene = preload("res://other/rain_scene/rain_scene_ground.tscn")
+onready var rain_node = $rain_drop
+onready var rain_ground_node = $rain_ground
+var rain_chance
 
 onready var bush = preload("res://food/vegetals/bush/bush.tscn")
 onready var tree = preload("res://entities/tree/tree_adult/tree.tscn")
@@ -71,7 +79,7 @@ onready var big_strength_flower = preload("res://entities/big_strength_flower/bi
 onready var big_water_flower = preload ("res://entities/big_water_flower/big_water_flower_adult/big_water_flower.tscn")
 onready var strength_water_flower = preload("res://entities/strength_water_flower/strength_water_flower_adult/strength_water_flower.tscn")
 #onready var big_tree = preload("res://bigtree.tscn")
-onready var parasite_algae = preload ("res://entities/parasite_algae/baby/parasite_algae_baby.tscn")
+onready var parasite_algae = preload ("res://entities/parasite_algae/parasit_algae_sprout/parasite_alagae_sprout.tscn")
 
 onready var fluffiplant = preload("res://entities/fluffiplant/fluffiplant_adult/fluffiplant.tscn")
 onready var fluffisprout = preload ("res://entities/fluffisprout/fluffisprout.tscn")
@@ -86,11 +94,13 @@ onready var orca_bear = preload("res://entities/orca_bear/orca_bear_adult/orca_b
 
 onready var pond = preload("res://constructs/pond/pond.tscn")
 onready var hill = preload("res://constructs/hill/hill.tscn")
+onready var info_construct = preload ("res://GUI/info_construct/info_construct.tscn")
+onready var hill_button =$CanvasLayer/entities_button/hill
+onready var pond_button =$CanvasLayer/entities_button/pond
 
 onready var robot_scene = preload("res://entities/robot/robot_broken/robot_broken.tscn")
 onready var new_robot = preload ("res://entities/robot/robot/robot.tscn")
 onready var infos_robot_scene = preload("res://GUI/info_robot/info_repaired_robot/info_robot.tscn")
-onready var robot_stat_scene = preload("res://GUI/info_robot/robot_stats/robot_life_and_energy.tscn")
 
 var option_1_bought = false
 var option_2_bought = false
@@ -100,8 +110,11 @@ var option_5_bought = false
 var option_6_bought = false
 var option_7_bought = false
 
+var parasite_algae_number = (xmap + ymap) / 50
 var day_count = 1
+var year = 1
 signal day_number
+signal year
 #signal diversity_number
 onready var pause_menu_scene = preload ("res://GUI/pause_menu/pause_menu.tscn")
 
@@ -157,11 +170,11 @@ func _ready():
 	tilemap_Water = get_tree().root.get_node("Game/Water")
 	
 	emit_signal ("day_number", self)
+	emit_signal ("year")
 
 # Called when the node enters the scene tree for the first time.
 	self.connect("end_of_day", get_tree().root.get_node("Game"), "_on_end_of_day")
-	#create the map
-	
+
 
 	if saved == false :
 		robot_repaired = false
@@ -192,12 +205,18 @@ func _ready():
 	#make_tree()
 	$Camera2D.position.x = xmap*tilesize/2
 	$Camera2D.position.y = ymap*tilesize/2	
-	print (robot_repaired)
+
 	if robot_repaired == false :
 		robot_button.set_disabled(true)
-	if saved == false :
-		import_parasite_algae()
 	
+	if rain_falling == true :
+		set_rain()
+		
+		
+	#if saved == false :
+		#for i in parasite_algae_number :
+	#		import_parasite_algae()
+
 	saved = true
 	
 func _process(_delta):
@@ -288,7 +307,7 @@ func make_tree():
 					
 func _on_fluffisprout_pressed():
 	if pearl_count > 0 :
-		var fluffisprout = $CanvasLayer/entities_buttonfluffisprout
+		#var fluffisprout_button = $CanvasLayer/entities_buttonfluffisprout
 		var item_name = "fluffisprout"
 		var item_load_scene = "res://items_selected/"+ item_name + "_item/" + item_name + "_item.tscn"
 		var animal = load(item_load_scene)
@@ -300,28 +319,53 @@ func _on_fluffisprout_pressed():
 
 func _on_pond_pressed():
 	if strength_count > 50 :
-		var pond = $CanvasLayer/entities_button/pond
+		#var pond_button = $CanvasLayer/entities_button/pond
 		var item_name = "pond"
 		var item_load_scene = "res://items_selected/"+ item_name + "_item/" + item_name + "_item.tscn"
 		var animal = load(item_load_scene)
 		get_tree().root.get_node("Game/game_start/YSort").add_child(animal.instance())
 		strength_count -= 50
 		emit_signal("number_of_strength", self)
+		pond_button.set_disabled(true)
 	else:
 		pass # Replace with function body.
 
 
 func _on_hill_pressed():
-	if strength_count > 0 :
-		var pond = $CanvasLayer/entities_button/hill
+	if strength_count > 50 :
+		#var pond = $CanvasLayer/entities_button/hill
 		var item_name = "hill"
 		var item_load_scene = "res://items_selected/"+ item_name + "_item/" + item_name + "_item.tscn"
 		var animal = load(item_load_scene)
 		get_tree().root.get_node("Game/game_start/YSort").add_child(animal.instance())
 		strength_count -= 50
 		emit_signal("number_of_strength", self)
+		hill_button.set_disabled(true)
 	else :
 		pass # Replace with function body.
+
+func _on_construct_panel_pressed(ressource_given_count_max, ressource_given, ressource_transferred, id) :
+
+	var info_panel = info_construct.instance()
+	
+	if ressource_given == "water" :
+		if water_count > ressource_given_count_max :
+			info_panel.ressource_given_count_max = ressource_given_count_max
+		else :
+			info_panel.ressource_given_count_max = water_count
+	
+	if ressource_given == "strength" :
+		if strength_count > ressource_given_count_max :
+			info_panel.ressource_given_count_max = ressource_given_count_max
+		else :
+			info_panel.ressource_given_count_max = strength_count
+			
+	info_panel.ressource_given = ressource_given
+	info_panel.ressource_transferred = ressource_transferred
+	info_panel.id = id
+	
+	get_tree().root.get_node("Game/game_start/CanvasLayer").add_child(info_panel)
+	info_panel.position = Vector2 (1500, 100)
 
 
 func _on_pearl_earned():
@@ -337,7 +381,7 @@ func _on_strength_earned(strength_value):
 	emit_signal("number_of_strength", self)
 	
 func _on_water_spend(water_value):
-	print ("water spent ", water_value)
+
 	water_count -= water_value
 
 	emit_signal("number_of_water", self)
@@ -345,8 +389,15 @@ func _on_water_spend(water_value):
 func _on_strength_spend(strength_value):
 	strength_count -= strength_value
 	emit_signal("number_of_strength", self)
-
 	
+	
+func _on_fluffisprout_created(fluffisprout_number, fluffisprout_cost) :
+	if fluffisprout_cost >= strength_count and pearl_count <= 0 :
+		pearl_count += fluffisprout_number
+		strength_count -= fluffisprout_cost
+		emit_signal("number_of_strength", self)
+		emit_signal("number_of_pearls", self)
+		
 func _on_item_bought_pearl():
 	emit_signal("number_of_pearls", self)
 
@@ -354,24 +405,23 @@ func _on_item_bought_strength():
 	emit_signal("number_of_strength", self)
 
 func import_parasite_algae():
-	for x in map_size.x:
-			for y in map_size.y:
-				var data = custom_gradient.get_data()
-				data.lock()
-				var gradient_value = data.get_pixel(x + xmap * 0.5 , y + ymap * 0.5).r * size_gradient
-				
-				var a = noise.get_noise_2d(x,y)
-				data.unlock()
-				a -= gradient_value
-				
-				if a < tree_caps.x and a > tree_caps.y and x > 1 and y > 1 :
-					var chance = randi() % 1000
-					
-					if chance >= 995:
-						var make_parasite_algae = parasite_algae.instance()
-						#var num = randi() % tilesize/8 + tilesize/10
-						make_parasite_algae.position = Vector2(x*tilesize, y*tilesize)
-						$YSort.add_child(make_parasite_algae)
+	var valid_position = false
+	while not valid_position :
+		var xalgae = randi()% (xmap -2) + 2
+		var yalgae = randi()% (ymap +2) - 2
+		var make_parasite_algae = parasite_algae.instance()
+			
+		var data = custom_gradient.get_data()
+		data.lock()
+		var gradient_value = data.get_pixel(xalgae + xmap * 0.5 , yalgae + ymap * 0.5).r * size_gradient
+			
+		var a = noise.get_noise_2d(xalgae,yalgae)
+		data.unlock()
+		a -= gradient_value
+		if a < possible_position.x and a > possible_position.y :
+			$YSort.add_child(make_parasite_algae)
+			make_parasite_algae.position = Vector2(xalgae*tilesize, yalgae*tilesize)
+			valid_position = true
 
 func import_fluffilus():
 	var valid_position = false
@@ -444,12 +494,12 @@ func import_robot():
 		data.lock()
 		var gradient_value = data.get_pixel(xrobot + xmap * 0.5 , yrobot + ymap * 0.5).r * size_gradient
 		
-		print ("x robot ,", xrobot," y robo  ,",yrobot ,"   gradient value ,",gradient_value)
+
 			
 		var a = noise.get_noise_2d(xrobot,yrobot)
 		data.unlock()
 		a -= gradient_value
-		print ("value a to check if robot can be put here :", a)
+
 		if a < possible_position.x and a > possible_position.y :
 			$YSort.add_child(robot)
 			robot.position = Vector2(xrobot*100, yrobot*100)
@@ -667,15 +717,68 @@ func import_item(item):
 func _on_algae_cut():
 	strength_count += -1
 	emit_signal("number_of_strength", self)
+
+func set_rain():
+	var rain = rain_scene.instance()
+	var rain_ground = rain_ground_scene.instance()
+	rain_ground.process_material.emission_box_extents = Vector3(float(xmap*tilesize), float(ymap*tilesize), 0 )
+	rain_ground.position = Vector2 (xmap*tilesize/2, ymap*tilesize/2)
+	rain_ground.set_visibility_rect(Rect2(0, 0, 2000, 1200))
+
+	rain.process_material.emission_box_extents = Vector3(float(xmap*tilesize), float(ymap*tilesize), 0 )
+	rain.position = Vector2 (xmap*tilesize/2, ymap*tilesize/2)
+	rain.set_visibility_rect(Rect2(0, 0, 2000, 1200))
 	
+	rain_node.add_child(rain)
+	rain_ground_node.add_child(rain_ground)
 	
+	$daylight.hide()
+	$rainy_daylight.show()
+
+
+func stop_rain():
+	for child in rain_node.get_children() :
+		child.queue_free()
+		
+	for child in rain_ground_node.get_children() :
+		child.queue_free()		
+	
+	$rainy_daylight.hide()
+	$daylight.show()
+		
 func _on_end_of_day_timeout():
 	day_count +=  1
 	emit_signal ("day_number", self)
-
-	#save game every day
-	#parasites grow every day
+	if day_count <= 33 :
+		rain_chance = 33
 	
+	elif day_count > 33 :
+		rain_chance = 95
+	
+	elif day_count > 66 :
+		rain_chance = 1
+	
+	if day_count > 99 :
+		year += 1
+		day_count = 0
+	
+	randomize()
+	var weather = randi()% 100 + 1
+	if rain_chance >= weather :
+		if rain_falling == true :
+			pass
+		elif rain_falling == false :
+			set_rain()
+			rain_falling = true
+	else :
+		if rain_falling == true :
+			stop_rain()
+			rain_falling = false
+			
+		elif rain_falling == false :
+			pass
+	
+	print ("chances of rain ", rain_chance,"weather : ", weather, "rain is falling : " , rain_falling,  ", day number : ", day_count)
 
 	emit_signal("end_of_day")
 
@@ -698,27 +801,19 @@ func _on_diversity_level_3_out():
 	diversity_level_3 -= 1
 	
 func _on_robot_repaired():
-	print ("robot_repaired")
+
 	robot_repaired = true
 	robot_button.set_disabled(false)
 	var old_robot = get_tree().root.get_node("Game/game_start/YSort/robot_broken")
 	var make_new_robot = new_robot.instance()
-	
-	var robot_stat = robot_stat_scene.instance()
-	make_new_robot.health = robot_stat.health
-	make_new_robot.energy = robot_stat.energy
-	
-	get_tree().root.get_node("Game/game_start/CanvasLayer").add_child(robot_stat)
-	robot_stat.position = Vector2 (10, 800)
-	print("robotstat path :",robot_stat.get_path())
-	
+
 	get_tree().root.get_node("Game/game_start/YSort").add_child(make_new_robot)
 	make_new_robot.position = old_robot.position
 	
 	old_robot.queue_free()
 	
 func _on_robot_updated(option_number):
-	print ("signal send from robot interface to game_start")
+	
 	if option_number == 1 :
 		option_1_bought = true
 	
@@ -740,9 +835,9 @@ func _on_robot_updated(option_number):
 	if option_number == 7 :
 		option_7_bought = true
 	
-	print ("option 1 bought", option_1_bought)
 
 func _on_fertilizer_created(quality):
+	robot_container = "fertilizer"
 	fertilizer_quality = quality
 	
 func _on_robot_button_pressed():
@@ -760,8 +855,8 @@ func _on_robot_button_pressed():
 	info_robot.poop_quality = poop_quality
 	info_robot.container = robot_container
 
-	info_robot.fertilizer = 0
-	info_robot.fertilizer_quality = 0
+	info_robot.fertilizer = fertilizer
+	info_robot.fertilizer_quality = fertilizer_quality
 	
 	get_tree().root.get_node("Game/game_start/CanvasLayer").add_child(info_robot)
 	get_tree().paused = true
@@ -769,40 +864,38 @@ func _on_robot_button_pressed():
 func _on_object_recolted(object, quality, number_of_object):
 	
 	robot_container = object
-	
+
 	if robot_container == "poop" :
 		poop_number += number_of_object
 		poop_quality += quality
-		print ("poop quality", poop_quality)
+	
+	else : 
+		poop_number = number_of_object
+		poop_quality = quality
+
 
 
 func _on_evolution_1_selected(text_1, id, cost_text_1):
 
-	print ("evolution 1 selected")
-	print ("evolution name   ", text_1)
-	print ("identity", id)
-	print ("cost", cost_text_1)
+
 	if strength_count >= cost_text_1 :
 
 		var entity_scene = load ("res://entities/" + text_1 + "/" + text_1 +"_adult/"+ text_1 +".tscn")
 		var entity = entity_scene.instance()
 		for node in  get_tree().get_nodes_in_group(id) :
-			entity.gender = node.gender
-			entity.position = node.position
-			entity.creature_name = node.creature_name
-			print ("evoltion 1 entity name :", entity.creature_name)
-			$YSort.add_child(entity)
-			node.queue_free()
-			strength_count -= cost_text_1
-			emit_signal("number_of_strength", self)
+			if not node.is_in_group("produced") :
+				entity.gender = node.gender
+				entity.position = node.position
+				entity.creature_name = node.creature_name
+				$YSort.add_child(entity)
+				node.queue_free()
+				strength_count -= cost_text_1
+				emit_signal("number_of_strength", self)
 
 
 		
 func _on_evolution_2_selected(text_2, id, cost_text_2):
 
-	print ("evolution 2 selected")
-	print ("evolution name   ", text_2)
-	print ("identity", id)
 	if strength_count >= cost_text_2 :
 		
 		var entity_scene = load ("res://entities/" + text_2 + "/" + text_2 +"_adult/"+ text_2 +".tscn")
@@ -812,8 +905,7 @@ func _on_evolution_2_selected(text_2, id, cost_text_2):
 			entity.gender = node.gender
 			entity.position = node.position
 			entity.creature_name = node.creature_name
-			print ("evoltion 2 node name :", node.creature_name)
-			print ("evoltion 2 entity name :", entity.creature_name)
+
 			$YSort.add_child(entity)
 			node.queue_free()
 			strength_count -= cost_text_2
@@ -821,9 +913,6 @@ func _on_evolution_2_selected(text_2, id, cost_text_2):
 	
 func _on_evolution_3_selected(text_3, id, cost_text_3):
 
-	print ("evolution 3 selected")
-	print ("evolution name   ", text_3)
-	print ("identity", id)
 	if strength_count >= cost_text_3 :
 		var entity_scene = load ("res://entities/" + text_3 + "/" + text_3 +"_adult/"+ text_3 +".tscn")
 		var entity = entity_scene.instance()
@@ -831,12 +920,12 @@ func _on_evolution_3_selected(text_3, id, cost_text_3):
 			entity.gender = node.gender
 			entity.position = node.position
 			entity.creature_name = node.creature_name
-			print ("evoltion 3 entity name :", entity.creature_name)
+
 			$YSort.add_child(entity)
 			node.queue_free()
 			strength_count -= cost_text_3
 			emit_signal("number_of_strength", self)
-			print ("strength count", strength_count)
+
 	else :
 		pass
 	
@@ -878,7 +967,15 @@ func save():
 			"option_4_bought" : option_4_bought,
 			"option_5_bought" : option_5_bought,
 			"option_6_bought" : option_6_bought,
-			"option_7_bought" : option_7_bought
+			"option_7_bought" : option_7_bought,
+			"poop_number" : poop_number,
+			"poop_quality" : poop_quality,
+			"robot_container" : robot_container,
+			"fertilizer" : fertilizer,
+			"fertilizer_quality" : fertilizer_quality,
+			"rain_falling" : rain_falling,
+			"year" : year,
+			"rain_chance" : rain_chance
 
 	}
 	return save

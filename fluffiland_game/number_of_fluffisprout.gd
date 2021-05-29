@@ -5,8 +5,8 @@ var pearl_counter
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	self.text =str(pearl_counter)
+	pass
 
 
 func _on_game_start_number_of_pearls(Game):
-	pearl_counter = Game.pearl_count
+	self.text = str (Game.pearl_count)

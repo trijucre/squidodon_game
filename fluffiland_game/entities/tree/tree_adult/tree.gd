@@ -11,21 +11,21 @@ var bush_time =0
 var health_time =0
 
 var cost = 4
-var energy = 200
-var energy_max = 200
-var health = 60
-var health_max = 60
+var energy = 0
+var energy_max = 0
+var health = 10
+var health_max = 10
 var specie = "tree"
 onready var used_position = Vector2(-30, -600)
 
 
 var evolution_1 = "big_tree"
 var evolution_1_text = "prairie_path"
-var cost_text_1 = 200
+var cost_text_1 = 50
 
 var evolution_2 = "star_tree_1"
 var evolution_2_text = "forest_path"
-var cost_text_2 = 250
+var cost_text_2 = 65
 
 var evolution_3 = "null"
 var evolution_3_text = ""
@@ -34,17 +34,19 @@ var cost_text_3 = 0
 
 var gender
 var opposite_gender
-var happiness = 500
-var max_happiness = 1000
+var happiness = 0
+var max_happiness = 200
 var relative_happiness = float(happiness)/float(max_happiness)
 var love_happiness = 0.8
 var pregnant = false
 export(String) var random_noun
 export(String) var random_adjective
 var creature_name 
+var age = 1
 
 
-var bush_scene = preload("res://entities/tree/tree_produced_bush/tree_produced_bush.tscn")
+onready var bush_scene = load("res://entities/tree_produced_bush/tree_produced_bush.tscn")
+onready var seed_scene = load ("res://entities/tree/tree_seed/tree_seed.tscn")
 onready var sprite = $Sprite
 
 var center_x = self.position.x - 125
@@ -64,12 +66,12 @@ onready var thirsty = preload ("res://entities/tree/tree_adult/sprites/tree_bad_
 var bush_produced = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print ("tree instanced name", creature_name)	
+
 	randomize()
 		
 	add_to_group("tree")
 	add_to_group("vegetals")
-
+	add_to_group("creature", true)
 	add_to_group("Persist", true)
 	add_to_group("persist_child", true)
 
@@ -79,7 +81,7 @@ func _ready():
 		random_noun = str(get_random_word_from_file("res://other/nounlist.txt"))
 		random_adjective = str(get_random_word_from_file("res://other/adjectiveslist.txt"))
 		creature_name = str(random_adjective," ", random_noun)
-	print ("post randomisation tree name",creature_name)
+
 	if gender == null :
 		gender = "neutral"
 		
@@ -90,7 +92,7 @@ func _ready():
 		
 	emit_signal("gender",self)
 #generate name :
-	print ("tree identity  ", tree_id)
+
 func load_file(file_path):
 	var file = File.new()
 	file.open(file_path, file.READ)
@@ -117,7 +119,7 @@ func _on_Timer_timeout():
 	
 	health_time += 1
 	
-	if bush_time >= 60 and health == health_max :
+	if bush_time >= 60 :
 		bush_produced = get_tree().get_nodes_in_group(tree_id).size()
 
 		if bush_produced <= 10 :
@@ -161,8 +163,25 @@ func _on_Timer_timeout():
 				
 		elif health <= 0 :
 			self.queue_free()
-			
+		age += 1	
+		
+		if happiness >= love_happiness :
+			var seed_chances = randi()%100+1
+			if seed_chances >= 95 :
+				var count = rand_range(0, 2)
+				var radius = Vector2(area_radius, 0)
+				var center = self.position
+
+				var step = float(count) * PI 
+				var spawn_pos = center + radius.rotated(step)
+
+				var seed_grow = seed_scene.instance()
+				seed_grow.set_position(spawn_pos)
+				get_tree().root.get_node("Game/game_start/YSort").add_child(seed_grow)
+								
+		
 		health_time =0
+
 
 	
 func _on_bush_produced():
@@ -196,6 +215,7 @@ func _on_info_panel_pressed():
 	info_panel.cost_text_1 = cost_text_1
 	info_panel.cost_text_2 = cost_text_2
 	info_panel.cost_text_3 = cost_text_3
+	info_panel.age = age
 			
 	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
 	
@@ -217,7 +237,8 @@ func save():
 		"health_time" : health_time,
 		"happiness" : happiness,
 		"creature_name" : creature_name,
-		"tree_id" : tree_id
+		"tree_id" : tree_id,
+		"age" : age
 	}
-	print ("save tree", save)
+
 	return save

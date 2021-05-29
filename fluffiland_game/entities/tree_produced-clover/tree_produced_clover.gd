@@ -5,11 +5,13 @@ var energy = 100
 var health = 5
 var id
 var nutrient = 1
+var happiness = 1
 
 var save_value = "Persist_child"
 
 func _ready():
-	add_to_group("fruit", true)
+	add_to_group("clover", true)
+	add_to_group("produced", true)
 	add_to_group(id)
 	
 	#emit_signal("bush_produced")

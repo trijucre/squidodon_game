@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://entities/fluffishroom/fluffishroom_adult/fluffishroom.gd" type="Script" id=1]
 [ext_resource path="res://entities/fluffishroom/fluffishroom_adult/sprites/fluffishroom_default.png" type="Texture" id=2]
@@ -11,11 +11,15 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="CircleShape2D" id=2]
-radius = 40.9231
+[sub_resource type="CapsuleShape2D" id=4]
+radius = 22.1379
+height = 30.4858
 
 [sub_resource type="CircleShape2D" id=3]
 radius = 150.0
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 74.0
 
 [node name="fluffishroom" type="StaticBody2D"]
 collision_layer = 5
@@ -27,7 +31,8 @@ frames = SubResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -12 )
-shape = SubResource( 2 )
+rotation = 1.5708
+shape = SubResource( 4 )
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 5
@@ -46,5 +51,10 @@ __meta__ = {
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true
+
+[node name="life_space" type="Area2D" parent="."]
+
+[node name="life_area" type="CollisionShape2D" parent="life_space"]
+shape = SubResource( 5 )
 [connection signal="pressed" from="info_panel" to="." method="_on_info_panel_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

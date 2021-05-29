@@ -1,7 +1,11 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://entities/robot/robot/robot.gd" type="Script" id=1]
 [ext_resource path="res://entities/robot/sprites/robot.png" type="Texture" id=2]
+[ext_resource path="res://entities/robot/robot/energy_bar.gd" type="Script" id=3]
+[ext_resource path="res://GUI/info_panel/health_and_energy_bar/health_bar_2.png" type="Texture" id=4]
+[ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=5]
+[ext_resource path="res://GUI/info_panel/health_and_energy_bar/energy_bar_2.png" type="Texture" id=6]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -42,10 +46,58 @@ __meta__ = {
 }
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
-position = Vector2( 0, -29 )
+position = Vector2( 0, -32 )
 enabled = true
-cast_to = Vector2( 75, 0 )
+cast_to = Vector2( 100, 0 )
 collision_mask = 15
 
 [node name="container" type="Node2D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+margin_left = 18.0
+margin_top = 815.0
+margin_right = 58.0
+margin_bottom = 865.0
+rect_min_size = Vector2( 220, 50 )
+color = Color( 0.317647, 0.301961, 0.301961, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="energy_bar" type="ColorRect" parent="CanvasLayer"]
+margin_left = 24.0
+margin_top = 820.0
+margin_right = 64.0
+margin_bottom = 860.0
+color = Color( 1, 0.584314, 0, 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="refill" type="TextureButton" parent="CanvasLayer"]
+margin_left = 232.0
+margin_top = 728.0
+margin_right = 583.0
+margin_bottom = 791.0
+texture_normal = ExtResource( 6 )
+texture_pressed = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/refill"]
+margin_left = 32.0
+margin_top = 16.0
+margin_right = 89.0
+margin_bottom = 44.0
+custom_fonts/font = ExtResource( 5 )
+text = "refill"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="stat_changed" from="." to="CanvasLayer/energy_bar" method="_on_robot_stat_changed"]
 [connection signal="pressed" from="infos_button" to="." method="_on_infos_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/refill" to="." method="_on_refill_pressed"]

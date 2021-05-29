@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://entities/tree/tree_adult/tree.gd" type="Script" id=1]
 [ext_resource path="res://entities/tree/tree_adult/sprites/tree_good_health.png" type="Texture" id=2]
@@ -28,6 +28,9 @@ animations = [ {
 
 [sub_resource type="CircleShape2D" id=3]
 radius = 32.4412
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 74.0
 
 [node name="tree" type="StaticBody2D"]
 collision_layer = 12
@@ -60,5 +63,10 @@ margin_bottom = -1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="life_space" type="Area2D" parent="."]
+
+[node name="life_area" type="CollisionShape2D" parent="life_space"]
+shape = SubResource( 4 )
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="info_panel" to="." method="_on_info_panel_pressed"]

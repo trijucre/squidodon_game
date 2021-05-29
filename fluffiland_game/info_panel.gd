@@ -9,8 +9,24 @@ onready var pregnant = $pregnant
 onready var animal_picture = $animal_picture
 onready var health_bar = $health_bar
 onready var energy_bar = $energy_bar
+onready var energy_bar_back = $energy_bar_back
+onready var health_bar_back = $health_bar_back
+onready var info_love_happiness = $mood/love_happiness
+onready var age_text = $info_panel_text/age
 onready var id
 onready var evolution_panel_scene = preload("res://GUI/evolution_panel/evolution_panel.tscn")
+
+onready var produce_1_sprite = $eat_produce/produce_1
+onready var produce_2_sprite = $eat_produce/produce_2
+onready var eat_1_sprite = $eat_produce/eat_1
+onready var eat_2_sprite = $eat_produce/eat_2
+
+onready var produce_1
+onready var produce_2
+onready var eat_1
+onready var eat_2
+
+
 
 onready var evolution_1
 onready var evolution_2
@@ -34,6 +50,7 @@ var gender_text
 var mood
 var love_happiness
 var pregnancy
+var age
 
 onready var mood_texture_happy = load("res://GUI/info_panel/info_panel_happy.png")
 onready var mood_texture_meh = load("res://GUI/info_panel/info_panel_meh.png")
@@ -42,44 +59,24 @@ onready var male_logo = load("res://GUI/info_panel/info_panel_base_logomale.png"
 onready var female_logo = load ("res://GUI/info_panel/info_panel_base_logofemale.png")
 onready var pregnant_logo = load ("res://GUI/info_panel/pregnant_logo.png")
 
-onready var energy_full = load ("res://GUI/info_panel/health_and_energy_bar/energy_bar_full.png")
-onready var energy_6 = load ("res://GUI/info_panel/health_and_energy_bar/energy_bar_6.png")
-onready var energy_5 = load ("res://GUI/info_panel/health_and_energy_bar/energy_bar_5.png")
-onready var energy_4 = load ("res://GUI/info_panel/health_and_energy_bar/energy_bar_4.png")
-onready var energy_3 = load ("res://GUI/info_panel/health_and_energy_bar/energy_bar_3.png")
-onready var energy_2 = load ("res://GUI/info_panel/health_and_energy_bar/energy_bar_2.png")
-onready var energy_1 = load ("res://GUI/info_panel/health_and_energy_bar/energy_bar_1.png")
-
-onready var health_full = load ("res://GUI/info_panel/health_and_energy_bar/health_bar_full.png")
-onready var health_6 = load ("res://GUI/info_panel/health_and_energy_bar/health_bar_6.png")
-onready var health_5 = load ("res://GUI/info_panel/health_and_energy_bar/health_bar_5.png")
-onready var health_4 = load ("res://GUI/info_panel/health_and_energy_bar/health_bar_4.png")
-onready var health_3 = load ("res://GUI/info_panel/health_and_energy_bar/health_bar_3.png")
-onready var health_2 = load ("res://GUI/info_panel/health_and_energy_bar/health_bar_2.png")
-onready var health_1 = load ("res://GUI/info_panel/health_and_energy_bar/health_bar_1.png")
-
-var health_visual 
-var energy_visual
 
 
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
 	for node in get_tree().get_nodes_in_group("info_panel") :
 		node.queue_free()
 		
 	add_to_group("info_panel")
-	
-	health_visual = ( float (pv)/ float (pv_max) )
-	energy_visual = (float (energy) / float (energy_max) )
 	
 	self.position = Vector2(1635, 325)
 	info_name.text = str(name_text)
 	info_specie.text = str(specie_text)
 
 	info_mood.position.y = (200 -float(200 * mood))
-
+	info_love_happiness.position.y = (200 -float(200 * love_happiness))
 	
 	if gender_text  == "female" :
 		gender.set_texture(female_logo)
@@ -93,62 +90,35 @@ func _ready():
 	if pregnancy == true :
 		pregnant.set_texture(pregnant_logo)
 		
-
-	
+	if produce_1 != null :
+		var produce_1_logo = load("res://GUI/info_panel/eat_and_produce_graphic/eat_produce_"+ produce_1 + ".png")
+		produce_1_sprite.set_texture(produce_1_logo)
+	if produce_2 != null :
+		var produce_2_logo = load("res://GUI/info_panel/eat_and_produce_graphic/eat_produce_" + produce_2 + ".png")
+		produce_2_sprite.set_texture(produce_2_logo)
+	if eat_1 != null :
+		var eat_1_logo = load("res://GUI/info_panel/eat_and_produce_graphic/eat_produce_"+ eat_1 + ".png")
+		eat_1_sprite.set_texture(eat_1_logo)
+	if eat_2 != null :
+		var eat_2_logo = load("res://GUI/info_panel/eat_and_produce_graphic/eat_produce_"+ eat_2 + ".png")
+		eat_2_sprite.set_texture(eat_2_logo)
 	#set helth and energy texture depending of stats
-	if health_visual >= 0.86 :
-		health_bar.set_texture(health_full)
-		
-	elif health_visual >= 0.72 :
-		health_bar.set_texture(health_6)
-		
-	elif health_visual >= 0.58 :
-		health_bar.set_texture(health_5)
 	
-	elif health_visual >= 0.44 :
-		health_bar.set_texture(health_4)
-		
-	elif health_visual >= 0.30 :
-		health_bar.set_texture(health_3)
+	health_bar.rect_size.x = 10 * (float (pv))
+	energy_bar.rect_size.x = 10 * (float (energy))
 	
-	elif health_visual >= 0.16 :
-		health_bar.set_texture(health_2)
+	health_bar_back.rect_size.x = 10 * (float(pv_max))
+	energy_bar_back.rect_size.x = 10 * (float(energy_max))
 	
-	elif health_visual > 0 :
-		health_bar.set_texture(health_1)
-	
+	if age >= 200 :
+		age_text.text = str("Age : "+ str(age/ 100) + " years and " + str((age - (age/100) * 100)) + " days")
+	elif age >= 100 :
+		age_text.text = str("Age : "+ str(age/ 100) + " year and " + str((age - (age/100) * 100)) + " days")
+	elif age >1 :
+		age_text.text = str("Age : "+ str(age) + " days")
 	else :
-		health_bar.set_texture(null)
+		age_text.text = str("Age : "+ str(age) + " day")
 		
-	
-	if energy_visual >= 0.86 :
-		energy_bar.set_texture(energy_full)
-		
-	elif energy_visual >= 0.72 :
-		energy_bar.set_texture(energy_6)
-		
-	elif energy_visual >= 0.58 :
-		energy_bar.set_texture(energy_5)
-	
-	elif energy_visual >= 0.44 :
-		energy_bar.set_texture(energy_4)
-		
-	elif energy_visual >= 0.30 :
-		energy_bar.set_texture(energy_3)
-	
-	elif energy_visual >= 0.16 :
-		energy_bar.set_texture(energy_2)
-	
-	elif energy_visual > 0 :
-		energy_bar.set_texture(energy_1)
-	
-	else :
-		energy_bar.set_texture(null)
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
-	print ("info panel evolution 3   ", evolution_1_text)
 func _on_close_button_pressed():
 	self.queue_free()
 

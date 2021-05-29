@@ -21,11 +21,11 @@ onready var used_position = Vector2(-30, -600)
 
 var evolution_1 = "big_fruit_tree"
 var evolution_1_text = "grap_path"
-var cost_text_1 = 200
+var cost_text_1 = 50
 
 var evolution_2 = "star_tree_3"
 var evolution_2_text = "salad_path"
-var cost_text_2 = 250
+var cost_text_2 = 65
 
 var evolution_3 = "null"
 var evolution_3_text = ""
@@ -42,6 +42,7 @@ var pregnant = false
 export(String) var random_noun
 export(String) var random_adjective
 var creature_name 
+var age = 1
 
 
 var bush_scene = preload("res://entities/tree_produced-fruit/tree_produced_fruit.tscn")
@@ -69,6 +70,7 @@ func _ready():
 	
 	add_to_group("tree")
 	add_to_group("vegetals")
+	add_to_group("creature")
 	add_to_group(tree_id)
 
 	add_to_group("Persist", true)
@@ -158,7 +160,7 @@ func _on_Timer_timeout():
 				
 		elif health <= 0 :
 			self.queue_free()
-			
+		age += 1
 		health_time =0
 
 	
@@ -214,6 +216,7 @@ func save():
 		"health_time" : health_time,
 		"happiness" : happiness,
 		"creature_name" : creature_name,
-		"tree_id" : tree_id
+		"tree_id" : tree_id,
+		"age" : age
 	}
 	return save

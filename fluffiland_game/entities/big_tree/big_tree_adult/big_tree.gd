@@ -42,9 +42,9 @@ var pregnant = false
 export(String) var random_noun
 export(String) var random_adjective
 var creature_name 
+var age = 1
 
-
-var bush_scene = preload("res://entities/tree_produced_bush/tree_produced_bush.tscn")
+var bush_scene = preload("res://entities/tree_produced_bigbush/tree_produced_bigbush.tscn")
 onready var sprite = $Sprite
 
 var center_x = self.position.x - 175
@@ -69,7 +69,7 @@ func _ready():
 	
 	add_to_group("tree")
 	add_to_group("vegetals")
-	
+	add_to_group("creature", true)
 	add_to_group("Persist", true)
 	add_to_group("persist_child", true)
 
@@ -159,7 +159,7 @@ func _on_Timer_timeout():
 				
 		elif health <= 0 :
 			self.queue_free()
-			
+		age += 1	
 		health_time =0
 
 	
@@ -194,6 +194,7 @@ func _on_info_panel_pressed():
 	info_panel.cost_text_1 = cost_text_1
 	info_panel.cost_text_2 = cost_text_2
 	info_panel.cost_text_3 = cost_text_3
+	info_panel.age = age
 			
 	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
 	
@@ -215,6 +216,7 @@ func save():
 		"health_time" : health_time,
 		"happiness" : happiness,
 		"creature_name" : creature_name,
-		"tree_id" : tree_id
+		"tree_id" : tree_id,
+		"age" : age
 	}
 	return save

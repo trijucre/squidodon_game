@@ -1,10 +1,28 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://GUI/clock/clock_back.png" type="Texture" id=1]
+[ext_resource path="res://GUI/clock/clock_needle.png" type="Texture" id=1]
 [ext_resource path="res://GUI/clock/clock_rotating_part.png" type="Texture" id=2]
+[ext_resource path="res://GUI/clock/clock_top.png" type="Texture" id=3]
+[ext_resource path="res://GUI/clock/clock_top_needle.png" type="Texture" id=4]
+[ext_resource path="res://GUI/clock/clock.gd" type="Script" id=5]
 
 [sub_resource type="Animation" id=1]
-resource_name = "clock_rotation"
+resource_name = "season_needle_rotation"
+length = 6000.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("season_needle:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 6000 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 359.0 ]
+}
+
+[sub_resource type="Animation" id=2]
 length = 60.0
 loop = true
 step = 30.0
@@ -18,19 +36,30 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 60 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 0.0, 360.0 ]
+"values": [ 0.0, 359.0 ]
 }
 
 [node name="clock" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="seasons" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+
+[node name="season_needle" type="Sprite" parent="."]
+texture = ExtResource( 4 )
+offset = Vector2( 0, -64 )
+
+[node name="season_needle_rotation" type="AnimationPlayer" parent="."]
+anims/season_needle_rotation = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 0, -3 )
 texture = ExtResource( 2 )
 
 [node name="clock_rotation" type="AnimationPlayer" parent="."]
 autoplay = "clock_rotation"
 method_call_mode = 1
-anims/clock_rotation = SubResource( 1 )
+anims/clock_rotation = SubResource( 2 )
 
-[node name="border" type="Sprite" parent="."]
+[node name="clock_needle" type="Sprite" parent="."]
+position = Vector2( 0, -45 )
 texture = ExtResource( 1 )

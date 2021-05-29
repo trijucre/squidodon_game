@@ -12,18 +12,18 @@ onready var light = $Light2D
 
 onready var area_radius = $Area2D/area.shape.radius
 
-onready var produced_indicator = preload("res://popup/produced_spent_indicator/strength_produced_indicator.tscn")
-onready var used_indicator = preload("res://popup/produced_spent_indicator/water_used_indicator.tscn")
-onready var produced_position = Vector2(30, -120)
-onready var used_position = Vector2(-30, -120)
+onready var produced_indicator = preload("res://popup/produced_spent_indicator/strength_earned_particle.tscn")
+onready var produced_position = Vector2(0, -75)
+
+
 
 var evolution_1 = "big_strength_flower"
 var evolution_1_text = "earth_path"
-var cost_text_1 = 150
+var cost_text_1 = 25
 
 var evolution_2 = "strength_water_flower"
 var evolution_2_text = "balance_path"
-var cost_text_2 = 200
+var cost_text_2 = 30
 
 var evolution_3 = "null"
 var evolution_3_text = ""
@@ -31,10 +31,10 @@ var cost_text_3 = 0
 
 
 var cost = 1
-var health = 60
-var health_max = 60
-var energy = 100
-var energy_max = 100
+var health = 5
+var health_max = 5
+var energy = 0
+var energy_max = 0
 
 
 var gender
@@ -47,6 +47,7 @@ var pregnant = false
 export(String) var random_noun
 export(String) var random_adjective
 var creature_name 
+var age = 1
 
 var ressource_generation = 0
 var specie = "strength_flower"# Declare member variables here. Examples:
@@ -60,13 +61,14 @@ func _ready():
 	
 	self.connect("water_spend", get_tree().root.get_node("Game/game_start"), "_on_water_spend")
 	self.connect("strength_earned", get_tree().root.get_node("Game/game_start"), "_on_strength_earned")
-	
+
 	add_to_group("Persist", true)
 	add_to_group("persist_child", true)
 	#pearl_timer.start()
 	
 	var animation = "default"
 	sprite.play(animation)
+	add_to_group("creature", true)
 	add_to_group ("flower")
 	add_to_group ("vegetals")
 	add_to_group ("strength_flower")
@@ -113,10 +115,13 @@ func _on_pearl_generation_timeout():
 	
 	ressource_generation += 1
 	if ressource_generation >= 60 :
-		emit_signal("strength_earned", 5)
-		var produced = produced_indicator.instance()
-		self.add_child(produced)
-		produced.position = produced_position
+		var rain = get_tree().root.get_node("Game/game_start").rain_falling
+		if rain == false :
+			emit_signal("strength_earned", 5)
+			var produced = produced_indicator.instance()
+			self.add_child(produced)
+			produced.position = produced_position
+		age += 1
 		ressource_generation = 0
 	#produced.position.y = self.position.y 
 	#pearl_timer.start()	
@@ -137,8 +142,8 @@ func _on_info_panel_pressed():
 	info_panel.energy_max = energy_max
 	info_panel.energy_text = str (energy, "/", energy_max)
 	info_panel.name_text = creature_name
-	info_panel.mood = 50
-	info_panel.love_happiness = 50
+	info_panel.mood = relative_happiness
+	info_panel.love_happiness = love_happiness
 	info_panel.pregnancy = false
 	info_panel.id = id
 	info_panel.evolution_1 = evolution_1
@@ -150,6 +155,7 @@ func _on_info_panel_pressed():
 	info_panel.cost_text_1 = cost_text_1
 	info_panel.cost_text_2 = cost_text_2
 	info_panel.cost_text_3 = cost_text_3
+	info_panel.age = age
 	
 			
 	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
@@ -164,6 +170,7 @@ func save():
 		"health" : health,
 		"ressource_generation" : ressource_generation,
 		"creature_name" : creature_name,
-		"id" : id
+		"id" : id,
+		"age" : age
 	}
 	return save

@@ -1,8 +1,12 @@
 extends KinematicBody2D
 
-signal water_earned
-signal strength_earned
+#signal water_earned
+#signal strength_earned
+signal water_spend
+signal strength_spend
 signal object_recolted
+#signal refill
+
 
 signal stat_changed
 
@@ -21,6 +25,9 @@ var attack_damage = 30
 var save_value = "Persist_child"
 onready var sprite = $sprite
 onready var container_node = $container
+onready var energy_bar = $CanvasLayer/energy_bar
+
+onready var refill_scene = preload("res://popup/produced_spent_indicator/strength_earned_particle.tscn")
 
 var bush = preload("res://entities/tree_produced_bush/tree_produced_bush.tscn")
 var clover = preload("res://entities/tree_produced-clover/tree_produced_clover.tscn")
@@ -39,7 +46,7 @@ var container_id
 var fertilizer_quality
 
 var popup_scene = preload ("res://popup/popup_robot/popup_robot.tscn")
-var popup_position = Vector2 (0, - 75)
+var popup_position = Vector2 (0, - 150)
 func _ready():
 	
 	add_to_group("robot", true)
@@ -47,10 +54,14 @@ func _ready():
 	add_to_group("Persist_child", true)
 
 	self.connect("object_recolted", get_tree().root.get_node("Game/game_start"), "_on_object_recolted")
+	self.connect("water_spend",get_tree().root.get_node("Game/game_start"), "_on_water_spend")
+	self.connect("strength_spend",get_tree().root.get_node("Game/game_start"), "_on_strength_spend")
 	
+	#self.connect("stat_changed", get_tree().root.get_node("Game/game_start/CanvasLayer/robot_life_and_energy"), "_on_stats_changed")
+
+	emit_signal("stat_changed", energy)
 	
-	self.connect("stat_changed", get_tree().root.get_node("Game/game_start/CanvasLayer/robot_life_and_energy"), "_on_stats_changed")
-	emit_signal("stat_changed")
+
 	
 func _physics_process(delta):
 	
@@ -125,39 +136,41 @@ func _input(event):
 	if event.is_action_pressed("interact"):
 		
 		var target = $RayCast2D.get_collider()
-		if target != null and energy > 0 :
-		
-			if target.is_in_group("animal") :
+		if target != null :
+
+			if target.is_in_group("animal") and option_6_bought == true and energy > 0 and target.pet == false :
+				print ("robot detected an animal")
 				if target.happiness < target.max_happiness :
-					target.happiness = +10
+					target.happiness += 10
 					var happy_popup = target.love_bubble.instance()
 					target.add_child(happy_popup)
 					happy_popup.position = target.popup_position
 					self.energy -= 1
-					emit_signal("stat_changed", "strength", 1)		
+					emit_signal("stat_changed", energy)	
+					target.pet = true
 					
 					var popup = popup_scene.instance()
 					self.add_child(popup)
 					popup.position = popup_position
 			
-			if target.is_in_group("parasite") :
+			if target.is_in_group("parasite") and energy > 0 :
 				target.health -= attack_damage
 				self.energy -= 1
-				emit_signal("stat_changed", "strength", 1)		
+				emit_signal("stat_changed", energy)	
 				
 				var popup = popup_scene.instance()
 				popup.sprite_text = "angry"
 				self.add_child(popup)
 				popup.position = popup_position
 				
-			if target.is_in_group("poop") and (container == null or container == "poop")  :
+			if target.is_in_group("poop") and (container == null or container == "poop") and option_5_bought == true  :
 				target.queue_free()
 				self.energy -= 1
 				emit_signal("object_recolted","poop", target.quality, 1)
-				emit_signal("stat_changed", "strength", 1)		
+				container = "poop"	
 								
-			if target.is_in_group("bush") and container == null :
-				print ("bush taken by robot")
+			if target.is_in_group("bush") and container == null and option_4_bought == true and energy > 0 :
+
 				container = target.specie
 				container_id = target.id
 				target.queue_free()
@@ -165,33 +178,38 @@ func _input(event):
 				self.energy -= 1
 				bush_container.id = container_id
 				bush_container.position = Vector2(0, -100)
-				print ("container name ,", container)
+
 				container_node.add_child(bush_container)
 			
-				emit_signal("stat_changed", "strength", 1)	
+				emit_signal("stat_changed", energy)	
+				emit_signal("object_recolted", container, 1, 1)
 
 		
 			if target.is_in_group("tree") and container == "fertilizer" :
 				target.happiness += fertilizer_quality
+				target.health += fertilizer_quality
+				target.energy += fertilizer_quality
 					
 				var popup = popup_scene.instance()
 				popup.sprite_text = "fertilizer"
 				self.add_child(popup)
 				popup.position = popup_position
 				container = null
+				emit_signal("object_recolted", container, 0, 0)
 
 		else :
 
 			if container != null :
-				print ("robot container is full")
+
 				if container == "bush" :
 					get_node("container/tree_produced_bush").queue_free()
-					print ("robot contains a bush")
+
 					var bush_container = bush.instance()
 					bush_container.id = container_id
 					get_tree().root.get_node("Game//game_start/YSort").add_child(bush_container)
 					bush_container.position = self.position+ last_direction.normalized() * 75
 					container = null
+					emit_signal("object_recolted", container, 0, 0)
 					
 				
 	#	if (energy >= 2 and !attack_playing ) :
@@ -206,26 +224,15 @@ func _input(event):
 	#		var target = $RayCast2D.get_collider()
 	#		if target != null and target.is_in_group("animal") :
 	#			target.hit(attack_damage)
-		
-	elif event.is_action_pressed("special"):
-	
-		var animation = get_animation_direction(last_direction) + "_special"
-		if (energy >= 4 and !special_playing ) :
-			energy = energy - 4
-			emit_signal("squidodon_stats_changed", self)
-			special_playing = true
-			#var animation = get_animation_direction(last_direction) + "_special"
-			sprite.play(animation) 
-	
-signal squidodon_stats_changed()
+
 
 func _on_fertilizer_created(quality):
 	for node in container_node.get_children() :
 		container_node.remove_child(node)
+	self.energy -= 1
+	emit_signal("stat_changed", energy)	
 	container = "fertilizer"
 	fertilizer_quality = quality
-	print (container, " created in robot  ", fertilizer_quality)
-	
 	
 
 
@@ -246,8 +253,7 @@ func _on_Timer_timeout():
 
 
 func _on_robot_updated(option_number):
-	print ("robot_updated")
-	print (option_number," selectionnée par robot")
+
 	
 	if option_number == 1 :
 		option_1_bought = true
@@ -273,18 +279,56 @@ func _on_robot_updated(option_number):
 func _on_infos_button_pressed():
 	pass # Replace with function body.
 
+func _on_refill_pressed():
+	
+	var energy_to_fill = energy_max - energy
+	var strength_count = get_tree().root.get_node("Game/game_start").strength_count
+	var water_count = get_tree().root.get_node("Game/game_start").water_count
+	if water_count >= energy_to_fill and strength_count >= energy_to_fill  :
+		print ("energy to fill : ", energy_to_fill)
+		energy = energy_max
+		emit_signal("strength_spend", energy_to_fill)
+		emit_signal("water_spend", energy_to_fill)
+
+	elif water_count <= energy_to_fill or strength_count <= energy_to_fill  :
+		if water_count > strength_count :
+			print ("water_count > strength_count, energi donnée ",strength_count)
+			energy += strength_count
+			emit_signal("strength_spend", strength_count)
+			emit_signal("water_spend", strength_count)
+			
+		if water_count <= strength_count :
+			print (" strength_count > water_count, energi donnée ",water_count)
+			energy += water_count
+			emit_signal("strength_spend", water_count)
+			emit_signal("water_spend", water_count)
+
+	if water_count or strength_count > 0 :
+		var refilled = refill_scene.instance()
+		self.add_child(refilled)
+		refilled.position = Vector2(0, -150)
+	
+	emit_signal("stat_changed", energy)
+		
 func save():
 	var save = {
 		"filename" : get_filename(),
 		#"parent" : get_parent().get_path(),
 		"position" : get_global_position(),
 		"pos_y" : get_position(),
+		"energy" : energy,
 		"option_1_bought" : option_1_bought,
 		"option_2_bought" : option_2_bought,
 		"option_3_bought" : option_3_bought,
 		"option_4_bought" : option_4_bought,
 		"option_5_bought" : option_5_bought,
 		"option_6_bought" : option_6_bought,
-		"option_7_bought" : option_7_bought
+		"option_7_bought" : option_7_bought,
+		"container" : container,
+		"container_id" : container_id ,
+		"fertilizer_quality" : fertilizer_quality
 	}
 	return save
+
+
+

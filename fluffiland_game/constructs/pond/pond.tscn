@@ -5,7 +5,7 @@
 [ext_resource path="res://constructs/pond/sprite/pond_sprite_thirsty.png" type="Texture" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 150.0
+radius = 600.0
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -20,13 +20,12 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="CapsuleShape2D" id=3]
-radius = 38.2132
-height = 158.637
+[sub_resource type="CircleShape2D" id=3]
+radius = 347.625
 
 [node name="pond" type="StaticBody2D"]
-collision_layer = 14
-collision_mask = 14
+collision_layer = 15
+collision_mask = 15
 script = ExtResource( 2 )
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -42,7 +41,7 @@ position = Vector2( 0, -43 )
 frames = SubResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -36 )
+position = Vector2( 0, -43 )
 rotation = 1.5708
 shape = SubResource( 3 )
 
@@ -51,9 +50,9 @@ autostart = true
 
 [node name="info_panel" type="TextureButton" parent="."]
 margin_left = -100.0
-margin_top = -79.0
+margin_top = -166.0
 margin_right = 99.0
-margin_bottom = -1.0
+margin_bottom = 77.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

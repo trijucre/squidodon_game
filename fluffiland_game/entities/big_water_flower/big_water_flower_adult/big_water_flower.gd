@@ -47,9 +47,9 @@ export(String) var random_noun
 export(String) var random_adjective
 var creature_name 
 var specie = "big_water_flower"# Declare member variables here. Examples:
+var age = 1
 
-
-var tree_id = str(self.get_instance_id())
+var id = str(self.get_instance_id())
 
 func _ready():
 	randomize()
@@ -107,10 +107,13 @@ func _on_pearl_generation_timeout():
 
 	ressource_generation += 1
 	if ressource_generation >= 60 :
-		emit_signal("water_earned", 10)
-		var produced = produced_indicator.instance()
-		self.add_child(produced)
-		produced.position = produced_position
+		var rain = get_tree().root.get_node("Game/game_start").rain_falling
+		if rain == true :
+			emit_signal("water_earned", 10)
+			var produced = produced_indicator.instance()
+			self.add_child(produced)
+			produced.position = produced_position
+		age += 1
 		ressource_generation = 0
 	
 
@@ -118,27 +121,48 @@ func _on_pearl_generation_timeout():
 
 func _on_water_button_pressed():
 	
-
-	#else :
-	var info_panel_scene = preload ("res://GUI/info_panel_vegetals/info_panel_vegetals_strength/info_panel_vegetals_strength.tscn")
+	
+	var info_panel_scene = preload ("res://GUI/info_panel/info_panel.tscn")
 	var info_panel = info_panel_scene.instance()
-		
+	
 	info_panel.specie_text = specie
+	info_panel.gender_text = ""
+	info_panel.pv_text = str (health, "/", health_max)
 	info_panel.pv = health
 	info_panel.pv_max = health_max
-	info_panel.id = tree_id
-		
-	get_tree().root.get_node("Game/game_start/CanvasLayer").add_child(info_panel)
+	info_panel.energy = energy
+	info_panel.energy_max = energy_max
+	info_panel.energy_text = str (energy, "/", energy_max)
+	info_panel.name_text = creature_name
+	info_panel.mood = 50
+	info_panel.love_happiness = 50
+	info_panel.pregnancy = false
+	info_panel.id = id
+	info_panel.evolution_1 = evolution_1
+	info_panel.evolution_2 = evolution_2
+	info_panel.evolution_3 = evolution_3
+	info_panel.evolution_1_text = evolution_1_text	
+	info_panel.evolution_2_text = evolution_2_text
+	info_panel.evolution_3_text = evolution_3_text
+	info_panel.cost_text_1 = cost_text_1
+	info_panel.cost_text_2 = cost_text_2
+	info_panel.cost_text_3 = cost_text_3
+	info_panel.age = age
+	
+			
+	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
+
 
 func save():
 	var save = {
 		"filename" : get_filename(),
 		#"parent" : get_parent().get_path(),
 		"position" : get_global_position(),
-		"pos_y" : get_position(),
+	#	"pos_y" : get_position(),
 		"health" : health,
 		"ressource_generation" : ressource_generation,
-		"name" : creature_name
+		"creature_name" : creature_name,
+		"age" : age
 
 	}
 	return save

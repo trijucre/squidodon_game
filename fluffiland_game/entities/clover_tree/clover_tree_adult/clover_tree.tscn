@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://entities/clover_tree/clover_tree_adult/clover_tree.gd" type="Script" id=1]
 [ext_resource path="res://entities/clover_tree/clover_tree_adult/sprites/clover_tree_thirsty.png" type="Texture" id=2]
@@ -7,7 +7,10 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 150.0
 
-[sub_resource type="SpriteFrames" id=2]
+[sub_resource type="CircleShape2D" id=5]
+radius = 74.0
+
+[sub_resource type="SpriteFrames" id=6]
 animations = [ {
 "frames": [ ExtResource( 3 ) ],
 "loop": true,
@@ -20,7 +23,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="CircleShape2D" id=3]
+[sub_resource type="CircleShape2D" id=4]
 radius = 18.6456
 
 [node name="clover_tree" type="StaticBody2D"]
@@ -35,13 +38,20 @@ collision_mask = 12
 [node name="area" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
 
+[node name="life_space" type="Area2D" parent="."]
+collision_layer = 12
+collision_mask = 12
+
+[node name="life_area" type="CollisionShape2D" parent="life_space"]
+shape = SubResource( 5 )
+
 [node name="Sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -271 )
-frames = SubResource( 2 )
+frames = SubResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 2, -10 )
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true

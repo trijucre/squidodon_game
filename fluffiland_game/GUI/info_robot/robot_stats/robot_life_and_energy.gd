@@ -11,12 +11,16 @@ var energy_bit_value = 5
 var health_bit_value = 1
 var bar_size = 10
 
+var save_value = "Persist_child"
+
 onready var health_bar = $health_bar
 onready var strength_bar = $strength_bar
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-
+	add_to_group ("Persist", true)
+	add_to_group("Persist_child", true)
+	
 	health_bar.rect_size.x = float(health) * health_bit_value
 	health_bar.rect_size.y = 20
 	
@@ -39,11 +43,19 @@ func _on_stats_changed(stat, value):
 		energy -= value
 		strength_bar.rect_size.x = float(energy) * energy_bit_value
 		
-func _on_test():
-	print("test signal robot stat okay")
+
 	
 		
-	
+func save():
+	var save = {
+		"filename" : get_filename(),
+		#"parent" : get_parent().get_path(),
+		"position" : get_global_position(),
+		"pos_y" : get_position(),
+		"health" : health,
+		"energy" : energy
+	}
+	return save
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

@@ -12,9 +12,9 @@ onready var pearl_timer = $pearl_generation
 onready var sprite = $flower_sprite
 
 onready var produced_indicator_water = preload("res://popup/produced_spent_indicator/water_produced_indicator.tscn")
-onready var produced_indicator_strength = preload("res://popup/produced_spent_indicator/strength_produced_indicator.tscn")
-onready var produced_position_1 = Vector2(30, -120)
-onready var produced_position_2 = Vector2(-30, -120)
+onready var produced_indicator_strength = preload("res://popup/produced_spent_indicator/strength_earned_particle.tscn")
+onready var produced_position_1 = Vector2(0, -120)
+onready var produced_position_2 = Vector2(0, -120)
 
 var evolution_1 = "null"
 var evolution_1_text = ""
@@ -45,6 +45,7 @@ export(String) var random_noun
 export(String) var random_adjective
 var creature_name 
 var ressource_generation = 0
+var age = 1
 
 var specie = "big_strength_water_flower"# Declare member variables here. Examples:
 
@@ -58,7 +59,7 @@ func _ready():
 	self.connect("water_earned", get_tree().root.get_node("Game/game_start"), "_on_water_earned")
 	self.connect("strength_earned", get_tree().root.get_node("Game/game_start"), "_on_strength_earned")
 
-	
+	add_to_group("creature", true)	
 	add_to_group("Persist", true)
 	add_to_group("persist_child", true)
 	
@@ -102,21 +103,20 @@ func _on_pearl_generation_timeout():
 	
 	ressource_generation += 1
 	if ressource_generation >= 60 :
-		emit_signal("strength_earned", 7)
-		emit_signal("water_earned", 7)
-		var produced1 = produced_indicator_water.instance()
-		self.add_child(produced1)
-		produced1.position = produced_position_1
+		var rain = get_tree().root.get_node("Game/game_start").rain_falling
+		if rain == false :
+			emit_signal("strength_earned", 7)
+			var produced2 = produced_indicator_strength.instance()
+			self.add_child(produced2)
+			produced2.position = produced_position_2
+		if rain == true :
+			emit_signal("water_earned", 7)
+			var produced1 = produced_indicator_water.instance()
+			self.add_child(produced1)
+			produced1.position = produced_position_1
+		age += 1
 		ressource_generation = 0
-		var produced2 = produced_indicator_strength.instance()
-		self.add_child(produced2)
-		produced2.position = produced_position_2
-		ressource_generation = 0
-	#produced.position.y = self.position.y 
-	#pearl_timer.start()	
-	
-
-
+		
 
 func _on_water_button_pressed():
 	
@@ -160,7 +160,8 @@ func save():
 		"health" : health,
 		"ressource_generation" : ressource_generation,
 		"name" : creature_name,
-		"id" : id
+		"id" : id,
+		"age" : age
 
 	}
 	return save

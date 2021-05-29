@@ -4,11 +4,13 @@ signal robot_repaired
 signal strength_spend
 
 var reparation_cost = 30
+onready var text_cost = $cost/Label
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.connect("robot_repaired", get_tree().root.get_node("Game/game_start"), "_on_robot_repaired")
 	self.connect("strength_spend", get_tree().root.get_node("Game/game_start"), "_on_strength_spend")
-
+	
+	text_cost.text = str(reparation_cost)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
