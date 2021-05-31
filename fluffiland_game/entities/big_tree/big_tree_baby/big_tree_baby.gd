@@ -35,7 +35,7 @@ var sleeping = false
 var id = str(self.get_instance_id())
 
 var gender = "neutral"
-var specie = "fluffisprout"
+var specie = "big_tree"
 var opposite_gender
 var happiness = 0
 var max_happiness = 30
@@ -46,7 +46,7 @@ var adult_time = 0
 
 onready var used_indicator = preload("res://popup/produced_spent_indicator/water_used_indicator.tscn")
 onready var used_position = Vector2(-30, -120)
-onready var adult_scene = load("res://entities/fluffishroom/fluffishroom_adult/fluffishroom.tscn")
+onready var adult_scene = load("res://entities/big_tree/big_tree_adult/big_tree.tscn")
 
 func load_file(file_path):
 	var file = File.new()
@@ -84,7 +84,13 @@ func _ready():
 		random_noun = str(get_random_word_from_file("res://other/nounlist.txt"))
 		random_adjective = str(get_random_word_from_file("res://other/adjectiveslist.txt"))
 		creature_name = str(random_adjective," ", random_noun)
-
+		
+func _process(_delta):
+	if health <= 0 :
+		self.queue_free()
+	
+	if health >= health_max :
+		health = health_max
 
 func _on_info_panel_pressed():
 	var info_panel_scene = preload ("res://GUI/info_panel/info_panel.tscn")
@@ -126,8 +132,8 @@ func _on_Timer_timeout():
 	
 	if ressource_generation >= 60 :
 		age += 1
-	
-	if adult_time >= 180 :
+		emit_signal("water_spend", 3)
+	if adult_time >= 4550 :
 		var adult = adult_scene.instance()
 		adult.creature_name = self.creature_name
 		adult.happiness = self.happiness
@@ -146,6 +152,7 @@ func save():
 		#"parent" : get_parent().get_path(),
 		"position" : get_global_position(),
 		"pos_y" : get_position(),
+		"health" : health,
 		"save_value" : save_value,
 		"creature_name" : creature_name,
 		"sleep_hour" : sleep_hour,

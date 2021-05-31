@@ -188,7 +188,7 @@ func _input(event):
 			if target.is_in_group("tree") and container == "fertilizer" :
 				target.happiness += fertilizer_quality
 				target.health += fertilizer_quality
-				target.energy += fertilizer_quality
+				#target.energy += fertilizer_quality
 					
 				var popup = popup_scene.instance()
 				popup.sprite_text = "fertilizer"

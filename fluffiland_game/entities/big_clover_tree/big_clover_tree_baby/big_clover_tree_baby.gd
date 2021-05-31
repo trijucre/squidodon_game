@@ -35,10 +35,10 @@ var sleeping = false
 var id = str(self.get_instance_id())
 
 var gender = "neutral"
-var specie = "fluffisprout"
+var specie = "big_clover_tree"
 var opposite_gender
 var happiness = 0
-var max_happiness = 30
+var max_happiness = 100
 var relative_happiness = float(happiness)/float(max_happiness)
 var love_happiness = 0.8
 var age = 1
@@ -46,7 +46,7 @@ var adult_time = 0
 
 onready var used_indicator = preload("res://popup/produced_spent_indicator/water_used_indicator.tscn")
 onready var used_position = Vector2(-30, -120)
-onready var adult_scene = load("res://entities/fluffishroom/fluffishroom_adult/fluffishroom.tscn")
+onready var adult_scene = load("res://entities/big_clover_tree/big_clover_tree_adult/big_clover_tree.tscn")
 
 func load_file(file_path):
 	var file = File.new()
@@ -118,16 +118,21 @@ func _on_info_panel_pressed():
 	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
 	
 
-
+func _process(_delta):
+	if health <= 0 :
+		self.queue_free()
+	
+	if health >= health_max :
+		health = health_max
 
 func _on_Timer_timeout():
 	
 	adult_time += 1
-	
+
 	if ressource_generation >= 60 :
 		age += 1
-	
-	if adult_time >= 180 :
+		emit_signal("water_spend", 3)
+	if adult_time >= 4550 :
 		var adult = adult_scene.instance()
 		adult.creature_name = self.creature_name
 		adult.happiness = self.happiness

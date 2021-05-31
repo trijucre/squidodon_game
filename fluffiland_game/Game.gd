@@ -103,6 +103,9 @@ func load_game():
 		
 		elif new_object.save_value == "Persist_clock" :
 			var delete_clock = get_tree().get_nodes_in_group("Persist_clock")
+			for i in delete_clock :
+				i.queue_free()
+				
 			for i in node_data :
 				if i == "filename" or i == "parent" or i == "position" :#or i == "name" :
 					continue
@@ -126,5 +129,4 @@ func _on_quit_to_menu_pressed():
 	self.add_child(start)
 
 func _on_end_of_day():
-	
 	save_game()

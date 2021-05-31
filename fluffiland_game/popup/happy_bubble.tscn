@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://popup/hunger_bubble.gd" type="Script" id=1]
+[ext_resource path="res://popup/happy_bubble.gd" type="Script" id=1]
 [ext_resource path="res://popup/Illustration2.png" type="Texture" id=2]
 
 [node name="happy_bubble" type="Node2D"]

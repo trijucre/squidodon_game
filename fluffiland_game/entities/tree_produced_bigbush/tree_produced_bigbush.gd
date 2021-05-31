@@ -6,7 +6,7 @@ var cost = 1
 var energy = 100
 var health = 5
 var id
-var nutrient = 1
+
 var happiness = 1
 
 var specie = "bush"
@@ -25,7 +25,7 @@ func _ready():
 		
 func _process(_delta):
 	
-	if energy <= 0 or health <= 0 or nutrient <= 0:
+	if energy <= 0 and health <= 0 :
 		get_tree().queue_delete(self)
 		#emit_signal("bush_deleted")
 

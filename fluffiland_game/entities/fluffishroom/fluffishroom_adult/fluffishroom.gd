@@ -5,29 +5,32 @@ signal water_earned
 
 var save_value = "Persist_child"
 
+var ray_directions = []
+export var look_ahead = 100
+export var num_rays = 12
+
 var evolution_1 = "water_flower"
-var evolution_1_text = "flower_path"
-var cost_text_1 = 8
+var evolution_1_text = "moisture_path"
+var cost_text_1 = 6
 var evolution_2 = "strength_flower"
 var evolution_2_text = "root_path"
 var cost_text_2 = 6
-var evolution_3 = "null"
-var evolution_3_text = ""
-var cost_text_3 = 0
+var evolution_3 = "strength_water_flower"
+var evolution_3_text = "magic_path"
+var cost_text_3 = 10
 
-var health = 5
-var health_max = 5
+var health = 3
+var health_max = 3
 
-var energy = 5
-var energy_max = 5
+var energy = 10
+var energy_max = 10
 
 var gender
 var opposite_gender
 var happiness = 0
 var max_happiness = 30
-var relative_happiness = float(happiness)/float(max_happiness)
 var love_happiness = 0.8
-var pregnant = false
+var hungry = false
 var age = 1
 onready var seed_scene = preload ("res://entities/fluffishroom/fluffishroom_egg/fluffishroom_egg.tscn")
 
@@ -46,6 +49,9 @@ var sleep_hour
 var sleeping = false
 var id = str(self.get_instance_id())
 
+var hungry_time = 0
+onready var hungry_bubble_scene = preload("res://popup/fertilizer_bubble.tscn")
+var bubble_position = Vector2(0, -150)
 var specie = "fluffishroom"
 
 func load_file(file_path):
@@ -88,18 +94,44 @@ func _ready():
 	
 	if gender == null :
 		gender = "neutral"
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-func _process(delta):
+		
+	ray_directions.resize(num_rays)
 	
-	var sleep = get_tree().root.get_node("Game/game_start/daylight").get_color().r
-	
+	for i in num_rays:
+		var angle = i * 2 * PI / num_rays
+		ray_directions[i] = Vector2.RIGHT.rotated(angle)
 
-	if sleep < sleep_hour :
-		set_sleep()
-		sleeping = true
+func _process(delta):
+		
+	if health <= 0 :
+		self.queue_free()
+	elif health > health_max :
+		health = health_max
 	
+	if energy == 0 and hungry == false:
+		hungry = true
+		
+	elif energy >= 10 :
+		energy = energy_max
+		if hungry == true :
+			hungry = false
+
+	find_food()
+
+func find_food() :
+	var space_state = get_world_2d().direct_space_state
+	
+	for i in num_rays:
+			
+			var result = space_state.intersect_ray(position, position + ray_directions[i].rotated(rotation) * look_ahead, [self])
+			
+			if result :
+				var target = result["collider"]
+				if target.is_in_group("poop") and hungry == true :
+					happiness += target.happiness
+					health += target.health
+					energy += target.energy
+					
 func set_sleep():
 
 	var animation = "side_sleep"
@@ -119,7 +151,7 @@ func _on_info_panel_pressed():
 	info_panel.energy_max = energy_max
 	info_panel.energy_text = str (energy, "/", energy_max)
 	info_panel.name_text = creature_name
-	info_panel.mood = relative_happiness
+	info_panel.mood = float(happiness)/float(max_happiness)
 	info_panel.love_happiness = love_happiness
 	info_panel.pregnancy = false
 	info_panel.id = id
@@ -145,10 +177,14 @@ func save():
 		"position" : get_global_position(),
 		"pos_y" : get_position(),
 		"save_value" : save_value,
+		"health" : health ,
+		"happiness" : happiness,
 		"creature_name" : creature_name,
 		"sleep_hour" : sleep_hour,
 		"ressource_generation" : ressource_generation,
-		"age" : age
+		"age" : age,
+		"hungry_time" : hungry_time,
+		"hungry" : hungry
 	}
 	return save
 
@@ -156,7 +192,8 @@ func save():
 
 func _on_Timer_timeout():
 	ressource_generation += 1
-	
+	hungry_time += 1
+
 	if ressource_generation >= 60 :
 		var rain = get_tree().root.get_node("Game/game_start").rain_falling
 		if rain == false :
@@ -170,7 +207,7 @@ func _on_Timer_timeout():
 			self.add_child(produced)
 			produced.position = produced_position
 		age += 1
-	
+		
 		if happiness >= love_happiness :
 			var seed_chances = randi()%100+1
 			if seed_chances >= 85 :
@@ -186,7 +223,25 @@ func _on_Timer_timeout():
 				get_tree().root.get_node("Game/game_start/YSort").add_child(seed_grow)
 								
 		ressource_generation = 0
-
-	#produced.position.y = self.position.y 
-	#pearl_timer.start()	
+		
+	if hungry_time > 1000 :
+		if energy <= 0 :
+			health -= 1
+		hungry_time = 0
 	
+	if health <= 1 :
+		var hungry_bubble = hungry_bubble_scene.instance()
+		self.add_child(hungry_bubble)
+		hungry_bubble.position = bubble_position
+	
+	if health > 1 :
+		for node in get_children() :
+			if node.is_in_group("popup") :
+				node.queue_free()
+
+
+
+func _draw():
+	for i in num_rays:
+		draw_line(Vector2(0,0), Vector2(0,0) + ray_directions[i] * look_ahead, Color(255, 255, 0), 5)
+#		

@@ -8,8 +8,3 @@ script = ExtResource( 1 )
 
 [node name="hunger_bubble_sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 0.5
-autostart = true
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

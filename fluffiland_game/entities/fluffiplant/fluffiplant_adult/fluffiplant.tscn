@@ -14,10 +14,10 @@ animations = [ {
 [sub_resource type="CircleShape2D" id=2]
 radius = 40.9231
 
-[sub_resource type="CircleShape2D" id=4]
+[sub_resource type="CircleShape2D" id=3]
 radius = 74.0
 
-[sub_resource type="CircleShape2D" id=3]
+[sub_resource type="CircleShape2D" id=4]
 radius = 150.0
 
 [node name="fluffiplant" type="StaticBody2D"]
@@ -37,14 +37,14 @@ collision_layer = 5
 collision_mask = 5
 
 [node name="life_area" type="CollisionShape2D" parent="life_space"]
-shape = SubResource( 4 )
+shape = SubResource( 3 )
 
-[node name="Area2D2" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="."]
 collision_layer = 5
 collision_mask = 5
 
-[node name="area" type="CollisionShape2D" parent="Area2D2"]
-shape = SubResource( 3 )
+[node name="area" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 4 )
 
 [node name="info_panel" type="TextureButton" parent="."]
 margin_left = -42.0

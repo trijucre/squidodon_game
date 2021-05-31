@@ -3,8 +3,8 @@ extends StaticBody2D
 
 var save_value = "Persist_child"
 
-var energy =100
-var health = 5
+var energy =1
+var health = 1
 var quality = 1
 
 func _ready():

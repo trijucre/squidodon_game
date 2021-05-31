@@ -1,8 +1,7 @@
 extends StaticBody2D
 
-signal water_spend
 
-var save_value = ""
+var save_value = "Persist_child"
 
 var evolution_1 = "null"
 var evolution_1_text = ""
@@ -35,18 +34,21 @@ var sleeping = false
 var id = str(self.get_instance_id())
 
 var gender = "neutral"
-var specie = "fluffisprout"
+var specie = "water_flower"
 var opposite_gender
 var happiness = 0
 var max_happiness = 30
-var relative_happiness = float(happiness)/float(max_happiness)
 var love_happiness = 0.8
 var age = 1
 var adult_time = 0
 
+var hungry_time = 0
+onready var hungry_bubble_scene = preload("res://popup/fertilizer_bubble.tscn")
+var bubble_position = Vector2(0, -150)
+
 onready var used_indicator = preload("res://popup/produced_spent_indicator/water_used_indicator.tscn")
 onready var used_position = Vector2(-30, -120)
-onready var adult_scene = load("res://entities/fluffishroom/fluffishroom_adult/fluffishroom.tscn")
+onready var adult_scene = load("res://entities/water_flower/water_flower_adult/water_flower.tscn")
 
 func load_file(file_path):
 	var file = File.new()
@@ -67,7 +69,16 @@ func get_random_word_from_file(file_path):
 	return words[randi() % words.size()]
 	
 	
-
+func _process(_delta):
+	if health <= 0 :
+		self.queue_free()
+	
+	elif health > health_max :
+		health = health_max
+		
+	if happiness > max_happiness :
+		happiness = max_happiness
+		
 func _ready():
 	
 	add_to_group(specie, true)
@@ -77,7 +88,7 @@ func _ready():
 	add_to_group(id, true)
 	add_to_group("creature", true)
 	
-	self.connect("water_spend", get_tree().root.get_node("Game/game_start"), "_on_water_spend")
+
 	
 	
 	if creature_name == null :
@@ -99,7 +110,7 @@ func _on_info_panel_pressed():
 	info_panel.energy_max = energy_max
 	info_panel.energy_text = str (energy, "/", energy_max)
 	info_panel.name_text = creature_name
-	info_panel.mood = relative_happiness
+	info_panel.mood = float(happiness)/float(max_happiness)
 	info_panel.love_happiness = love_happiness
 	info_panel.pregnancy = false
 	info_panel.id = id
@@ -127,7 +138,7 @@ func _on_Timer_timeout():
 	if ressource_generation >= 60 :
 		age += 1
 	
-	if adult_time >= 180 :
+	if adult_time >= 1020 :
 		var adult = adult_scene.instance()
 		adult.creature_name = self.creature_name
 		adult.happiness = self.happiness
@@ -140,18 +151,32 @@ func _on_Timer_timeout():
 		ressource_generation = 0
 		self.queue_free()
 
+	if health <= 1 :
+		var hungry_bubble = hungry_bubble_scene.instance()
+		self.add_child(hungry_bubble)
+		hungry_bubble.position = bubble_position
+	
+	if health > 1 :
+		for node in get_children() :
+			if node.is_in_group("popup") :
+				node.queue_free()
+
+
 func save():
 	var save = {
 		"filename" : get_filename(),
 		#"parent" : get_parent().get_path(),
 		"position" : get_global_position(),
 		"pos_y" : get_position(),
+		"happiness" : happiness,
+		"health" : health,
 		"save_value" : save_value,
 		"creature_name" : creature_name,
 		"sleep_hour" : sleep_hour,
 		"ressource_generation" : ressource_generation,
 		"age" : age,
-		"adult_time" : adult_time
+		"adult_time" : adult_time,
+		"hungry_time" : hungry_time
 	}
 	return save
 

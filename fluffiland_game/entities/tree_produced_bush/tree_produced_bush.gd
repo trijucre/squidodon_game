@@ -3,10 +3,10 @@ extends KinematicBody2D
 var save_value = "Persist_child"
 
 var cost = 1
-var energy = 100
-var health = 5
+var energy = 1
+var health = 0
 var id
-var nutrient = 1
+var happiness = 1
 var specie = "bush"
 
 func _ready():
@@ -23,7 +23,7 @@ func _ready():
 		
 func _process(_delta):
 	
-	if energy <= 0 or health <= 0 or nutrient <= 0:
+	if energy <= 0 and health <= 0 :
 		get_tree().queue_delete(self)
 		#emit_signal("bush_deleted")
 
@@ -33,7 +33,6 @@ func save():
 		#"parent" : get_parent().get_path(),
 		"position" : get_global_position(),
 		"pos_y" : get_position(),
-		"nutrient" : nutrient,
 		"id" : id
 	}
 	return save

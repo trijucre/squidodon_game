@@ -208,6 +208,8 @@ func _on_make_fertilizer_pressed():
 	if container == "poop" :
 		
 		fertilizer_quality = poop_quality / 5
+		if fertilizer_quality < 1 :
+			fertilizer_quality = 1
 		container = "fertilizer"	
 		poop_number = 0
 		poop_quality = 0

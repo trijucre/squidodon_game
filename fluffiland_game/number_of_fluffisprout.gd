@@ -10,3 +10,4 @@ func _ready():
 
 func _on_game_start_number_of_pearls(Game):
 	self.text = str (Game.pearl_count)
+

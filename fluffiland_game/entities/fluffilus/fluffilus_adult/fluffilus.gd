@@ -78,8 +78,10 @@ var energy_max = 5
 var attack_distance = 50
 var baby_incubation = 540
 var sleeping = false
+var sleepy = false
 var id = str(self.get_instance_id())
 #hunger
+var hungry = false
 var hunger = 4
 var age = 1
 var robot_seen = false
@@ -129,7 +131,7 @@ var sleep_bubble = preload("res://popup/sleep_bubble.tscn")
 var curious_bubble= preload("res://popup/curious_bubble.tscn")
 onready var popup_position = Vector2(0, -200)
 # var for bubble per second
-var alert = 0
+#var alert = 0
 var sleep_time = 0
 
 # when the aniaml goes to sleep, random, it's set in the _ready function
@@ -213,7 +215,6 @@ func _ready():
 	
 	
 	
-	rng.randomize()
 	rng.randomize()
 	rngx.randomize()
 	rngy.randomize()
@@ -495,12 +496,18 @@ func set_default_interest():
 		
 			
 func set_sleep():
+	
 	movement = 0
 	other_animation_playing = true
 	var animation = "side_sleep"
 	$AnimatedSprite.play(animation)
 	chosen_dir = Vector2.ZERO
 	
+	var sleep_popup = sleep_bubble.instance()
+	self.add_child(sleep_popup)
+	sleep_popup.position = popup_position
+		
+	sleepy = true
 
 func choose_direction():
 	
@@ -662,19 +669,6 @@ func _on_energyandlife_timeout():
 			pregnancy_end()
 			pregnancy_time = 0
 			pregnant = false
-			
-
-	
-
-
-
-	
-
-
-
-	#happiness per second :
-	
-
 	
 	elif energy < hunger :
 		happiness += 0
@@ -686,27 +680,27 @@ func _on_energyandlife_timeout():
 	emit_signal("ai_stats_changed", self)
 	
 		#var alert for surprise
-	if alert < 4 :
-		alert += 1
+	#if alert < 4 :
+	#	alert += 1
 	
 	
-	if energy <= 0 and alert >= 4:
+	if energy <= 0 :
+		hungry = true
 		var hunger_popup = hunger_bubble.instance()
 		self.add_child(hunger_popup)
 		hunger_popup.position = popup_position
-		
-		alert = 0
-		
-		#var for sleep
-	if sleep_time < 2 :
-		sleep_time += 1
 	
-	if sleeping == true and sleep_time >= 2 :
-		var sleep_popup = sleep_bubble.instance()
-		self.add_child(sleep_popup)
-		sleep_popup.position = popup_position
-		
-		sleep_time = 0
+	if sleepy == true and sleeping == false :
+		for node in get_children() :
+			if node.is_in_group("sleep_popup") :
+				node.queue_free()
+				sleepy = false
+			
+	if energy > 0 and hungry == true :
+		for node in get_children() :
+			if node.is_in_group("hunger_popup") :
+				node.queue_free()
+				hungry = false
 		
 	if hurt == true and healed < 10 :
 		happiness -= 5
@@ -790,7 +784,6 @@ func save():
 		"healed" : healed,
 		"poop_time" : poop_time,
 		"pregnancy_time" : pregnancy_time,
-		"alert" : alert,
 		"sleep_time" : sleep_time,
 		"food_eaten" :  food_eaten,
 		"attack_cooldown_time" : attack_cooldown_time,
@@ -800,7 +793,9 @@ func save():
 		"pet" : pet,
 		"pet_time" : pet_time,
 		"robot_seen" : robot_seen,
-		"memory_of_robot" : memory_of_robot
+		"memory_of_robot" : memory_of_robot,
+		"hungry" : hungry,
+		"sleepy" : sleepy
 	}
 	return save
 	

@@ -25,7 +25,7 @@
 [ext_resource path="res://entities/fluffilus/fluffilus_adult/sprites/side_walk/side_walk_fluffilus_0010.png" type="Texture" id=28]
 [ext_resource path="res://entities/fluffilus/fluffilus_adult/sprites/side_walk/side_walk_fluffilus_0011.png" type="Texture" id=29]
 
-[sub_resource type="CapsuleShape2D" id=3]
+[sub_resource type="CapsuleShape2D" id=1]
 radius = 40.2086
 height = 48.992
 
@@ -59,13 +59,13 @@ animations = [ {
 
 [node name="fluffilus" type="KinematicBody2D"]
 collision_layer = 34
-collision_mask = 2147483649
+collision_mask = 2147483648
 script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -14 )
 rotation = 1.5708
-shape = SubResource( 3 )
+shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -46 )

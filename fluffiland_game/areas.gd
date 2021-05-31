@@ -23,6 +23,7 @@ func _draw() :
 			var radius = node.area_radius
 			var color = Color(0.3, 0.5, 0.8)
 			draw_circle(center, radius, color)
+			
 		for node in  get_tree().get_nodes_in_group ("parasite_algae") :
 			var center = node.position
 			var radius = node.area_radius

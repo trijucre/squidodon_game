@@ -35,10 +35,10 @@ var sleeping = false
 var id = str(self.get_instance_id())
 
 var gender = "neutral"
-var specie = "fluffisprout"
+var specie = "big_water_flower"
 var opposite_gender
 var happiness = 0
-var max_happiness = 30
+var max_happiness = 50
 var relative_happiness = float(happiness)/float(max_happiness)
 var love_happiness = 0.8
 var age = 1
@@ -85,6 +85,12 @@ func _ready():
 		random_adjective = str(get_random_word_from_file("res://other/adjectiveslist.txt"))
 		creature_name = str(random_adjective," ", random_noun)
 
+func _process(_delta):
+	if health <= 0 :
+		self.queue_free()
+	
+	if health >= health_max :
+		health = health_max
 
 func _on_info_panel_pressed():
 	var info_panel_scene = preload ("res://GUI/info_panel/info_panel.tscn")
@@ -146,6 +152,7 @@ func save():
 		#"parent" : get_parent().get_path(),
 		"position" : get_global_position(),
 		"pos_y" : get_position(),
+		"health" : health,
 		"save_value" : save_value,
 		"creature_name" : creature_name,
 		"sleep_hour" : sleep_hour,

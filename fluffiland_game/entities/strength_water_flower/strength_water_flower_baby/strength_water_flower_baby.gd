@@ -2,7 +2,7 @@ extends StaticBody2D
 
 signal water_spend
 
-var save_value = ""
+var save_value = "Persist_child"
 
 var evolution_1 = "null"
 var evolution_1_text = ""
@@ -17,15 +17,16 @@ var evolution_3_text = ""
 var cost_text_3 = 0
 
 
-var health = 5
-var health_max = 5
-var energy = 3
-var energy_max = 3
+var health = 3
+var health_max = 3
+var energy = 0
+var energy_max = 0
 
 var ressource_generation = 0
 
 onready var sprite = $AnimatedSprite
 onready var area_radius = $Area2D/area.shape.radius
+onready var light_animation = $AnimationPlayer
 export(String) var random_noun
 export(String) var random_adjective
 var creature_name 
@@ -35,18 +36,21 @@ var sleeping = false
 var id = str(self.get_instance_id())
 
 var gender = "neutral"
-var specie = "fluffisprout"
+var specie = "strength_water_flower"
 var opposite_gender
 var happiness = 0
 var max_happiness = 30
-var relative_happiness = float(happiness)/float(max_happiness)
 var love_happiness = 0.8
 var age = 1
 var adult_time = 0
 
+var hungry_time = 0
+onready var hungry_bubble_scene = preload("res://popup/fertilizer_bubble.tscn")
+var bubble_position = Vector2(0, -150)
+
 onready var used_indicator = preload("res://popup/produced_spent_indicator/water_used_indicator.tscn")
 onready var used_position = Vector2(-30, -120)
-onready var adult_scene = load("res://entities/fluffishroom/fluffishroom_adult/fluffishroom.tscn")
+onready var adult_scene = load("res://entities/strength_water_flower/strength_water_flower_adult/strength_water_flower.tscn")
 
 func load_file(file_path):
 	var file = File.new()
@@ -84,7 +88,20 @@ func _ready():
 		random_noun = str(get_random_word_from_file("res://other/nounlist.txt"))
 		random_adjective = str(get_random_word_from_file("res://other/adjectiveslist.txt"))
 		creature_name = str(random_adjective," ", random_noun)
-
+		
+	light_animation.seek(60 - get_tree().root.get_node("Game/game_start/end_of_day").get_time_left() , true)
+	
+	
+func _process(_delta):
+	if health <= 0 :
+		self.queue_free()
+	
+	elif health > health_max :
+		health = health_max
+	
+	if happiness > max_happiness :
+		happiness = max_happiness
+		
 
 func _on_info_panel_pressed():
 	var info_panel_scene = preload ("res://GUI/info_panel/info_panel.tscn")
@@ -99,7 +116,7 @@ func _on_info_panel_pressed():
 	info_panel.energy_max = energy_max
 	info_panel.energy_text = str (energy, "/", energy_max)
 	info_panel.name_text = creature_name
-	info_panel.mood = relative_happiness
+	info_panel.mood = float(happiness)/float(max_happiness)
 	info_panel.love_happiness = love_happiness
 	info_panel.pregnancy = false
 	info_panel.id = id
@@ -123,11 +140,12 @@ func _on_info_panel_pressed():
 func _on_Timer_timeout():
 	
 	adult_time += 1
+	ressource_generation += 1
 	
 	if ressource_generation >= 60 :
 		age += 1
 	
-	if adult_time >= 180 :
+	if adult_time >= 1020 :
 		var adult = adult_scene.instance()
 		adult.creature_name = self.creature_name
 		adult.happiness = self.happiness
@@ -139,6 +157,17 @@ func _on_Timer_timeout():
 		
 		ressource_generation = 0
 		self.queue_free()
+		
+	if health <= 1 :
+		var hungry_bubble = hungry_bubble_scene.instance()
+		self.add_child(hungry_bubble)
+		hungry_bubble.position = bubble_position
+	
+	if health > 1 :
+		for node in get_children() :
+			if node.is_in_group("popup") :
+				node.queue_free()
+
 
 func save():
 	var save = {
@@ -146,12 +175,15 @@ func save():
 		#"parent" : get_parent().get_path(),
 		"position" : get_global_position(),
 		"pos_y" : get_position(),
+		"health" : health,
+		"happiness" : happiness,
 		"save_value" : save_value,
 		"creature_name" : creature_name,
 		"sleep_hour" : sleep_hour,
 		"ressource_generation" : ressource_generation,
 		"age" : age,
-		"adult_time" : adult_time
+		"adult_time" : adult_time,
+		"hungry_time" : hungry_time
 	}
 	return save
 

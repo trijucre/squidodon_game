@@ -115,6 +115,10 @@ pause={
 2d_physics/layer_11="pearls"
 2d_physics/layer_16="titan size"
 
+[memory]
+
+limits/message_queue/max_size_kb=5000
+
 [rendering]
 
 quality/intended_usage/framebuffer_allocation=0

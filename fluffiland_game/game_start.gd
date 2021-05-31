@@ -51,6 +51,7 @@ onready var rain_scene = preload("res://other/rain_scene/rain_scene.tscn")
 onready var rain_ground_scene = preload("res://other/rain_scene/rain_scene_ground.tscn")
 onready var rain_node = $rain_drop
 onready var rain_ground_node = $rain_ground
+onready var weather_animation = $AnimationPlayer
 var rain_chance
 
 onready var bush = preload("res://food/vegetals/bush/bush.tscn")
@@ -170,7 +171,7 @@ func _ready():
 	tilemap_Water = get_tree().root.get_node("Game/Water")
 	
 	emit_signal ("day_number", self)
-	emit_signal ("year")
+	emit_signal ("year", self)
 
 # Called when the node enters the scene tree for the first time.
 	self.connect("end_of_day", get_tree().root.get_node("Game"), "_on_end_of_day")
@@ -732,8 +733,7 @@ func set_rain():
 	rain_node.add_child(rain)
 	rain_ground_node.add_child(rain_ground)
 	
-	$daylight.hide()
-	$rainy_daylight.show()
+	weather_animation.set_current_animation("day_and_night_rain")
 
 
 func stop_rain():
@@ -743,8 +743,7 @@ func stop_rain():
 	for child in rain_ground_node.get_children() :
 		child.queue_free()		
 	
-	$rainy_daylight.hide()
-	$daylight.show()
+	weather_animation.set_current_animation("day_and_night")
 		
 func _on_end_of_day_timeout():
 	day_count +=  1
@@ -752,17 +751,20 @@ func _on_end_of_day_timeout():
 	if day_count <= 33 :
 		rain_chance = 33
 	
-	elif day_count > 33 :
-		rain_chance = 95
-	
+	elif day_count > 99 :
+		year += 1
+		day_count = 0
+
 	elif day_count > 66 :
 		rain_chance = 1
 	
-	if day_count > 99 :
-		year += 1
-		day_count = 0
+	elif day_count > 33 :
+		rain_chance = 95
 	
-	randomize()
+	
+
+	
+
 	var weather = randi()% 100 + 1
 	if rain_chance >= weather :
 		if rain_falling == true :
@@ -839,6 +841,7 @@ func _on_robot_updated(option_number):
 func _on_fertilizer_created(quality):
 	robot_container = "fertilizer"
 	fertilizer_quality = quality
+	poop_number = 1
 	
 func _on_robot_button_pressed():
 	var info_robot = infos_robot_scene.instance()
@@ -932,11 +935,11 @@ func _on_evolution_3_selected(text_3, id, cost_text_3):
 
 
 func _on_hide_tree_button_pressed():
-		for node in get_tree().get_nodes_in_group("tree") :
+		for node in get_tree().get_nodes_in_group("hideable") :
 			node.sprite.play("hidden")
 			
 func _on_show_tree_pressed():
-		for node in get_tree().get_nodes_in_group("tree") :
+		for node in get_tree().get_nodes_in_group("hideable") :
 			node.sprite.play("default")
 
 	

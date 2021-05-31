@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://Ground.tres" type="TileSet" id=1]
 [ext_resource path="res://Grass.tres" type="TileSet" id=2]
@@ -60,17 +60,23 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Color( 0.611765, 0.564706, 0.996078, 1 ), Color( 0.752941, 0.886275, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.807843, 0.756863, 1 ), Color( 1, 0.807843, 0.756863, 1 ), Color( 0.611765, 0.564706, 0.996078, 1 ), Color( 0.611765, 0.564706, 0.996078, 1 ) ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath("rainy_daylight:color")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 3, 8, 25, 30, 35, 39, 60 ),
+
+[sub_resource type="Animation" id=2]
+resource_name = "day_and_night_rain"
+length = 60.0
+loop = true
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("daylight:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 1, 3, 8, 25, 30, 35, 39, 60 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 0.611765, 0.564706, 0.996078, 1 ), Color( 0.45098, 0.627451, 0.780392, 1 ), Color( 0.52549, 0.686275, 0.866667, 1 ), Color( 0.553695, 0.646531, 0.908974, 1 ), Color( 0.643137, 0.588235, 0.87451, 1 ), Color( 0.637909, 0.584314, 0.894771, 1 ), Color( 0.611765, 0.564706, 0.996078, 1 ), Color( 0.611765, 0.564706, 0.996078, 1 ) ]
+"values": [ Color( 0.611765, 0.564706, 0.996078, 1 ), Color( 0.439216, 0.658824, 0.854902, 1 ), Color( 0.498039, 0.686275, 0.890196, 1 ), Color( 0.498039, 0.686275, 0.890196, 1 ), Color( 0.407843, 0.568627, 0.776471, 1 ), Color( 0.407843, 0.568627, 0.776471, 1 ), Color( 0.611765, 0.564706, 0.996078, 1 ), Color( 0.611765, 0.564706, 0.996078, 1 ) ]
 }
 
 [node name="game_start" type="Node2D"]
@@ -82,16 +88,13 @@ current = true
 smoothing_enabled = true
 script = ExtResource( 18 )
 
-[node name="rainy_daylight" type="CanvasModulate" parent="."]
-visible = false
-color = Color( 0.611765, 0.564706, 0.996078, 1 )
-
 [node name="daylight" type="CanvasModulate" parent="."]
-color = Color( 0.611765, 0.564706, 0.996078, 1 )
+color = Color( 0.407843, 0.568627, 0.776471, 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "day_and_night"
 anims/day_and_night = SubResource( 1 )
+anims/day_and_night_rain = SubResource( 2 )
 
 [node name="Water" type="TileMap" parent="."]
 tile_set = ExtResource( 22 )
@@ -525,11 +528,10 @@ __meta__ = {
 wait_time = 60.0
 autostart = true
 script = ExtResource( 40 )
-[connection signal="day_number" from="." to="CanvasLayer/day_counter" method="_on_Game_day_number"]
-[connection signal="number_of_fluffilus" from="." to="CanvasLayer/animal_counter" method="_on_game_start_number_of_fluffilus"]
+[connection signal="day_number" from="." to="CanvasLayer/day_counter" method="_on_game_start_day_number"]
 [connection signal="number_of_pearls" from="." to="CanvasLayer/entities_button/fluffisprout/number_of_fluffisprout" method="_on_game_start_number_of_pearls"]
-[connection signal="number_of_strength" from="." to="CanvasLayer/strength_counter" method="_on_Game_number_of_strength"]
-[connection signal="number_of_water" from="." to="CanvasLayer/water_counter" method="_on_Game_number_of_water"]
+[connection signal="number_of_strength" from="." to="CanvasLayer/strength_counter" method="_on_game_start_number_of_strength"]
+[connection signal="number_of_water" from="." to="CanvasLayer/water_counter" method="_on_game_start_number_of_water"]
 [connection signal="year" from="." to="CanvasLayer/year_counter" method="_on_game_start_year"]
 [connection signal="pressed" from="CanvasLayer/item_tree_button" to="." method="_on_item_tree_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/item_stock/item_stock_container/item_1" to="." method="_on_item_1_pressed"]

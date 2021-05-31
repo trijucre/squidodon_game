@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://popup/hunger_bubble.gd" type="Script" id=1]
+[ext_resource path="res://popup/sleep_bubble.gd" type="Script" id=1]
 [ext_resource path="res://popup/sleep.png" type="Texture" id=2]
 
 [node name="sleep_bubble" type="Node2D"]
@@ -8,8 +8,3 @@ script = ExtResource( 1 )
 
 [node name="sleep_bubble_sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 0.5
-autostart = true
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

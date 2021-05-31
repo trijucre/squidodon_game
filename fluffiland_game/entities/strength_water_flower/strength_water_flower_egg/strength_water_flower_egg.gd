@@ -5,7 +5,7 @@ var save_value = "Persist_child"
 
 onready var life_area = $life_space/life_area
 onready var area_radius = $Area2D/area.shape.radius
-onready var baby_scene = preload ("res://entities/fluffishroom/fluffishroom_baby/fluffishroom_baby.tscn")
+onready var baby_scene = preload ("res://entities/strength_water_flower/strength_water_flower_baby/strength_water_flower_baby.tscn")
 # Called when the node enters the scene tree for the first time.
 onready var enough_space = false
 var adulthood = 0
@@ -22,7 +22,7 @@ func _on_adulthood_timeout():
 	if enough_space == false :
 		enough_space = true
 		
-	if adulthood >= 120 :
+	if adulthood >= 320 :
 		var baby = baby_scene.instance()
 		get_tree().root.get_node("Game/game_start/YSort").add_child(baby)
 		baby.position = self.position
