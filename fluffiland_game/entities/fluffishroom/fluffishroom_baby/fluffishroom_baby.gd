@@ -24,7 +24,8 @@ var energy_max = 3
 var ressource_generation = 0
 
 onready var sprite = $AnimatedSprite
-onready var area_radius = $Area2D/area.shape.radius
+onready var life_area = $life_space/life_area
+onready var area_radius = life_area.shape.radius
 export(String) var random_noun
 export(String) var random_adjective
 var creature_name 
@@ -99,7 +100,8 @@ func _on_info_panel_pressed():
 	info_panel.energy_max = energy_max
 	info_panel.energy_text = str (energy, "/", energy_max)
 	info_panel.name_text = creature_name
-	info_panel.mood = float(happiness)/float(max_happiness)
+	info_panel.happiness = happiness
+	info_panel.max_happiness = max_happiness
 	info_panel.love_happiness = love_happiness
 	info_panel.pregnancy = false
 	info_panel.id = id

@@ -45,7 +45,7 @@ var creature_name
 var age = 1
 
 
-var bush_scene = preload("res://entities/tree_produced-fruit/tree_produced_fruit.tscn")
+var bush_scene = preload("res://food/tree_produced-fruit/tree_produced_fruit.tscn")
 onready var sprite = $Sprite
 
 var center_x = self.position.x - 125

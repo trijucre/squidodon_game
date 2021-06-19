@@ -3,7 +3,7 @@ extends Node2D
 signal robot_repaired
 signal strength_spend
 
-var reparation_cost = 30
+var reparation_cost = 0
 onready var text_cost = $cost/Label
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -3,9 +3,15 @@ extends StaticBody2D
 signal water_spend
 signal gender
 
-onready var area_radius = $Area2D/area.shape.radius
+onready var life_area = $life_space/life_area
+onready var area_radius = life_area.shape.radius
 
 var save_value = "Persist_child"
+
+var ray_directions = []
+export var look_ahead = 150
+export var num_rays = 12
+
 
 var bush_time =0
 var health_time =0
@@ -16,6 +22,7 @@ var energy_max = 0
 var health = 10
 var health_max = 10
 var specie = "tree"
+var hungry = false
 onready var used_position = Vector2(-30, -600)
 
 
@@ -35,7 +42,7 @@ var cost_text_3 = 0
 var gender
 var opposite_gender
 var happiness = 0
-var max_happiness = 100
+var max_happiness = 50
 var relative_happiness = float(happiness)/float(max_happiness)
 var love_happiness = 0.8
 var pregnant = false
@@ -83,8 +90,13 @@ func _ready():
 		tree_id = str(self.get_instance_id())
 	
 	add_to_group(tree_id)
-		
-	emit_signal("gender",self)
+
+	ray_directions.resize(num_rays)
+	
+	for i in num_rays:
+		var angle = i * 2 * PI / num_rays
+		ray_directions[i] = Vector2.RIGHT.rotated(angle)
+
 #generate name :
 
 func load_file(file_path):
@@ -115,12 +127,22 @@ func _on_Timer_timeout():
 	
 	if health_time >= 60 :
 		health -= 1
-
+		energy -= 1
+		happiness -= 1
 		
-		if 	get_tree().root.get_node("Game/game_start").water_count >= 5 :
+		if 	get_tree().root.get_node("Game/game_start").rain_falling == true :
+			happiness += 5
+			var happy_bubble = love_bubble.instance()
+			self.add_child(happy_bubble)
+			happy_bubble.position = used_position
+		
+		
+		if 	get_tree().root.get_node("Game/game_start").water_count >= 2 :
 			
-			emit_signal("water_spend", 5)
+			emit_signal("water_spend", 2)
 			health += 1
+			energy += 1
+			happiness += 1
 			if health > health_max :
 				health = health_max
 			
@@ -128,8 +150,7 @@ func _on_Timer_timeout():
 			self.add_child(used)
 			used.position = used_position
 		
-		else : 
-			happiness -= 1
+
 
 				
 		if health > float(health_max/6) :
@@ -158,7 +179,41 @@ func _on_Timer_timeout():
 		adult.position = self.position
 		self.queue_free()
 
+func _process(delta):
+		
+	if health <= 0 :
+		self.queue_free()
+	elif health > health_max :
+		health = health_max
+	
+	if energy == 0 and hungry == false:
+		hungry = true
+		
+	elif energy >= energy_max :
+		energy = energy_max
+		if hungry == true :
+			hungry = false
+	
+	if happiness > max_happiness :
+		happiness = max_happiness
 
+	find_food()
+
+func find_food() :
+	var space_state = get_world_2d().direct_space_state
+	
+	for i in num_rays:
+			
+			var result = space_state.intersect_ray(position, position + ray_directions[i].rotated(rotation) * look_ahead, [self])
+			
+			if result :
+				var target = result["collider"]
+				if target.is_in_group("fertilizer") and hungry == true and target.eatable == true  :
+					happiness += target.quality
+					health += target.quality
+					energy += target.quality
+					target.queue_free()
+					
 func _on_info_panel_pressed():
 
 	var info_panel_scene = preload ("res://GUI/info_panel/info_panel.tscn")
@@ -173,7 +228,8 @@ func _on_info_panel_pressed():
 	info_panel.energy_max = energy_max
 	info_panel.energy_text = str (energy, "/", energy_max)
 	info_panel.name_text = creature_name
-	info_panel.mood = relative_happiness
+	info_panel.happiness = happiness
+	info_panel.max_happiness = max_happiness
 	info_panel.love_happiness = love_happiness
 	info_panel.pregnancy = pregnant
 	info_panel.id = tree_id
@@ -208,7 +264,12 @@ func save():
 		"creature_name" : creature_name,
 		"tree_id" : tree_id,
 		"age" : age,
-		"adult_time" : adult_time
+		"adult_time" : adult_time,
+		"hungry" : hungry
 	}
 
 	return save
+
+func _draw():
+	for i in num_rays:
+		draw_line(Vector2(0,0), Vector2(0,0) + ray_directions[i] * look_ahead, Color(0, 255, 255), 3)

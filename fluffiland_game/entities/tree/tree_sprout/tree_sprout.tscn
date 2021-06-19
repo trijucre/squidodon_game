@@ -1,11 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://entities/tree/tree_sprout/tree_sprout.gd" type="Script" id=1]
 [ext_resource path="res://entities/tree/tree_sprout/tree_sprout_thirsty.png" type="Texture" id=2]
 [ext_resource path="res://entities/tree/tree_sprout/tree_sprout.png" type="Texture" id=3]
-
-[sub_resource type="CircleShape2D" id=1]
-radius = 150.0
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -31,13 +28,6 @@ collision_layer = 12
 collision_mask = 12
 script = ExtResource( 1 )
 
-[node name="Area2D" type="Area2D" parent="."]
-collision_layer = 12
-collision_mask = 12
-
-[node name="area" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 1 )
-
 [node name="Sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -58 )
 frames = SubResource( 2 )
@@ -59,6 +49,8 @@ __meta__ = {
 }
 
 [node name="life_space" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
 
 [node name="life_area" type="CollisionShape2D" parent="life_space"]
 shape = SubResource( 4 )

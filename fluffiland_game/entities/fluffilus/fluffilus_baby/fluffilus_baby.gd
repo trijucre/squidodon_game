@@ -11,14 +11,14 @@ signal gender
 
 var save_value = "Persist_child"
 
-var evolution_1 = ""
+var evolution_1 = "null"
 var evolution_1_text = ""
 var cost_text_1 = 0
-var evolution_2 = ""
+var evolution_2 = "null"
 var evolution_2_text = ""
 var cost_text_2 = 0
-var evolution_3 = ""
-var evolution_3_text = ""
+var evolution_3 = "null"
+var evolution_3_text = "null"
 var cost_text_3 = 0
 
 var produce_1 = "poop"
@@ -28,11 +28,11 @@ var eat_2 = null
 
 var other_animation_playing = false
 
-export var speed = 40
-export var run_speed = 40
+export var speed = 50
+export var run_speed = 50
 var max_speed = speed
 export var steer_force = 1
-export var look_ahead = 400
+export var look_ahead = 500
 export var num_rays = 12
 
 var rng = RandomNumberGenerator.new()
@@ -67,20 +67,23 @@ var creature_name
 var specie = "fluffilus"
 var gender 
 var opposite_gender
+var pregnant = false
 var size = 1
 var resistance = 0
-var health = 2
-var health_max = 2
-var energy = 3
-var energy_max = 3
+var health = 3
+var health_max = 3
+var energy = 4
+var energy_max = 4
 var attack_distance = 50
 var sleeping = false
 var id = str(self.get_instance_id())
 #hunger
+var hungry = false
 var hunger = 2
 var age = 1
 var robot_seen = false
 var memory_of_robot = 0
+var in_love = false
 
 #meat produced variable (produce meat whaen dying
 var meat_produced = false
@@ -90,10 +93,9 @@ var meat_produced = false
 var hurt = false
 var healed = 0
 # happiness
-var happiness = 50
-var max_happiness = 100
-var relative_happiness = float(happiness)/float(max_happiness)
-var love_happiness = 0.65
+var happiness = 0
+var max_happiness = 30
+var love_happiness = 0.8
 #attack variables
 var attack_cooldown_time = 200
 var next_attack_time = 0
@@ -108,28 +110,28 @@ var pet = false
 var pet_time = 0
 #variable childbirth
 
+
 #variables poop
 
 var food_eaten = false
-onready var poop_scene = preload("res://food/poop/medium_poop/poop.tscn")
+onready var poop_scene = load("res://food/poop/poop.tscn")
 var poop_time = 0
-#variable adulthood
-var adult_scene = load("res://entities/fluffilus/fluffilus_adult/fluffilus.tscn")
 
 #variable popup
-onready var love_bubble = preload("res://popup/love_bubble.tscn")
-onready var hunger_bubble = preload("res://popup/hunger_bubble.tscn")
-onready var happy_bubble = preload("res://popup/happy_bubble.tscn")
-onready var surprise_bubble = preload("res://popup/surprise_bubble.tscn")
-onready var sleep_bubble = preload("res://popup/sleep_bubble.tscn")
-onready var curious_bubble= preload("res://popup/curious_bubble.tscn")
-onready var popup_position = Vector2(0, -150)
+var love_bubble = preload("res://popup/love_bubble.tscn")
+var hunger_bubble = preload("res://popup/hunger_bubble.tscn")
+var happy_bubble = preload("res://popup/happy_bubble.tscn")
+var surprise_bubble = preload("res://popup/surprise_bubble.tscn")
+var sleep_bubble = preload("res://popup/sleep_bubble.tscn")
+var curious_bubble= preload("res://popup/curious_bubble.tscn")
+onready var popup_position = Vector2(0, -200)
 # var for bubble per second
-var alert = 0
+#var alert = 0
 var sleep_time = 0
 
 # when the aniaml goes to sleep, random, it's set in the _ready function
 var sleep_hour
+var wake_hour
 
 var directionX 
 var directionY 
@@ -141,37 +143,18 @@ var love_here = false
 var obstacle_here = false
 var danger_here = false
 var something_here = false
-var predator_here = false
-var friend_here = false
 var robot_here = false
 
 var food_found = false
 
-var creature_size_choose = randi()% 100 + 1
-var creature_size
-
-
 
 func _ready():
 
-	randomize()
-	#size of the creature
-	if creature_size == null :
-		if creature_size_choose < 23 :
-			creature_size = 0.9
 
-		elif creature_size_choose >= 76 :
-			creature_size = 1.2
-		
-		else :
-			creature_size = 1
-		
-	$CollisionShape2D.scale = Vector2(creature_size, creature_size)
-	$AnimatedSprite.scale = Vector2(creature_size, creature_size)
-	
 	#when creature goes to sleep
-	sleep_hour = 0.7 + (randf() * 0.2 + 0.05)
-	
+	sleep_hour = 25 + randi()% 10 + 1
+	wake_hour = 60 - (sleep_hour - 25)
+
 	#name of the creature
 	if creature_name == null :
 		random_noun = str(get_random_word_from_file("res://other/nounlist.txt"))
@@ -189,7 +172,6 @@ func _ready():
 
 	emit_signal("gender",self)
 	
-	add_to_group("baby", true)
 	add_to_group("animal", true)
 	add_to_group("creature", true)
 	add_to_group("prey", true)
@@ -197,6 +179,7 @@ func _ready():
 	add_to_group(id, true)
 	add_to_group ("Persist", true)
 	add_to_group("Persist_child", true)
+	add_to_group("baby", true)
 	
 	self.connect("fluffilus_birth", get_tree().root.get_node("Game/game_start"), "_on_fluffilus_fluffilus_birth")
 	self.connect("fluffilus_death", get_tree().root.get_node("Game/game_start"), "_on_fluffilus_fluffilus_death")
@@ -210,7 +193,6 @@ func _ready():
 	
 	
 	
-	rng.randomize()
 	rng.randomize()
 	rngx.randomize()
 	rngy.randomize()
@@ -258,7 +240,7 @@ func animates_animal() :
 	
 	if chosen_dir.x > 0 :
 		if sprite_direction == "left" and change_direction_counter >= 20 :
-			$AnimatedSprite.scale.x = -creature_size
+			$AnimatedSprite.scale.x = -1
 			sprite_direction = "right"
 			change_direction_counter = 0
 		else :
@@ -266,7 +248,7 @@ func animates_animal() :
 			
 	if chosen_dir.x <= 0 :
 		if sprite_direction == "right" and change_direction_counter >= 20 :
-			$AnimatedSprite.scale.x = creature_size
+			$AnimatedSprite.scale.x = 1
 			sprite_direction = "left"
 			change_direction_counter = 0
 		else : 
@@ -285,6 +267,7 @@ func animates_animal() :
 	
 
 func _physics_process(delta):
+
 	
 	if 1 in danger :
 		danger_here = true
@@ -315,18 +298,26 @@ func _physics_process(delta):
 	#set collision
 	collision = move_and_collide(movement)
 	
-	var sleep = get_tree().root.get_node("Game/game_start/daylight").get_color().r
-	
+	var sleep = get_tree().root.get_node("Game/game_start/end_of_day").get_time_left()
 
-	if sleep < sleep_hour  and hurt == false :
+	if sleep < sleep_hour or sleep > wake_hour  and hurt == false :
 		set_sleep()
-		sleeping = true
+		if sleeping == false :
+			var sleep_popup = sleep_bubble.instance()
+			self.add_child(sleep_popup)
+			sleep_popup.position = popup_position
+			sleeping = true
+
 		
 	elif not other_animation_playing :
 		animates_animal()
 		set_interest()
 		choose_direction()
-		sleeping = false
+		if sleeping == true :
+			for node in get_children() :
+				if node.is_in_group("sleep_popup") :
+					node.queue_free()
+			sleeping = false
 	
 	else :
 		movement = 0
@@ -350,18 +341,19 @@ func set_interest():
 				var target = result["collider"]
 				var distance = relative_position.length()
 
+						
 				if target.is_in_group("predator") and target.size >= self.size :
-					
-					if predator_here == false :
+				
+					if danger_here == false :
 						var surprise_popup = surprise_bubble.instance()
 						self.add_child(surprise_popup)
 						surprise_popup.position = popup_position
 						
 
 					danger[i] = 10 + 2 * ((look_ahead+100 - distance)/(look_ahead+100))
+						
 
-
-				elif energy <= hunger and target.is_in_group("bush") and not danger_here and not love_here :
+				elif energy <= hunger and target.is_in_group("herb") and not danger_here and not love_here and target.eatable == true  :
 						
 					interest[i] = 0.1 + (randi()*1.0 + 0.1 + 2.0) * ((look_ahead+100 - distance)/(look_ahead+100))
 					something_interresting[i] = 1.0
@@ -369,7 +361,7 @@ func set_interest():
 						eat(target)
 						something_interresting[i] = 0.0
 				
-				elif target.is_in_group("robot") and pet == false and not predator_here and not love_here and not something_here and robot_seen == false :
+				elif target.is_in_group("robot") and pet == false and not danger_here and not love_here and not something_here and robot_seen == false :
 					robot_seen = true
 					if self.get_global_position().distance_to(target.get_global_position()) <= look_ahead/2 :
 						interest[i] = 0.1 + (randi()*1.0 + 0.1 + 2.0) * ((look_ahead+100 - distance)/(look_ahead+100))
@@ -402,7 +394,7 @@ func set_interest():
 	if collision != null :
 		set_default_interest()
 		
-	if not something_here and not love_here and not predator_here and not robot_here:
+	if not something_here and not love_here and not danger_here and not robot_here:
 		
 		set_default_interest()
 		
@@ -470,6 +462,7 @@ func set_default_interest():
 		
 			
 func set_sleep():
+
 	movement = 0
 	other_animation_playing = true
 	var animation = "side_sleep"
@@ -568,7 +561,6 @@ func produce_meat() :
 		meat.position.y = self.position.y + rng.randf_range(0, spawn_area.size.y)
 
 
-
 func poop() :
 	var poop = poop_scene.instance()
 	get_tree().root.get_node("Game/game_start/YSort").add_child(poop)
@@ -607,44 +599,29 @@ func _on_energyandlife_timeout():
 			poop()
 			poop_time = 0
 			food_eaten = false
+		
 
-	#happiness per second :
-
-	
-	elif energy < hunger :
-		happiness += 0
 	
 	if happiness >= max_happiness :
 		happiness = max_happiness
-		
-	relative_happiness = float(happiness)/float(max_happiness)
-	emit_signal("ai_stats_changed", self)
 	
-		#var alert for surprise
-	if alert < 4 :
-		alert += 1
-	
-	
-	if energy <= 0 and alert >= 4:
+
+	if energy <= 0 and hungry == false :
+		hungry = true
 		var hunger_popup = hunger_bubble.instance()
 		self.add_child(hunger_popup)
 		hunger_popup.position = popup_position
-		
-		alert = 0
-		
-		#var for sleep
-	if sleep_time < 2 :
-		sleep_time += 1
-	
-	if sleeping == true and sleep_time >= 2 :
-		var sleep_popup = sleep_bubble.instance()
-		self.add_child(sleep_popup)
-		sleep_popup.position = popup_position
-		
-		sleep_time = 0
+
+				
+	elif energy >= 1 and hungry == true :
+		for node in get_children() :
+			if node.is_in_group("hunger_popup") :
+				node.queue_free()
+		if 	 energy >= energy_max :
+				hungry = false
 		
 	if hurt == true and healed < 10 :
-		happiness -= 5
+		happiness -= 1
 		healed += 1
 	
 	if hurt == true and healed >= 10 :
@@ -670,25 +647,10 @@ func _on_energyandlife_timeout():
 		
 		if energy > 0 :
 			energy -= 1
-			happiness -= 1
 		else : 
 			health -= 1
-	
-	if age > 15 :
-		adulthood()
+			happiness -= 1
 
-func adulthood():
-	var adult = adult_scene.instance()
-	adult.happiness = happiness
-	adult.gender = gender
-	adult.creature_name = creature_name
-	adult.age = age
-	adult.pet_time = pet_time
-	adult.robot_seen = robot_seen
-	
-	get_tree().root.get_node("Game/game_start/Ysort").add_child(adult)
-	self.queue_free()
-	
 func _on_info_button_pressed():
 	var info_panel_scene = preload ("res://GUI/info_panel/info_panel.tscn")
 	var info_panel = info_panel_scene.instance()
@@ -702,7 +664,8 @@ func _on_info_button_pressed():
 	info_panel.energy_max = energy_max
 	info_panel.energy_text = str (energy, "/", energy_max)
 	info_panel.name_text = creature_name
-	info_panel.mood = relative_happiness
+	info_panel.happiness = happiness
+	info_panel.max_happiness = max_happiness
 	info_panel.love_happiness = love_happiness
 	info_panel.pregnancy = false
 	info_panel.id = id
@@ -731,29 +694,33 @@ func save():
 		"pos_y" : get_position(),
 		"save_value" : save_value,
 		"gender" : gender,
+		"opposite_gender" : opposite_gender,
 		"health" : health,
 		"energy" : energy,
 		"creature_name" : creature_name,
-		"creature_size" : creature_size,
 		"healed" : healed,
 		"poop_time" : poop_time,
-		"alert" : alert,
 		"sleep_time" : sleep_time,
 		"food_eaten" :  food_eaten,
 		"attack_cooldown_time" : attack_cooldown_time,
 		"happiness" : happiness,
 		"sleep_hour" : sleep_hour,
+		"wake_hour" : wake_hour,
 		"age" : age,
 		"pet" : pet,
 		"pet_time" : pet_time,
 		"robot_seen" : robot_seen,
-		"memory_of_robot" : memory_of_robot
+		"memory_of_robot" : memory_of_robot,
+		"hungry" : hungry,
+		"sleeping" : sleeping,
+		"in_love" : in_love
+
 	}
 	return save
 	
 #func _draw():
-	#for in num_rays:
-		#draw_line(Vector2(0,0), Vector2(0,0) + ray_directions[i] * look_ahead, Color(255, 255, 0), 5)
-	#	draw_line(Vector2(0,0), Vector2(0,0) + ray_directions[i]  * look_ahead * interest[i], Color(255, 0, 0), 5)
-		#draw_line(Vector2(0,0), Vector2(0,0) + chosen_dir * look_ahead, Color(0, 255, 0), 5)
+#	for i in num_rays:
+#		draw_line(Vector2(0,0), Vector2(0,0) + ray_directions[i] * look_ahead, Color(255, 255, 0), 5)
+#		draw_line(Vector2(0,0), Vector2(0,0) + ray_directions[i]  * look_ahead * interest[i], Color(255, 0, 0), 5)
+#		draw_line(Vector2(0,0), Vector2(0,0) + chosen_dir * look_ahead, Color(0, 255, 0), 5)
 		

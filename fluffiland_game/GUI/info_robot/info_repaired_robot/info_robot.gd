@@ -47,9 +47,9 @@ onready var number_of_items = $number_of_poop
 var cost_1 = 75
 var cost_2 = 30
 var cost_3 = 15
-var cost_4 = 10
-var cost_5 = 15
-var cost_6 = 30
+var cost_4 = 0
+var cost_5 = 0
+var cost_6 = 0
 var cost_7 = 75
 
 var poop_number = 0
@@ -207,7 +207,7 @@ func _on_make_fertilizer_pressed():
 
 	if container == "poop" :
 		
-		fertilizer_quality = poop_quality / 5
+		fertilizer_quality = poop_quality * 2
 		if fertilizer_quality < 1 :
 			fertilizer_quality = 1
 		container = "fertilizer"	

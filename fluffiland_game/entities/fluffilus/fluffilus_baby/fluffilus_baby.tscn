@@ -16,12 +16,12 @@ animations = [ {
 }, {
 "frames": [ ExtResource( 1 ) ],
 "loop": true,
-"name": "side_hurt",
+"name": "side_default",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 1 ) ],
 "loop": true,
-"name": "side_default",
+"name": "side_attack",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 1 ) ],
@@ -31,7 +31,7 @@ animations = [ {
 }, {
 "frames": [ ExtResource( 1 ) ],
 "loop": true,
-"name": "side_attack",
+"name": "side_hurt",
 "speed": 5.0
 } ]
 

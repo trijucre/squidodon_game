@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://GUI/fluffi_button/fluffi_button_sprite.png" type="Texture" id=1]
+[ext_resource path="res://GUI/fluffi_button/fluffi_button_sprite_empty.png" type="Texture" id=2]
+[ext_resource path="res://GUI/fluffi_button/fluffi_button.gd" type="Script" id=3]
+[ext_resource path="res://GUI/info_panel/info_panel_base_logomale.png" type="Texture" id=4]
+
+[node name="fluffi_container" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 26, 48 )
+texture = ExtResource( 4 )
+
+[node name="fluffi_sprite" type="TextureButton" parent="."]
+texture_normal = ExtResource( 1 )
+texture_disabled = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="fluffi_sprite" to="." method="_on_fluffi_sprite_pressed"]

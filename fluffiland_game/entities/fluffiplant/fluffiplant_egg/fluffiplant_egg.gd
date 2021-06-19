@@ -4,7 +4,7 @@ extends StaticBody2D
 var save_value = "Persist_child"
 
 onready var life_area = $life_space/life_area
-onready var area_radius = $Area2D/area.shape.radius
+onready var area_radius = life_area.shape.radius
 onready var baby_scene = preload ("res://entities/fluffiplant/fluffiplant_baby/fluffiplant_baby.tscn")
 # Called when the node enters the scene tree for the first time.
 onready var enough_space = false

@@ -15,7 +15,7 @@ var evolution_3_text = "mushroom_path"
 var cost_text_3 = 2
 
 
-var gender = "neutral"
+var gender
 var health = 3
 var health_max = 3
 
@@ -23,12 +23,13 @@ var energy = 3
 var energy_max = 3
 
 onready var sprite = $sprite
-onready var area_radius = $Area2D/area.shape.radius
+onready var life_area = $life_space/life_area
+onready var area_radius = life_area.shape.radius
 export(String) var random_noun
 export(String) var random_adjective
 var creature_name 
-var happiness = 500
-var max_happiness = 1000
+var happiness = 0
+var max_happiness = 10
 var relative_happiness = float(happiness)/float(max_happiness)
 var love_happiness = 0.8
 var time = 0
@@ -61,7 +62,7 @@ func get_random_word_from_file(file_path):
 	
 
 func _ready():
-	
+	print ("fluffi gender  ", gender)
 	add_to_group(specie, true)
 	add_to_group ("Persist", true)
 	add_to_group ("creature", true)
@@ -73,34 +74,19 @@ func _ready():
 		random_noun = str(get_random_word_from_file("res://other/nounlist.txt"))
 		random_adjective = str(get_random_word_from_file("res://other/adjectiveslist.txt"))
 		creature_name = str(random_adjective," ", random_noun)
-	
-	sleep_hour = 0.7 + (randf() * 0.2 + 0.05)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-func _process(_delta):
-	
-	var sleep = get_tree().root.get_node("Game/game_start/daylight").get_color().r
-	
-
-	if sleep < sleep_hour :
-		set_sleep()
-		sleeping = true
 	
 func set_sleep():
 
 	var animation = "side_sleep"
 	sprite.play(animation)
 
-
 func _on_info_panel_pressed():
 	var info_panel_scene = preload ("res://GUI/info_panel/info_panel.tscn")
 	var info_panel = info_panel_scene.instance()
 	
 	info_panel.specie_text = specie
-	info_panel.gender_text = ""
+	info_panel.gender_text =  gender
 	info_panel.pv_text = str (health, "/", health_max)
 	info_panel.pv = health
 	info_panel.pv_max = health_max
@@ -108,7 +94,8 @@ func _on_info_panel_pressed():
 	info_panel.energy_max = energy_max
 	info_panel.energy_text = str (energy, "/", energy_max)
 	info_panel.name_text = creature_name
-	info_panel.mood = relative_happiness
+	info_panel.happiness = happiness
+	info_panel.max_happiness = max_happiness
 	info_panel.love_happiness = 50
 	info_panel.pregnancy = false
 	info_panel.id = id
@@ -135,6 +122,7 @@ func save():
 		"save_value" : save_value,
 		"creature_name" : creature_name,
 		"sleep_hour" : sleep_hour,
+		"gender" : gender,
 		"time" : time,
 		"age" : age
 	}

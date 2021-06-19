@@ -4,8 +4,8 @@ var fixed_toggle_point = Vector2(0,0)
 
 
 func _ready():
-	self.zoom.x += 1
-	self.zoom.y += 1
+	self.zoom.x += 0
+	self.zoom.y += 0
 func _physics_process(_delta):
 
 	# This happens once 'move_map' is pressed

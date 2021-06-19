@@ -65,10 +65,10 @@ func load_game():
 	
 
 	var save_nodes = get_tree().get_nodes_in_group("Persist_parent")
-	
 	for i in save_nodes:
 		i.queue_free()
-		
+				
+				
 	while save_game.get_position() < save_game.get_len():
 		var node_data = save_game.get_var(true)
 
@@ -87,7 +87,9 @@ func load_game():
 			new_object.position = Vector2(node_data["pos_x"], node_data["pos_y"])
 		#else :
 		#	new_object.queue_free()
-	
+			var delete_fluffi = get_tree().get_nodes_in_group("Persist_fluffi_button")
+			for i in delete_fluffi :
+				i.queue_free()
 	
 		elif new_object.save_value == "Persist_child" :
 	
@@ -100,20 +102,45 @@ func load_game():
 				#new_object.set_name()
 			new_object.position = Vector2(node_data["position"])
 		
-		
-		elif new_object.save_value == "Persist_clock" :
-			var delete_clock = get_tree().get_nodes_in_group("Persist_clock")
-			for i in delete_clock :
-				i.queue_free()
-				
+		elif new_object.save_value == "Persist_child_robot" :
+	
 			for i in node_data :
 				if i == "filename" or i == "parent" or i == "position" :#or i == "name" :
 					continue
 				new_object.set(i, node_data[i])
-				print ("clock data : ", i, node_data[i])
-			get_tree().root.get_node("Game/game_start/CanvasLayer/clock_node").add_child(new_object, true)
+				
+			get_tree().root.get_node("Game/game_start/YSort/robot/container").add_child(new_object, true)
 				#new_object.set_name()
 			new_object.position = Vector2(node_data["position"])
+
+		elif new_object.save_value == "Persist_fluffi_button" :			
+
+			for i in node_data :
+				if i == "filename" or i == "parent" or i == "position" :#or i == "name" :
+					continue
+				new_object.set(i, node_data[i])
+			
+			get_tree().root.get_node("Game/game_start/CanvasLayer/fluffi_node").add_child(new_object, true)
+				#new_object.set_name()
+			new_object.position = Vector2(node_data["position"])
+			print ("fluffi_button_load")
+		
+		
+		elif new_object.save_value == "Persist_clock" :
+
+			var delete_clock = get_tree().get_nodes_in_group("Persist_clock")
+			for i in delete_clock :
+				i.queue_free()
+
+			for i in node_data :
+				if i == "filename" or i == "parent" or i == "pos_y" :#or i == "name" :
+					continue
+				new_object.set(i, node_data[i])
+			
+			get_tree().root.get_node("Game/game_start/CanvasLayer/clock_node").add_child(new_object, true)
+				#new_object.set_name()
+			new_object.position = Vector2(node_data["pos_y"])
+	
 		
 		else : 
 			new_object.queue_free()

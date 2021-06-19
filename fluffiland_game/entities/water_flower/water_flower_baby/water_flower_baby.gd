@@ -24,7 +24,9 @@ var energy_max = 3
 var ressource_generation = 0
 
 onready var sprite = $AnimatedSprite
-onready var area_radius = $Area2D/area.shape.radius
+onready var life_area = $life_space/life_area
+onready var area_radius = life_area.shape.radius
+
 export(String) var random_noun
 export(String) var random_adjective
 var creature_name 

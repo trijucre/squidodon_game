@@ -44,7 +44,7 @@ export(String) var random_adjective
 var creature_name 
 
 
-var bush_scene = preload("res://entities/tree_produced-clover/tree_produced_clover.tscn")
+onready var bush_scene = preload("res://food/tree_produced-clover/tree_produced_clover.tscn")
 onready var sprite = $Sprite
 
 var center_x = self.position.x - 125

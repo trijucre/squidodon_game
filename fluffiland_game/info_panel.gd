@@ -2,15 +2,18 @@ extends Node2D
 
 
 onready var info_name = $info_panel_text/name
+onready var info_pregnant = $info_panel_text/pregnant
 onready var info_specie = $info_panel_text/specie
 onready var info_mood = $mood/mood_indicator
 onready var gender = $gender
 onready var pregnant = $pregnant
-onready var animal_picture = $animal_picture
 onready var health_bar = $health_bar
 onready var energy_bar = $energy_bar
 onready var energy_bar_back = $energy_bar_back
 onready var health_bar_back = $health_bar_back
+onready var happiness_bar = $happiness_bar
+onready var happiness_bar_back = $happiness_bar_back
+onready var love_happiness_bar = $love_happiness_bar
 onready var info_love_happiness = $mood/love_happiness
 onready var age_text = $info_panel_text/age
 onready var id
@@ -47,7 +50,8 @@ var energy_text
 var energy
 var energy_max
 var gender_text 
-var mood
+var happiness
+var max_happiness
 var love_happiness
 var pregnancy
 var age
@@ -65,44 +69,30 @@ onready var pregnant_logo = load ("res://GUI/info_panel/pregnant_logo.png")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
+	print ("info panel" ,gender, " ,", pregnancy)
 	for node in get_tree().get_nodes_in_group("info_panel") :
 		node.queue_free()
 		
 	add_to_group("info_panel")
 	
-	self.position = Vector2(1635, 325)
-	info_name.text = str(name_text)
-	info_specie.text = str(specie_text)
+	self.position = Vector2(960, 600)
+	
+	info_name.text = "hi :) My name is " + str(name_text) + ", I'm a  [b]" + str(specie_text ) + "[/b] ,\nmy gender is " +str(gender_text) +" and I'm "+ str(age) + " year old !"
+	
+	if gender_text == "female" :
+		if pregnancy == false :
+			info_pregnant.text = "I'm not waiting for a child ."
+		else :
+			info_pregnant.text = "I'm waiting for a child ^ _ ^"
+	
+	if eat_1 == null :
+		age_text.text =	"I don't need to eat anything :)"
+	
+	elif eat_2 == null :
+		age_text.text = "I like to eat " + str(eat_1) 
+	else :
+		age_text.text = "I like to eat " + str(eat_1) +" and " + str(eat_2)
 
-	info_mood.position.y = (200 -float(200 * mood))
-	info_love_happiness.position.y = (200 -float(200 * love_happiness))
-	
-	if gender_text  == "female" :
-		gender.set_texture(female_logo)
-	
-	elif gender_text == "male" :
-		gender.set_texture(male_logo)
-	
-	elif gender_text == "neutral" :
-		gender.set_texture(null)
-	
-	if pregnancy == true :
-		pregnant.set_texture(pregnant_logo)
-		
-	if produce_1 != null :
-		var produce_1_logo = load("res://GUI/info_panel/eat_and_produce_graphic/eat_produce_"+ produce_1 + ".png")
-		produce_1_sprite.set_texture(produce_1_logo)
-	if produce_2 != null :
-		var produce_2_logo = load("res://GUI/info_panel/eat_and_produce_graphic/eat_produce_" + produce_2 + ".png")
-		produce_2_sprite.set_texture(produce_2_logo)
-	if eat_1 != null :
-		var eat_1_logo = load("res://GUI/info_panel/eat_and_produce_graphic/eat_produce_"+ eat_1 + ".png")
-		eat_1_sprite.set_texture(eat_1_logo)
-	if eat_2 != null :
-		var eat_2_logo = load("res://GUI/info_panel/eat_and_produce_graphic/eat_produce_"+ eat_2 + ".png")
-		eat_2_sprite.set_texture(eat_2_logo)
-	#set helth and energy texture depending of stats
 	
 	health_bar.rect_size.x = 10 * (float (pv))
 	energy_bar.rect_size.x = 10 * (float (energy))
@@ -110,16 +100,14 @@ func _ready():
 	health_bar_back.rect_size.x = 10 * (float(pv_max))
 	energy_bar_back.rect_size.x = 10 * (float(energy_max))
 	
-	if age >= 200 :
-		age_text.text = str("Age : "+ str(age/ 100) + " years and " + str((age - (age/100) * 100)) + " days")
-	elif age >= 100 :
-		age_text.text = str("Age : "+ str(age/ 100) + " year and " + str((age - (age/100) * 100)) + " days")
-	elif age >1 :
-		age_text.text = str("Age : "+ str(age) + " days")
-	else :
-		age_text.text = str("Age : "+ str(age) + " day")
-		
+	happiness_bar.rect_size.x = 5 * (float(happiness))
+	happiness_bar_back.rect_size.x = 5 * (float(max_happiness))
+	love_happiness_bar.rect_size.x = 5 * (float(max_happiness) * float(love_happiness))
+
+	get_tree().paused = true
 func _on_close_button_pressed():
+	
+	get_tree().paused = false
 	self.queue_free()
 
 
@@ -136,7 +124,7 @@ func _on_evolution_button_pressed():
 	evolution_panel.cost_text_2 = cost_text_2
 	evolution_panel.cost_text_3 = cost_text_3
 		
-	$evolution_spot.add_child(evolution_panel)
-	evolution_panel.position = Vector2 (- 750, - 200 )
+	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(evolution_panel)
+	evolution_panel.position = self.position
 	
 	#evolution_panel.position.y = self.position.y 

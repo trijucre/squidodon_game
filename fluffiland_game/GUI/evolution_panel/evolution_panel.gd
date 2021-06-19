@@ -31,6 +31,11 @@ onready var cost_text_3
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	for node in get_tree().get_nodes_in_group("info_panel") :
+		node.queue_free()
+		
+	add_to_group("info_panel")
+	
 	if evolution_1 == "null" :
 		$text/button/buy_1.set_disabled(true)
 	
@@ -54,22 +59,21 @@ func _ready():
 
 
 func _on_TextureButton_pressed():
+	get_tree().paused = false
 	self.queue_free()
 
 
 func _on_buy_1_pressed():
-	
-	print ("buy1 pressed")
+	get_tree().paused = false
 	emit_signal("evolution_1_selected", evolution_1, id, cost_text_1)
-
+	self.queue_free()
 
 func _on_buy_2_pressed():
-	
-	print ("buy2 pressed")
+	get_tree().paused = false	
 	emit_signal("evolution_2_selected", evolution_2, id, cost_text_2)
-
+	self.queue_free()
 
 func _on_buy_3_pressed():
-	
-	print ("buy3 pressed")
+	get_tree().paused = false	
 	emit_signal("evolution_3_selected", evolution_3, id, cost_text_3)
+	self.queue_free()

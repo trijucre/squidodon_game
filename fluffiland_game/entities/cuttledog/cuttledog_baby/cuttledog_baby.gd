@@ -111,7 +111,7 @@ var pet_time = 0
 #variables poop
 
 var food_eaten = false
-onready var poop_scene = preload("res://food/poop/medium_poop/poop.tscn")
+onready var poop_scene = preload("res://food/poop/poop.tscn")
 var poop_time = 0
 #variable adulthood
 var adult_scene = load("res://entities/cuttledog/cuttledog_adult/cuttledog.tscn")

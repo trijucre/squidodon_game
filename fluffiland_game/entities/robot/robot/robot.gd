@@ -1,12 +1,7 @@
 extends KinematicBody2D
 
-#signal water_earned
-#signal strength_earned
-signal water_spend
-signal strength_spend
-signal object_recolted
-#signal refill
-
+signal water_earned
+signal strength_earned
 
 signal stat_changed
 
@@ -24,14 +19,18 @@ var resistance = 20
 var attack_damage = 30
 var save_value = "Persist_child"
 onready var sprite = $sprite
-onready var container_node = $container
+onready var container_sprite_front = $bag_front
+onready var container_sprite_back = $bag_back
+onready var bag = $bag
+onready var container_node = $bag/container
 onready var energy_bar = $CanvasLayer/energy_bar
+
+var sprite_right = true
 
 onready var refill_scene = preload("res://popup/produced_spent_indicator/strength_earned_particle.tscn")
 
-var bush = preload("res://entities/tree_produced_bush/tree_produced_bush.tscn")
-var clover = preload("res://entities/tree_produced-clover/tree_produced_clover.tscn")
-var fruit = preload ("res://entities/tree_produced-fruit/tree_produced_fruit.tscn")
+#var poop = preload ("res://food/poop/poop.tscn")
+var fertilizer = preload ("res://food/fertilizer/fertilizer.tscn")
 
 var option_1_bought = false
 var option_2_bought = false
@@ -42,20 +41,21 @@ var option_6_bought = false
 var option_7_bought = false
 
 var container
+
 var container_id
-var fertilizer_quality
 
 var popup_scene = preload ("res://popup/popup_robot/popup_robot.tscn")
 var popup_position = Vector2 (0, - 150)
+var object_position = Vector2 (0, 0)
+
 func _ready():
 	
 	add_to_group("robot", true)
 	add_to_group ("Persist", true)
 	add_to_group("Persist_child", true)
-
-	self.connect("object_recolted", get_tree().root.get_node("Game/game_start"), "_on_object_recolted")
-	self.connect("water_spend",get_tree().root.get_node("Game/game_start"), "_on_water_spend")
-	self.connect("strength_spend",get_tree().root.get_node("Game/game_start"), "_on_strength_spend")
+	
+	self.connect("water_earned",get_tree().root.get_node("Game/game_start"), "_on_water_earned")
+	self.connect("strength_earned",get_tree().root.get_node("Game/game_start"), "_on_strength_earned")
 	
 	#self.connect("stat_changed", get_tree().root.get_node("Game/game_start/CanvasLayer/robot_life_and_energy"), "_on_stats_changed")
 
@@ -64,8 +64,7 @@ func _ready():
 
 	
 func _physics_process(delta):
-	
-	randomize()
+
 	# Get player input
 	var direction: Vector2
 	direction.x = Input.get_action_strength("right") - Input.get_action_strength("left")
@@ -87,27 +86,25 @@ func _physics_process(delta):
 	
 	$RayCast2D.cast_to = last_direction.normalized() * 100
 	
-	
-func get_animation_direction(direction: Vector2):
-	var norm_direction = direction.normalized()
-	if norm_direction.y >= 0.707:
-		return "down"
-	elif norm_direction.y <= -0.707:
-		return "up"
-	elif norm_direction.x <= -0.707:
-		return "right"
-	elif norm_direction.x >= 0.707:
-		return "right"
-	return "down"
-	
+
 	
 func animates_player(direction: Vector2):
 	
-	if Input.is_action_pressed("left"):
+	if Input.is_action_pressed("left") and sprite_right == true :
 		sprite.scale.x = -1
+		#container_sprite_back.scale.x = -1
+		#container_sprite_front.scale.x = -1
+		bag.scale.x = -1
+		bag.position.x = 16 
+		sprite_right = false
 		
-	if Input.is_action_pressed("right"):
+	if Input.is_action_pressed("right") and sprite_right == false :
 		sprite.scale.x = 1
+		#container_sprite_back.scale.x = 1
+		#container_sprite_front.scale.x = 1
+		bag.scale.x = 1
+		bag.position.x = - 16
+		sprite_right = true
 	
 	if direction != Vector2.ZERO:
 		# update last_direction
@@ -137,11 +134,10 @@ func _input(event):
 		
 		var target = $RayCast2D.get_collider()
 		if target != null :
-
-			if target.is_in_group("animal") and option_6_bought == true and energy > 0 and target.pet == false :
-				print ("robot detected an animal")
+			print ("target, robot")
+			if target.is_in_group("animal")  and energy > 0 and target.pet == false :
 				if target.happiness < target.max_happiness :
-					target.happiness += 10
+					target.happiness += 5
 					var happy_popup = target.love_bubble.instance()
 					target.add_child(happy_popup)
 					happy_popup.position = target.popup_position
@@ -152,6 +148,13 @@ func _input(event):
 					var popup = popup_scene.instance()
 					self.add_child(popup)
 					popup.position = popup_position
+					
+			if target.is_in_group("meteor") :
+				print("meteor found, robot")
+				energy += target.fuel
+				emit_signal("strength_earned", target.strength)
+				emit_signal("water_earned", target.water)
+				target.queue_free()
 			
 			if target.is_in_group("parasite") and energy > 0 :
 				target.health -= attack_damage
@@ -163,53 +166,68 @@ func _input(event):
 				self.add_child(popup)
 				popup.position = popup_position
 				
-			if target.is_in_group("poop") and (container == null or container == "poop") and option_5_bought == true  :
-				target.queue_free()
-				self.energy -= 1
-				emit_signal("object_recolted","poop", target.quality, 1)
-				container = "poop"	
-								
-			if target.is_in_group("bush") and container == null and option_4_bought == true and energy > 0 :
 
+			if target.is_in_group("poop") and container == null :
+				print ("poop found by robot")
+				container = target.specie
+				var tree_produced_object = load("res://food/" + str(container) + "/" +  str(container) + ".tscn")
+				target.queue_free()
+				var object_container = tree_produced_object.instance()
+				object_container.position = object_position
+				object_container.in_box = true
+				object_container.save_value == "Persist_child_robot"
+				container_node.add_child(object_container)
+
+
+
+			if target.is_in_group("fertilizer") and container == null  :
+				container = target.specie
+				var tree_produced_object = load("res://food/" + str(container) + "/" +  str(container) + ".tscn")
+				target.queue_free()
+				var object_container = tree_produced_object.instance()
+				object_container.position = object_position
+				object_container.in_box = true
+				object_container.save_value == "Persist_child_robot"
+				container_node.add_child(object_container)
+								
+
+			if target.is_in_group("produced") and container == null  :
+				
 				container = target.specie
 				container_id = target.id
+				var tree_produced_object = load("res://food/" + str(container) + "/" +  str(container) + ".tscn")
 				target.queue_free()
-				var bush_container = bush.instance()
-				self.energy -= 1
-				bush_container.id = container_id
-				bush_container.position = Vector2(0, -100)
-
-				container_node.add_child(bush_container)
+				var object_container = tree_produced_object.instance()
+				object_container.id = container_id
+				object_container.position = object_position
+				object_container.in_box = true
+				object_container.save_value == "Persist_child_robot"
+				container_node.add_child(object_container)
 			
 				emit_signal("stat_changed", energy)	
 				emit_signal("object_recolted", container, 1, 1)
 
-		
-			if target.is_in_group("tree") and container == "fertilizer" :
-				target.happiness += fertilizer_quality
-				target.health += fertilizer_quality
-				#target.energy += fertilizer_quality
-					
-				var popup = popup_scene.instance()
-				popup.sprite_text = "fertilizer"
-				self.add_child(popup)
-				popup.position = popup_position
-				container = null
-				emit_signal("object_recolted", container, 0, 0)
 
 		else :
 
-			if container != null :
-
-				if container == "bush" :
-					get_node("container/tree_produced_bush").queue_free()
-
-					var bush_container = bush.instance()
-					bush_container.id = container_id
-					get_tree().root.get_node("Game//game_start/YSort").add_child(bush_container)
-					bush_container.position = self.position+ last_direction.normalized() * 75
-					container = null
-					emit_signal("object_recolted", container, 0, 0)
+			if container != null and energy >= 1 :
+				
+				for node in get_node("bag/container").get_children() :
+					node.queue_free()
+				var tree_produced_object = load("res://food/" + str(container) + "/" +  str(container) + ".tscn")
+				print ("robo object instanced  " ,tree_produced_object)
+				var object_container = tree_produced_object.instance()
+				if container_id != null :
+					object_container.id = container_id
+				get_tree().root.get_node("Game//game_start/YSort").add_child(object_container)
+		
+				object_container.position = self.position+ last_direction.normalized() * 75
+				energy -= 1
+				emit_signal("stat_changed", energy)
+				container = null
+				container_id = null
+				emit_signal("object_recolted", container, 0, 0)
+				
 					
 				
 	#	if (energy >= 2 and !attack_playing ) :
@@ -226,13 +244,20 @@ func _input(event):
 	#			target.hit(attack_damage)
 
 
-func _on_fertilizer_created(quality):
+
+
+func _on_make_fertilizer_pressed():
+
 	for node in container_node.get_children() :
-		container_node.remove_child(node)
-	self.energy -= 1
-	emit_signal("stat_changed", energy)	
-	container = "fertilizer"
-	fertilizer_quality = quality
+		if node.is_in_group("poop") and energy >= 1 :
+			container_node.remove_child(node)
+			var fertilizer_container = fertilizer.instance()
+			fertilizer_container.in_box = true
+			container_node.add_child(fertilizer_container)
+			fertilizer_container.position = object_position
+			self.energy -= 1
+			emit_signal("stat_changed", energy)	
+			container = "fertilizer"
 	
 
 
@@ -252,61 +277,22 @@ func _on_Timer_timeout():
 		health = new_health
 
 
-func _on_robot_updated(option_number):
-
-	
-	if option_number == 1 :
-		option_1_bought = true
-
-	if option_number == 2 :
-		option_2_bought = true
-		
-	if option_number == 3 :
-		option_3_bought = true
-
-	if option_number == 4 :
-		option_4_bought = true
-
-	if option_number == 5 :
-		option_5_bought = true
-		
-	if option_number == 6 :
-		option_6_bought = true
-
-	if option_number == 7 :
-		option_7_bought = true
-		
-func _on_infos_button_pressed():
-	pass # Replace with function body.
-
 func _on_refill_pressed():
 	
-	var energy_to_fill = energy_max - energy
-	var strength_count = get_tree().root.get_node("Game/game_start").strength_count
-	var water_count = get_tree().root.get_node("Game/game_start").water_count
-	if water_count >= energy_to_fill and strength_count >= energy_to_fill  :
-		print ("energy to fill : ", energy_to_fill)
-		energy = energy_max
-		emit_signal("strength_spend", energy_to_fill)
-		emit_signal("water_spend", energy_to_fill)
+	var object_number = get_node("bag/container").get_child_count()
+	var object_in_bag = get_node("bag/container").get_children()
+	if object_number >= 1 :
+		for node in object_in_bag :
+			energy += node.health
+			node.queue_free()
+		
 
-	elif water_count <= energy_to_fill or strength_count <= energy_to_fill  :
-		if water_count > strength_count :
-			print ("water_count > strength_count, energi donnée ",strength_count)
-			energy += strength_count
-			emit_signal("strength_spend", strength_count)
-			emit_signal("water_spend", strength_count)
+			var refilled = refill_scene.instance()
+			self.add_child(refilled)
+			refilled.position = Vector2(0, -150)
 			
-		if water_count <= strength_count :
-			print (" strength_count > water_count, energi donnée ",water_count)
-			energy += water_count
-			emit_signal("strength_spend", water_count)
-			emit_signal("water_spend", water_count)
-
-	if water_count or strength_count > 0 :
-		var refilled = refill_scene.instance()
-		self.add_child(refilled)
-		refilled.position = Vector2(0, -150)
+		container = null
+		container_id = null
 	
 	emit_signal("stat_changed", energy)
 		
@@ -326,9 +312,6 @@ func save():
 		"option_7_bought" : option_7_bought,
 		"container" : container,
 		"container_id" : container_id ,
-		"fertilizer_quality" : fertilizer_quality
 	}
 	return save
-
-
 

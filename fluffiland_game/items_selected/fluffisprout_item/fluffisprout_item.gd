@@ -8,8 +8,11 @@ onready var radius = $Area2D/CollisionShape2D.shape.radius
 onready var red_circle
 onready var circle_area = $Area2D
 
+var gender
+
+
 func _ready() :
-	
+	print ("fluffi item gender", gender)
 	red_circle = 0
 	self.connect("instance_fluffisprout", get_tree().root.get_node("Game/game_start/"), "_on_fluffisprout_item_pressed")
 	self.connect("show_area", get_tree().root.get_node("Game/game_start/areas"), "_on_show_areas")
@@ -25,7 +28,7 @@ func _process(_delta):
 func _on_TextureButton_pressed():
 	
 	if 	red_circle == 0 :
-		emit_signal("instance_fluffisprout")
+		emit_signal("instance_fluffisprout", gender)
 		emit_signal("hide_area")
 		self.queue_free()
 	else : 

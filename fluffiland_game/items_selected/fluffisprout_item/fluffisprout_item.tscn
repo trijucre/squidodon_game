@@ -4,7 +4,7 @@
 [ext_resource path="res://items_selected/fluffisprout_item/fluffisprout_item.gd" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 150.0
+radius = 74.0
 
 [node name="fluffisprout_item" type="StaticBody2D"]
 collision_layer = 2147483652
@@ -12,8 +12,8 @@ collision_mask = 4
 script = ExtResource( 2 )
 
 [node name="Area2D" type="Area2D" parent="."]
-collision_layer = 12
-collision_mask = 12
+collision_layer = 4
+collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
