@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://entities/fluffi_node_base.tscn" type="PackedScene" id=1]
+[ext_resource path="res://entities/tree/tree_baby/tree_sprout.png" type="Texture" id=2]
+[ext_resource path="res://entities/tree/tree_baby/tree_sprout.gd" type="Script" id=3]
+[ext_resource path="res://other/fluffi_face.tres" type="SpriteFrames" id=4]
+
+[sub_resource type="CapsuleShape2D" id=1]
+
+[node name="tree_sprout" type="StaticBody2D"]
+collision_layer = 12
+collision_mask = 12
+script = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -11, -56 )
+texture = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Sprite"]
+position = Vector2( 16, 42 )
+frames = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -5 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="info_panel" type="TextureButton" parent="."]
+margin_left = -28.0
+margin_top = -70.0
+margin_right = 27.0
+margin_bottom = -1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="plant_node_base" parent="." instance=ExtResource( 1 )]
+collision_layer = 12
+collision_mask = 12
+[connection signal="pressed" from="info_panel" to="." method="_on_info_panel_pressed"]

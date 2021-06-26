@@ -7,6 +7,7 @@
 [ext_resource path="res://Camera2D.gd" type="Script" id=104]
 
 [node name="Game" type="Node2D"]
+position = Vector2( 1, 0 )
 script = ExtResource( 98 )
 
 [node name="Camera2D" type="Camera2D" parent="."]

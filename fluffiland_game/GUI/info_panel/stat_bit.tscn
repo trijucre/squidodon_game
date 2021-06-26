@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://GUI/info_panel/stat_bit.png" type="Texture" id=1]
+
+[node name="stat_bit" type="TextureRect"]
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

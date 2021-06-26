@@ -21,12 +21,13 @@ var evolution_3 = ""
 var evolution_3_text = ""
 var cost_text_3 = 0
 
-var produce_1 = ""
-var produce_2 = null
-var eat_1 = ""
-var eat_2 = null
+var produce_1 
+var produce_2 
+var eat_1 
+var eat_2 
 
 var other_animation_playing = false
+var food_chain_position
 
 export var speed = 0
 export var run_speed = 0
@@ -46,6 +47,7 @@ var interest = []
 var danger = []
 var something_interresting = []
 var robot = []
+var predator = []
 
 var chosen_dir = Vector2.ZERO
 var velocity = Vector2.ZERO
@@ -63,6 +65,7 @@ var collision
 export(String) var random_noun
 export(String) var random_adjective
 var creature_name 
+var orientation_choice
 
 #animal state
 var specie = ""
@@ -86,7 +89,7 @@ var robot_seen = false
 var memory_of_robot = 0
 var in_love = false
 var energy_spent = 0
-
+var size = 0
 #meat produced variable (produce meat whaen dying
 var meat_produced = false
 
@@ -102,11 +105,11 @@ var baby_happiness
 #attack variables
 var attack_cooldown_time = 200
 var next_attack_time = 0
-var attack_damage = 1
+var attack_damage = 0
 
 #variables death
 export var spawn_area : Rect2 = Rect2(self.position.x, self.position.y, 50, 50)
-onready var meat_scene = load("res://food/meat/Squid_meat/squid_meat.tscn")
+var meat_scene
 var pregnancy_time = 0
 export var meat_number = 1
 var dead = false
@@ -115,13 +118,13 @@ var pet_time = 0
 var need_friend = true
 var time_to_meet_friend = 0
 #variable childbirth
-var egg_scene = preload("res://entities/fluffilus/fluffilus_egg/fluffilus_egg.tscn")
-var egg_number = 1
+var egg_scene
+var egg_number = 0
 
 #variables poop
 
 var food_eaten = false
-onready var poop_scene = load("res://food/poop/poop.tscn")
+var poop_scene
 var poop_time = 0
 
 #variable popup
@@ -151,6 +154,7 @@ var obstacle_here = false
 var danger_here = false
 var something_here = false
 var robot_here = false
+var predator_here = false
 
 var food_found = false
 
@@ -160,14 +164,6 @@ var food_found = false
 
 func _ready():
 
-	#randomize()
-	#size of the creature
-
-	#when creature goes to sleep
-	if sleep_hour == null :
-		sleep_hour = 40 + randi()% 10 + 1
-	if wake_hour == null :
-		wake_hour = 60 - (randi()% 10 + 1)
 
 	if sleeping == true :
 		var sleep_popup = sleep_bubble.instance()
@@ -190,7 +186,6 @@ func _ready():
 	
 	add_to_group("animal", true)
 	add_to_group("creature", true)
-	add_to_group("prey", true)
 	add_to_group(specie, true)
 	add_to_group(id, true)
 	add_to_group ("Persist", true)
@@ -213,6 +208,7 @@ func _ready():
 	something_interresting.resize(num_rays)
 	ray_directions.resize(num_rays)
 	robot.resize(num_rays)
+	predator.resize(num_rays)
 	
 	for i in num_rays:
 		var angle = i * 2 * PI / num_rays
@@ -222,6 +218,7 @@ func _ready():
 		love[i] = 0.0
 		danger[i] = 0.0
 		robot[i] = 0.0
+		predator[i] = 0.0
 #generate name :
 	
 func load_file(file_path):
@@ -274,11 +271,11 @@ func animates_animal() :
 	
 
 func _physics_process(delta):
-	
-	if energy >= energy_max :
+
+	if energy > energy_max :
 		energy = energy_max
 
-	if happiness >= max_happiness :
+	if happiness > max_happiness :
 		happiness = max_happiness
 
 	if 1 in love :
@@ -286,7 +283,11 @@ func _physics_process(delta):
 	else :
 		love_here = false
 
-	
+	if 1 in predator :
+		predator_here = true
+	else :
+		predator_here = false
+		
 	if 1 in danger :
 		danger_here = true
 		max_speed = run_speed
@@ -318,7 +319,7 @@ func _physics_process(delta):
 	
 	var sleep = get_tree().root.get_node("Game/game_start/end_of_day").get_time_left()
 
-	if sleep < sleep_hour or sleep > wake_hour  and hurt == false :
+	if sleep < sleep_hour or sleep > wake_hour  and hurt == false and not danger_here :
 		set_sleep()
 		if sleeping == false :
 			var sleep_popup = sleep_bubble.instance()
@@ -358,96 +359,133 @@ func set_interest():
 				var relative_position = result["collider"].position - self.position
 				var target = result["collider"]
 				var distance = relative_position.length()
+			
+				if target.is_in_group("predator") :
+					set_predator_seen(target,i,distance)
 
-						
-				if target.is_in_group("predator") and target.size >= self.size :
-				
-					if danger_here == false :
-						var surprise_popup = surprise_bubble.instance()
-						self.add_child(surprise_popup)
-						surprise_popup.position = popup_position
-						
-
-					danger[i] = 10 + 2 * ((look_ahead+100 - distance)/(look_ahead+100))
-					
-				
 				elif in_love == true and self.pregnant == false and energy > 0 and target.is_in_group(specie) and not target.is_in_group("baby") and target.gender == opposite_gender and target.pregnant == false and target.in_love == true and not danger_here :
-					interest[i] = 1.0 + 5.0 * ((look_ahead+100 - distance)/(look_ahead+100))
-					love[i] = 1.0
-					if distance <= (attack_distance * 2) :
+					set_find_love(i, distance, target)
 						
-						if self.gender == "male" :
-							mate(target)
-						var love_popup = love_bubble.instance()
-						self.add_child(love_popup)
-						love_popup.position = popup_position
-						love[i] = 0.0
-						need_friend = false
-						
+				elif  target.is_in_group(specie) and target.sleeping == false and energy > hunger and not danger_here and not love_here and need_friend == true :
+					set_friendship(i,distance)
+				
+				elif energy <= hunger and (target.is_in_group(eat_1) or target.is_in_group(eat_2)) and not danger_here and not love_here and target.eatable == true  :
+					set_searching_for_food(i, distance, target)
+				
+				elif food_chain_position == "hunter" and energy <= hunger and target.is_in_group("prey") and not danger_here and not love_here :
 
-				elif energy <= hunger and target.is_in_group("herb") and not danger_here and not love_here and target.eatable == true  :
-						
-					interest[i] = 0.1 + (randi()*1.0 + 0.1 + 2.0) * ((look_ahead+100 - distance)/(look_ahead+100))
-					something_interresting[i] = 1.0
-					if distance < attack_distance :
-						eat(target)
-						something_interresting[i] = 0.0
-						
-				elif target.is_in_group(specie) and target.sleeping == false and energy > hunger and not danger_here and not love_here and need_friend == true :
-					
-					interest[i] = 0.1 + (randi()*1.0 + 0.1 + 2.0) * ((look_ahead+100 - distance)/(look_ahead+100))
-					something_interresting[i] = 1.0
-					var friend_distance = 3 * attack_distance
-					if distance < friend_distance :
-						var happy_popup = happy_bubble.instance()
-						self.add_child(happy_popup)
-						happy_popup.position = popup_position
-						happiness += 5
-						need_friend = false
-					
+					set_hunting(i, distance, target)
+
 				elif target.is_in_group("robot") and pet == false and not danger_here and not love_here and not something_here and robot_seen == false :
-					robot_seen = true
-					if self.get_global_position().distance_to(target.get_global_position()) <= look_ahead/2 :
-						interest[i] = 0.1 + (randi()*1.0 + 0.1 + 2.0) * ((look_ahead+100 - distance)/(look_ahead+100))
-						robot[i] = 1.0
-						question()
-						robot[i] = 0.0
+					set_look_at_robot(i,target, distance)
 						#robot[i] = 0.0
-							
-					
-						
-				#herd movement, for herbivores, increase reproduction chances
-				#elif target.is_in_group(specie) and not something_here and not love_here and not predator_here   :
-					#interest[i] = 0.1 + ((look_ahead+100 - distance)/(look_ahead+100))
-					#friend[i] = 1.0
-					#if distance < attack_distance*2 :
-					#	interest[i] = 0.0
-					#	friend[i] = 0.0
+	
 				else :
 					interest[i] = 0.0
+					predator[i] = 0.0
 					danger[i] = 0.0
 					something_interresting[i] = 0.0
 					love[i] = 0.0
 					robot[i] = 0.0
 
 			else :
-				interest[i] = 0.0
+				interest[i] = 0.0 
+				predator[i] = 0.0
 				danger[i] = 0.0
 				something_interresting[i] = 0.0
 				love[i] = 0.0
 				robot[i] = 0.0
 				
-	if collision != null :
+
+		
+	if not something_here and not love_here and not danger_here and not robot_here :
+
 		set_default_interest()
 		
-	if not something_here and not love_here and not danger_here and not robot_here:
-		
-		set_default_interest()
+func set_predator_seen(target,i,distance) :
+
+	
+	if predator_here == false :
+
+		var surprise_popup = surprise_bubble.instance()
+		self.add_child(surprise_popup)
+		surprise_popup.position = popup_position
+	
+	predator[i] = 1
+	
+	if target.size < size :
+		set_counter_attack(target,i,distance)
+	else :
+		set_flee(i,distance)
 		
 
-			
-			
+func set_find_love(i, distance, target):
+	interest[i] = 1.0 + 5.0 * ((look_ahead+100 - distance)/(look_ahead+100))
+	love[i] = 1.0
+	if distance <= (attack_distance * 2) :
+						
+		if self.gender == "male" :
+			mate(target)
+		var love_popup = love_bubble.instance()
+		self.add_child(love_popup)
+		love_popup.position = popup_position
+		love[i] = 0.0
+		need_friend = false
 
+func set_searching_for_food(i,distance,target):	
+	
+	interest[i] = 0.1 + (randi()*1.0 + 0.1 + 2.0) * ((look_ahead+100 - distance)/(look_ahead+100))
+	something_interresting[i] = 1.0
+	if distance < attack_distance :
+		eat(target)
+		something_interresting[i] = 0.0
+		
+func set_hunting(i,distance,target):
+	
+	interest[i] = 0.1 + (randi()*1.0 + 0.1 + 2.0) * ((look_ahead + 100 - distance)/(look_ahead+100))
+	something_interresting[i] = 1.0
+	speed = run_speed
+	if distance < attack_distance :
+		attack(target)
+
+func set_friendship(i,distance):
+	interest[i] = 0.1 + (randi()*1.0 + 0.1 + 2.0) * ((look_ahead+100 - distance)/(look_ahead+100))
+	something_interresting[i] = 1.0
+	var friend_distance = 3 * attack_distance
+	if distance < friend_distance :
+		var happy_popup = happy_bubble.instance()
+		self.add_child(happy_popup)
+		happy_popup.position = popup_position
+		happiness += 5
+		need_friend = false
+
+func set_look_at_robot(i,target, distance):
+	robot_seen = true
+	if self.get_global_position().distance_to(target.get_global_position()) <= look_ahead/2 :
+		interest[i] = 0.1 + (randi()*1.0 + 0.1 + 2.0) * ((look_ahead+100 - distance)/(look_ahead+100))
+		robot[i] = 1.0
+		question()
+		robot[i] = 0.0
+
+func	 set_counter_attack(i,distance,target):
+	if danger_here == false :
+		var surprise_popup = surprise_bubble.instance()
+		self.add_child(surprise_popup)
+		surprise_popup.position = popup_position
+						
+		interest[i] = 0.1 + (randi()*1.0 + 0.1 + 2.0) * ((look_ahead+100 - distance)/(look_ahead+100))
+		danger[i] = 0.05
+		if distance <= attack_distance :
+			attack(target)
+			if target.health <= 0 :
+				danger[i] = 0.0
+	
+func set_flee(i,distance):
+		
+		danger[i] = 10 + 2 * ((look_ahead+100 - distance)/(look_ahead+100))
+
+			
+	
 func set_default_interest():
 	# Default to moving forward
 	var last_directionX = directionX
@@ -458,7 +496,7 @@ func set_default_interest():
 	for i in num_rays:
 		var d = ray_directions[i].rotated(rotation).dot(Vector2(directionX ,  directionY))
 		interest[i] = max(0, d)
-					
+
 	now = OS.get_ticks_msec()
 	if now - last_time > 3000:
 		
@@ -473,13 +511,14 @@ func set_default_interest():
 		else :
 			
 			var random_movement = randi()%100 + 1
+	
 			if energy <= 0 :
 				
-				if random_movement <= 30 :
+				if random_movement <= 10 :
 					directionX = 0
 					directionY = 0
 					
-				elif random_movement <= 50 :
+				elif random_movement <= 20 :
 					directionX = directionX
 					directionY = directionY
 				
@@ -505,8 +544,11 @@ func set_default_interest():
 		last_directionY = directionY
 		
 		last_time = now
-		
-			
+
+
+func attack(target):
+	target.health -= (attack_damage - target.resistance)
+	
 func set_sleep():
 
 	movement = 0

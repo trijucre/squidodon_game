@@ -1,21 +1,55 @@
-extends StaticBody2D
+extends KinematicBody2D
 
+var save_value = "Persist_child"
 
-var energy = 100
+var energy = 10
 var health = 10
+var quality = 10
+var happiness = 10
+var specie = "squid_meat"
+var type_1 = "meat"
 
+var eatable = true
+var in_box = false
 
-# Called when the node enters the scene tree for the first time.
+onready var sprite = $Sprite
+var orientation_choice
+
 func _ready():
-	add_to_group("meat")
+	if orientation_choice == null :
+		orientation_choice = randi()% 100 + 1
+	if orientation_choice > 50 :
+		sprite.scale.x = -1
+		
 	
+	add_to_group("Persist", true)
+	add_to_group("persist_child", true)
+	
+	add_to_group(specie, true)
+	add_to_group(type_1, true)
+	add_to_group("meat", true)
+	add_to_group("produced",true)
+	
+	
+	#emit_signal("bush_produced")
+		
 func _process(_delta):
 	
-	if energy <= 0 or health <= 0:
+	if energy <= 0 and health <= 0 :
 		get_tree().queue_delete(self)
+		#emit_signal("bush_deleted")
+
+func save():
+	var save = {
+		"filename" : get_filename(),
+		#"parent" : get_parent().get_path(),
+		"position" : get_global_position(),
+		"pos_y" : get_position(),
+		"save_value" : save_value,
+		"orientation_choice" : orientation_choice
+	}
+	return save
 
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+

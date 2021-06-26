@@ -1,11 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://entities/robot/robot/robot.gd" type="Script" id=1]
 [ext_resource path="res://entities/robot/sprites/robot.png" type="Texture" id=2]
 [ext_resource path="res://entities/robot/robot/energy_bar.gd" type="Script" id=3]
-[ext_resource path="res://GUI/info_panel/health_and_energy_bar/health_bar_2.png" type="Texture" id=4]
+[ext_resource path="res://GUI/close_icon.png" type="Texture" id=4]
 [ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=5]
-[ext_resource path="res://GUI/info_panel/health_and_energy_bar/energy_bar_2.png" type="Texture" id=6]
 [ext_resource path="res://entities/robot/sprites/robot_bag_front.png" type="Texture" id=7]
 [ext_resource path="res://entities/robot/sprites/robot_bag_back.png" type="Texture" id=8]
 
@@ -64,9 +63,9 @@ animation = "walk"
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 margin_left = 18.0
-margin_top = 815.0
-margin_right = 58.0
-margin_bottom = 865.0
+margin_top = 959.0
+margin_right = 238.0
+margin_bottom = 1009.0
 rect_min_size = Vector2( 220, 50 )
 color = Color( 0.317647, 0.301961, 0.301961, 1 )
 __meta__ = {
@@ -75,22 +74,39 @@ __meta__ = {
 
 [node name="energy_bar" type="ColorRect" parent="CanvasLayer"]
 margin_left = 24.0
-margin_top = 820.0
+margin_top = 964.0
 margin_right = 64.0
-margin_bottom = 860.0
+margin_bottom = 1004.0
 color = Color( 1, 0.584314, 0, 1 )
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="recolt" type="TextureButton" parent="CanvasLayer"]
+margin_left = 232.0
+margin_top = 544.0
+margin_right = 279.0
+margin_bottom = 592.0
+texture_normal = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/recolt"]
+margin_left = 32.0
+margin_top = 16.0
+margin_right = 106.0
+margin_bottom = 44.0
+custom_fonts/font = ExtResource( 5 )
+text = "recolt"
+
 [node name="refill" type="TextureButton" parent="CanvasLayer"]
 margin_left = 232.0
 margin_top = 728.0
 margin_right = 583.0
 margin_bottom = 791.0
-texture_normal = ExtResource( 6 )
-texture_pressed = ExtResource( 4 )
+texture_normal = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -111,8 +127,7 @@ margin_left = 232.0
 margin_top = 632.0
 margin_right = 583.0
 margin_bottom = 695.0
-texture_normal = ExtResource( 6 )
-texture_pressed = ExtResource( 4 )
+texture_normal = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -128,5 +143,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="stat_changed" from="." to="CanvasLayer/energy_bar" method="_on_robot_stat_changed"]
+[connection signal="pressed" from="CanvasLayer/recolt" to="." method="_on_recolt_pressed"]
 [connection signal="pressed" from="CanvasLayer/refill" to="." method="_on_refill_pressed"]
 [connection signal="pressed" from="CanvasLayer/make_fertilizer" to="." method="_on_make_fertilizer_pressed"]

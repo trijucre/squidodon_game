@@ -1,0 +1,19 @@
+[gd_resource type="Animation" format=2]
+
+[resource]
+resource_name = "light_control"
+length = 60.0
+loop = true
+step = 1.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("light:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 3, 39, 45, 60 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.0196078, 0.262745, 0.298039, 1 ), Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 1 ), Color( 0.0196078, 0.262745, 0.298039, 1 ), Color( 0.0196078, 0.262745, 0.298039, 1 ) ]
+}

@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 signal water_earned
 signal strength_earned
+signal mana_earned
 
 signal stat_changed
 
@@ -56,6 +57,7 @@ func _ready():
 	
 	self.connect("water_earned",get_tree().root.get_node("Game/game_start"), "_on_water_earned")
 	self.connect("strength_earned",get_tree().root.get_node("Game/game_start"), "_on_strength_earned")
+	self.connect("mana_earned",get_tree().root.get_node("Game/game_start"), "_on_mana_earned")
 	
 	#self.connect("stat_changed", get_tree().root.get_node("Game/game_start/CanvasLayer/robot_life_and_energy"), "_on_stats_changed")
 
@@ -295,7 +297,24 @@ func _on_refill_pressed():
 		container_id = null
 	
 	emit_signal("stat_changed", energy)
+	
+func _on_recolt_pressed():
+	
+	var object_number = get_node("bag/container").get_child_count()
+	var object_in_bag = get_node("bag/container").get_children()
+	if object_number >= 1 :
+		for node in object_in_bag :
+			emit_signal("mana_earned", node.health)
+			node.queue_free()
 		
+
+			var refilled = refill_scene.instance()
+			self.add_child(refilled)
+			refilled.position = Vector2(0, -150)
+			
+		container = null
+		container_id = null
+
 func save():
 	var save = {
 		"filename" : get_filename(),
@@ -314,4 +333,6 @@ func save():
 		"container_id" : container_id ,
 	}
 	return save
+
+
 

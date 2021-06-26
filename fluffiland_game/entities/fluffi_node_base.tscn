@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 150.0
+
+[node name="fluffi_node_base" type="StaticBody2D"]
+
+[node name="life_space" type="Area2D" parent="."]
+collision_layer = 13
+collision_mask = 13
+
+[node name="life_area" type="CollisionShape2D" parent="life_space"]
+shape = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true

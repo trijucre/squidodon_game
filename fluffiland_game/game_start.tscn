@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Ground.tres" type="TileSet" id=1]
 [ext_resource path="res://Grass.tres" type="TileSet" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://GUI/fluffi_button/fluffi_button_female.tscn" type="PackedScene" id=5]
 [ext_resource path="res://GUI/user_interface/background/UI_background_top_left.png" type="Texture" id=6]
 [ext_resource path="res://GUI/user_interface/background/UI_background_back_left.png" type="Texture" id=7]
+[ext_resource path="res://mana_counter.gd" type="Script" id=8]
 [ext_resource path="res://GUI/user_interface/background/UI_background.png" type="Texture" id=13]
 [ext_resource path="res://Camera2D.gd" type="Script" id=18]
 [ext_resource path="res://areas.gd" type="Script" id=20]
@@ -187,9 +188,9 @@ anchor_left = 0.949
 anchor_top = 0.937
 anchor_right = 0.981
 anchor_bottom = 0.979
-margin_left = -173.08
+margin_left = -258.08
 margin_top = 1.03998
-margin_right = -173.52
+margin_right = -258.52
 margin_bottom = 0.680054
 custom_fonts/font = ExtResource( 21 )
 custom_colors/font_color = Color( 0.764706, 0.235294, 0.0823529, 1 )
@@ -201,14 +202,33 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="mana_counter" type="Label" parent="CanvasLayer"]
+anchor_left = 0.949
+anchor_top = 0.937
+anchor_right = 0.981
+anchor_bottom = 0.979
+margin_left = -330.08
+margin_top = 1.03998
+margin_right = -330.52
+margin_bottom = 0.680054
+custom_fonts/font = ExtResource( 21 )
+custom_colors/font_color = Color( 0.764706, 0.235294, 0.0823529, 1 )
+custom_colors/font_outline_modulate = Color( 0.764706, 0.235294, 0.0823529, 1 )
+align = 1
+valign = 1
+script = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="water_counter" type="Label" parent="CanvasLayer"]
 anchor_left = 0.906
 anchor_top = 0.937
 anchor_right = 0.937
 anchor_bottom = 0.979
-margin_left = -174.52
+margin_left = -86.52
 margin_top = 1.03998
-margin_right = -174.04
+margin_right = -86.04
 margin_bottom = 0.680054
 custom_fonts/font = ExtResource( 21 )
 custom_colors/font_color = Color( 0.054902, 0.396078, 0.584314, 1 )
@@ -298,6 +318,7 @@ wait_time = 60.0
 autostart = true
 script = ExtResource( 40 )
 [connection signal="day_number" from="." to="CanvasLayer/day_counter" method="_on_game_start_day_number"]
+[connection signal="number_of_mana" from="." to="CanvasLayer/mana_counter" method="_on_game_start_number_of_mana"]
 [connection signal="number_of_strength" from="." to="CanvasLayer/strength_counter" method="_on_game_start_number_of_strength"]
 [connection signal="number_of_water" from="." to="CanvasLayer/water_counter" method="_on_game_start_number_of_water"]
 [connection signal="year" from="." to="CanvasLayer/year_counter" method="_on_game_start_year"]

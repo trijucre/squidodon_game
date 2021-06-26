@@ -32,11 +32,13 @@ var robot_repaired
 
 var tree_hidden = false
 #var number_animals = 5 #xmap/20
-var pearl_count = 6
+#var pearl_count = 6
 var water_count = 0
 var water_max = 1000
 var strength_count = 0
 var strength_max = 1000
+var mana_count = 3000
+var mana_max = 1000
 var rain_falling = false
 
 onready var rain_scene = preload("res://other/rain_scene/rain_scene.tscn")
@@ -76,6 +78,7 @@ onready var pause_menu_scene = preload ("res://GUI/pause_menu/pause_menu.tscn")
 signal end_of_day
 signal number_of_water
 signal number_of_strength
+signal number_of_mana
 #var first_animal_instance = 10
 #var second_animal_instance = 10
 
@@ -89,6 +92,7 @@ func _ready():
 
 	emit_signal("number_of_strength", self)
 	emit_signal("number_of_water", self)
+	emit_signal("number_of_mana", self)
 	
 	tilemap_Ground = get_tree().root.get_node("Game/Ground")
 	tilemap_Water = get_tree().root.get_node("Game/Water")
@@ -245,23 +249,29 @@ func _on_strength_earned(strength_value):
 	strength_count += strength_value
 	emit_signal("number_of_strength", self)
 	
+func _on_mana_earned(mana_value):
+	mana_count += mana_value
+	emit_signal("number_of_mana", self)
+	
 func _on_water_spend(water_value):
-
 	water_count -= water_value
-
 	emit_signal("number_of_water", self)
 
 func _on_strength_spend(strength_value):
 	strength_count -= strength_value
 	emit_signal("number_of_strength", self)
+
+func _on_mana_spend(mana_value):
+	mana_count -= mana_value
+	emit_signal("number_of_mana", self)
 	
 	
-func _on_fluffisprout_created(fluffisprout_number, fluffisprout_cost) :
-	if fluffisprout_cost >= strength_count and pearl_count <= 0 :
-		pearl_count += fluffisprout_number
-		strength_count -= fluffisprout_cost
-		emit_signal("number_of_strength", self)
-		emit_signal("number_of_pearls", self)
+#func _on_fluffisprout_created(fluffisprout_number, fluffisprout_cost) :
+#	if fluffisprout_cost >= strength_count and pearl_count <= 0 :
+#		pearl_count += fluffisprout_number
+#		strength_count -= fluffisprout_cost
+#		emit_signal("number_of_strength", self)
+#		emit_signal("number_of_pearls", self)
 		
 func _on_item_bought_pearl():
 	emit_signal("number_of_pearls", self)
@@ -456,10 +466,21 @@ func _on_robot_repaired():
 
 func _on_evolution_1_selected(text_1, id, cost_text_1):
 
+	evolution(text_1, id, cost_text_1)
 
-	if strength_count >= cost_text_1 :
+		
+func _on_evolution_2_selected(text_2, id, cost_text_2):
 
-		var entity_scene = load ("res://entities/" + text_1 + "/" + text_1 +"_adult/"+ text_1 +".tscn")
+		evolution(text_2, id, cost_text_2)
+		
+func _on_evolution_3_selected(text_3, id, cost_text_3):
+	
+		evolution(text_3, id, cost_text_3)
+	
+func 	evolution(text, id, cost) :
+	if mana_count >= cost :
+
+		var entity_scene = load ("res://entities/" + text + "/" + text +"_adult/"+ text +".tscn")
 		var entity = entity_scene.instance()
 		for node in  get_tree().get_nodes_in_group(id) :
 			if not node.is_in_group("produced") :
@@ -468,54 +489,18 @@ func _on_evolution_1_selected(text_1, id, cost_text_1):
 				entity.creature_name = node.creature_name
 				entity.happiness = node.happiness
 				entity.age = node.age
+				if not entity.is_in_group("animal") :
+					entity.orientation_choice = node.orientation_choice
+					
 				$YSort.add_child(entity)
 				node.queue_free()
-				strength_count -= cost_text_1
-				emit_signal("number_of_strength", self)
+				mana_count -= cost
+				emit_signal("number_of_mana", self)
 
 
-		
-func _on_evolution_2_selected(text_2, id, cost_text_2):
 
-	if strength_count >= cost_text_2 :
-		
-		var entity_scene = load ("res://entities/" + text_2 + "/" + text_2 +"_adult/"+ text_2 +".tscn")
-		var entity = entity_scene.instance()
-		for node in  get_tree().get_nodes_in_group(id) :
-			if not node.is_in_group("produced") :
-				entity.gender = node.gender
-				entity.position = node.position
-				entity.creature_name = node.creature_name
-				entity.happiness = node.happiness
-				entity.age = node.age			
 
-				$YSort.add_child(entity)
-				node.queue_free()
-				strength_count -= cost_text_2
-				emit_signal("number_of_strength", self)
-	
-func _on_evolution_3_selected(text_3, id, cost_text_3):
 
-	if strength_count >= cost_text_3 :
-		var entity_scene = load ("res://entities/" + text_3 + "/" + text_3 +"_adult/"+ text_3 +".tscn")
-		var entity = entity_scene.instance()
-		for node in  get_tree().get_nodes_in_group(id) :
-			if not node.is_in_group("produced") :
-				entity.gender = node.gender
-				entity.position = node.position
-				entity.creature_name = node.creature_name
-				entity.happiness = node.happiness
-				entity.age = node.age			
-
-				$YSort.add_child(entity)
-				node.queue_free()
-				strength_count -= cost_text_3
-				emit_signal("number_of_strength", self)
-	
-
-	else :
-		pass
-	
 
 
 func _on_hide_tree_button_pressed():
@@ -545,7 +530,7 @@ func save():
 			"day_count" : day_count,
 			"water_count" : water_count,
 			"strength_count" : strength_count,
-			"pearl_count" : pearl_count,
+			"mana_count" : mana_count,
 			"saved" : saved,
 			"robot_repaired" : robot_repaired,
 			"rain_falling" : rain_falling,

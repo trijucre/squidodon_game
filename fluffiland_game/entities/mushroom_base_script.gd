@@ -39,26 +39,34 @@ var baby_chances = 0
 var energy_needed_to_produce = 0
 onready var seed_scene
 
-onready var sprite = $sprite
-onready var life_area = $life_space/life_area
+onready var life_area = $fluffi_node_base/life_space/life_area
 onready var area_radius = life_area.shape.radius
-onready var child_radius = (life_area.shape.radius + 1) * 2
+onready var child_radius = (life_area.shape.radius + 2) * 2
+
+onready var sprite = $Sprite
+
 export(String) var random_noun
 export(String) var random_adjective
 var creature_name 
+
+onready var timer = $fluffi_node_base/Timer
+onready var animation = $Sprite/AnimatedSprite
 
 onready var produced_indicator = preload("res://popup/produced_spent_indicator/strength_produced_indicator.tscn")
 onready var produced_indicator_2 = preload("res://popup/produced_spent_indicator/water_used_indicator.tscn")
 onready var produced_position = Vector2(0, -120)
 
 var ressource_generation = 0
-var sleep_hour
-var sleeping = false
 var id = str(self.get_instance_id())
 
 onready var hungry_bubble_scene = preload("res://popup/fertilizer_bubble.tscn")
 var bubble_position = Vector2(0, -150)
-var specie = "fluffishroom"
+var specie
+var orientation_choice
+
+var other_animation_playing = false
+
+var dead = false
 
 func load_file(file_path):
 	var file = File.new()
@@ -81,6 +89,12 @@ func get_random_word_from_file(file_path):
 	
 
 func _ready():
+	if other_animation_playing == false :
+		animation.play("default")
+	if orientation_choice == null :
+		orientation_choice = randi()% 100 + 1
+	if orientation_choice > 50 :
+		sprite.scale.x = -1
 	
 	add_to_group(specie, true)
 	add_to_group("creature", true)
@@ -91,6 +105,9 @@ func _ready():
 	
 	self.connect("strength_earned", get_tree().root.get_node("Game/game_start"), "_on_strength_earned")
 	self.connect("water_earned", get_tree().root.get_node("Game/game_start"), "_on_water_earned")	
+	timer.connect("timeout", self, "_on_Timer_timeout")
+	animation.connect("animation_finished", self , "_on_AnimatedSprite_animation_finished")
+	
 	if creature_name == null :
 		random_noun = str(get_random_word_from_file("res://other/nounlist.txt"))
 		random_adjective = str(get_random_word_from_file("res://other/adjectiveslist.txt"))
@@ -109,20 +126,34 @@ func _ready():
 		var angle = i * 2 * PI / num_rays
 		ray_directions[i] = Vector2.RIGHT.rotated(angle)
 
-func _process(delta):
-		
+func _process(_delta):
+	
+	
+	if other_animation_playing == false :
+		animation.play("default")
+	
 	if health <= 0 :
 		self.queue_free()
 	elif health > health_max :
 		health = health_max
 	
-	if energy <= 0 and hungry == false:
+	if energy < energy_needed_to_produce and hungry == false:
+		var hungry_bubble = hungry_bubble_scene.instance()
+		self.add_child(hungry_bubble)
+		hungry_bubble.position = bubble_position
 		hungry = true
+		
+	if energy > 0 :
+		for node in get_children() :
+			if node.is_in_group("popup") :
+				node.queue_free()
+
 		
 	elif energy >= energy_max :
 		energy = energy_max
 		if hungry == true :
 			hungry = false
+			
 			
 	baby_happiness = float(love_happiness) * float(max_happiness)
 	if happiness > max_happiness :
@@ -142,11 +173,18 @@ func find_food() :
 				var target = result["collider"]
 
 				if target.is_in_group("poop") and hungry == true and target.eatable == true :
+					other_animation_playing = true
+					animation.play("eating")
 					self.happiness += target.quality
 					self.health += target.quality
 					self.energy += target.quality
 					target.queue_free()
 					
+func _on_AnimatedSprite_animation_finished():				
+	other_animation_playing = false
+	
+	if dead == true :
+		self.queue_free()
 
 
 func _on_Timer_timeout():
@@ -155,14 +193,14 @@ func _on_Timer_timeout():
 	if ressource_generation >= 60 :
 		
 		var rain = get_tree().root.get_node("Game/game_start").rain_falling
-		if rain == false and energy > energy_needed_to_produce :
+		if rain == false and energy >= energy_needed_to_produce :
 			emit_signal("strength_earned", strength_production)
 			energy -= energy_needed_to_produce
 			var produced = produced_indicator.instance()
 			self.add_child(produced)
 			produced.position = produced_position
 			
-		elif rain == true and energy > energy_needed_to_produce  :
+		elif rain == true and energy >= energy_needed_to_produce  :
 			emit_signal("water_earned", water_production)
 			energy -= energy_needed_to_produce
 			var produced = produced_indicator_2.instance()
@@ -192,17 +230,6 @@ func _on_Timer_timeout():
 			health -= 1
 			happiness -= 1
 	
-	if energy <= 0 and hungry == false :
-		var hungry_bubble = hungry_bubble_scene.instance()
-		self.add_child(hungry_bubble)
-		hungry_bubble.position = bubble_position
-		hungry == true
-		
-	if energy > 0 :
-		for node in get_children() :
-			if node.is_in_group("popup") :
-				node.queue_free()
-		hungry == false
 	
 func _on_info_panel_pressed():
 	var info_panel_scene = preload ("res://GUI/info_panel/info_panel.tscn")
@@ -250,10 +277,10 @@ func save():
 		"energy" : energy,
 		"happiness" : happiness,
 		"creature_name" : creature_name,
-		"sleep_hour" : sleep_hour,
 		"ressource_generation" : ressource_generation,
 		"age" : age,
-		"hungry" : hungry
+		"hungry" : hungry,
+		"orientation_choice" : orientation_choice
 	}
 	return save
 

@@ -1,41 +1,11 @@
-extends KinematicBody2D
+extends "res://food/tree_produced_script_base.gd"
 
-var save_value = "Persist_child"
+func _init():
+	energy = 2
+	health = 2
+	happiness = 2
+	specie = "bush"
+	type_1 = "bush"
+	type_2 = null
 
-var energy = 1
-var health = 1
-var id
-var happiness = 1
-var specie = "bush"
-var eatable = true 
 
-func _ready():
-	
-	add_to_group("Persist", true)
-	add_to_group("persist_child", true)
-	
-	add_to_group("bush", true)
-	add_to_group("vegetals", true)
-	add_to_group("produced",true)
-	
-	add_to_group(id)
-	
-	
-	#emit_signal("bush_produced")
-		
-func _process(_delta):
-	
-	if energy <= 0 and health <= 0 :
-		get_tree().queue_delete(self)
-		#emit_signal("bush_deleted")
-
-func save():
-	var save = {
-		"filename" : get_filename(),
-		#"parent" : get_parent().get_path(),
-		"position" : get_global_position(),
-		"pos_y" : get_position(),
-		"id" : id,
-		"save_value" : save_value
-	}
-	return save

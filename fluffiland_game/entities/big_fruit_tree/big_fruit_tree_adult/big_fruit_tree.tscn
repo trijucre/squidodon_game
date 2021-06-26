@@ -3,14 +3,10 @@
 [ext_resource path="res://entities/big_fruit_tree/big_fruit_tree_adult/big_fruit_tree.gd" type="Script" id=1]
 [ext_resource path="res://entities/big_fruit_tree/big_fruit_tree_adult/sprite/big_fruit_tree.png" type="Texture" id=2]
 [ext_resource path="res://entities/big_fruit_tree/big_fruit_tree_adult/sprite/big_fruit_tree_hidden.png" type="Texture" id=3]
+[ext_resource path="res://entities/fluffi_node_base.tscn" type="PackedScene" id=4]
+[ext_resource path="res://other/fluffi_face.tres" type="SpriteFrames" id=5]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 74.0
-
-[sub_resource type="CircleShape2D" id=2]
-radius = 150.0
-
-[sub_resource type="SpriteFrames" id=3]
+[sub_resource type="SpriteFrames" id=1]
 animations = [ {
 "frames": [ ExtResource( 2 ) ],
 "loop": true,
@@ -28,42 +24,27 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="CapsuleShape2D" id=4]
-radius = 42.8411
-height = 65.8425
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 20.0
+height = 40.0
 
 [node name="big_fruit_tree" type="StaticBody2D"]
 collision_layer = 12
 collision_mask = 12
 script = ExtResource( 1 )
 
-[node name="life_space" type="Area2D" parent="."]
-collision_layer = 12
-collision_mask = 12
-
-[node name="life_area" type="CollisionShape2D" parent="life_space"]
-position = Vector2( 0, -2.10605 )
-shape = SubResource( 1 )
-
-[node name="Area2D" type="Area2D" parent="."]
-collision_layer = 12
-collision_mask = 12
-
-[node name="area" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 0, -2.10605 )
-shape = SubResource( 2 )
-
 [node name="Sprite" type="AnimatedSprite" parent="."]
-position = Vector2( -24, -342 )
-frames = SubResource( 3 )
+position = Vector2( 0, -204 )
+frames = SubResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Sprite"]
+position = Vector2( 21, 175 )
+frames = ExtResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 2, -10 )
 rotation = 1.5708
-shape = SubResource( 4 )
-
-[node name="Timer" type="Timer" parent="."]
-autostart = true
+shape = SubResource( 2 )
 
 [node name="info_panel" type="TextureButton" parent="."]
 margin_left = -152.0
@@ -73,5 +54,6 @@ margin_bottom = -1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+
+[node name="fluffi_node_base" parent="." instance=ExtResource( 4 )]
 [connection signal="pressed" from="info_panel" to="." method="_on_info_panel_pressed"]

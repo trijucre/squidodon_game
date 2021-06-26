@@ -1,32 +1,18 @@
 [gd_scene load_steps=9 format=2]
 
+[ext_resource path="res://other/fluffi_face.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://other/strength_flower_light.png" type="Texture" id=2]
 [ext_resource path="res://entities/strength_flower/strength_flower_adult/sprites/strength_flower.png" type="Texture" id=3]
 [ext_resource path="res://entities/strength_flower/strength_flower_adult/strength_flower.gd" type="Script" id=4]
+[ext_resource path="res://entities/fluffi_node_base.tscn" type="PackedScene" id=5]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 74.0
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 15.0
 
-[sub_resource type="SpriteFrames" id=2]
-animations = [ {
-"frames": [ ExtResource( 3 ) ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 3 ) ],
-"loop": true,
-"name": "thirsty",
-"speed": 5.0
-} ]
-
-[sub_resource type="CircleShape2D" id=3]
-radius = 29.7465
-
-[sub_resource type="CanvasItemMaterial" id=4]
+[sub_resource type="CanvasItemMaterial" id=2]
 blend_mode = 1
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=3]
 resource_name = "light_control"
 length = 60.0
 loop = true
@@ -49,34 +35,30 @@ collision_layer = 12
 collision_mask = 12
 script = ExtResource( 4 )
 
-[node name="life_space" type="Area2D" parent="."]
-collision_layer = 12
-collision_mask = 12
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -24, -85 )
+texture = ExtResource( 3 )
 
-[node name="life_area" type="CollisionShape2D" parent="life_space"]
-shape = SubResource( 1 )
-
-[node name="flower_sprite" type="AnimatedSprite" parent="."]
-position = Vector2( 0, -61 )
-frames = SubResource( 2 )
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Sprite"]
+position = Vector2( 35, 61 )
+frames = ExtResource( 1 )
+animation = "eating"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 0.499996 )
-shape = SubResource( 3 )
+position = Vector2( 0, -5 )
+rotation = 1.5708
+shape = SubResource( 1 )
 
 [node name="light" type="Sprite" parent="."]
 modulate = Color( 0.47451, 0.231373, 0.0352941, 1 )
-material = SubResource( 4 )
-position = Vector2( 0, -78 )
+material = SubResource( 2 )
+position = Vector2( -31, -119 )
 scale = Vector2( 0.749468, 0.749468 )
 texture = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "light_control"
-anims/light_control = SubResource( 5 )
-
-[node name="pearl_generation" type="Timer" parent="."]
-autostart = true
+anims/light_control = SubResource( 3 )
 
 [node name="info_panel" type="TextureButton" parent="."]
 margin_left = -43.0
@@ -86,5 +68,6 @@ margin_bottom = -1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="timeout" from="pearl_generation" to="." method="_on_pearl_generation_timeout"]
+
+[node name="fluffi_node_base" parent="." instance=ExtResource( 5 )]
 [connection signal="pressed" from="info_panel" to="." method="_on_info_panel_pressed"]

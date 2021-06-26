@@ -2,17 +2,17 @@ extends "res://entities/plant_base_script.gd"
 
 func _init():
 	
-	energy = 3
-	energy_max = 3
-	health = 5
-	health_max = 5
+	energy = 2
+	energy_max = 2
+	health = 3
+	health_max = 3
 	specie = "fluffiplant"
 
 	evolution_1 = "tree"
 	evolution_1_text = "bush_path"
 	cost_text_1 = 25
 
-	evolution_2 = "fruit_tree_"
+	evolution_2 = "fruit_tree"
 	evolution_2_text = "fruit_path"
 	cost_text_2 = 25
 
@@ -29,11 +29,8 @@ func _init():
 	bush_scene = load("res://food/herb/herb.tscn")
 	seed_scene = load ("res://entities/fluffiplant/fluffiplant_egg/fluffiplant_egg.tscn")
 	
+	popup_position = Vector2(0, -20)
 
-func _ready():
-	add_to_group("tree",true)
-	add_to_group("vegetals",true)
-	add_to_group("fluffiplant",true)
-	add_to_group("creature", true)
+
 
 
