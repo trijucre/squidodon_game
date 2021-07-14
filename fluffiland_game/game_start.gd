@@ -56,16 +56,18 @@ onready var fluffisprout = preload ("res://entities/fluffisprout/fluffisprout.ts
 
 #onready var orca_bear_node = orca_bear.instance()
 
-onready var pond = preload("res://constructs/pond/pond.tscn")
+onready var water_point = preload("res://constructs/water_point/water_point.tscn")
 onready var hill = preload("res://constructs/hill/hill.tscn")
 onready var info_construct = preload ("res://GUI/info_construct/info_construct.tscn")
 onready var meteor_scene = preload ("res://other/meteor/meteor.tscn")
 onready var meteor_number = 5
 
-onready var robot_scene = preload("res://entities/robot/robot_broken/robot_broken.tscn")
+onready var robot_scene = preload("res://entities/robot/robot/robot.tscn")
+onready var robot_cook_scene = preload ("res://entities/robot/robot_cook/robot_cook.tscn")
 onready var new_robot = preload ("res://entities/robot/robot/robot.tscn")
 onready var infos_robot_scene = preload("res://GUI/info_robot/info_repaired_robot/info_robot.tscn")
-
+onready var pot_scene = preload("res://constructs/pot/pot.tscn")
+onready var robot_hug_scene = preload ("res://entities/robot/robot_hug/robot_hug.tscn")
 
 var parasite_algae_number = (xmap + ymap) / 50
 var day_count = 1
@@ -128,8 +130,7 @@ func _ready():
 	make_ground_map()
 	make_grass_map()
 	
-	if saved == false :
-		import_robot()
+
 	#make_tree()
 	$Camera2D.position.x = xmap*tilesize/2
 	$Camera2D.position.y = ymap*tilesize/2	
@@ -140,10 +141,19 @@ func _ready():
 	
 	if rain_falling == true :
 		set_rain()
-		
+	
 	if saved == false :
-		for i in meteor_number :
-			import_meteor()
+		import_robot()
+	#	import_object(robot_cook_scene)
+	#	import_object(robot_hug_scene)
+		import_object(water_point)
+	#if saved == false :
+	#	import_object(pot_scene)
+	
+	#if saved == false :
+	#	for i in meteor_number :
+	#		import_meteor()
+	
 	#if saved == false :
 		#for i in parasite_algae_number :
 	#		import_parasite_algae()
@@ -280,45 +290,49 @@ func _on_item_bought_strength():
 	emit_signal("number_of_strength", self)
 
 func import_parasite_algae():
-	var valid_position = false
-	while not valid_position :
-		var xalgae = randi()% (xmap -2) + 2
-		var yalgae = randi()% (ymap +2) - 2
-		var make_parasite_algae = parasite_algae.instance()
+	for x in map_size.x:
+		for y in map_size.y:
+			var algae_generation = randi()% 1000 + 1
+			if algae_generation > 999 :
+				var valid_position = false
+				while not valid_position :
+					var xalgae = randi()% (xmap -2) + 2
+					var yalgae = randi()% (ymap +2) - 2
+					var make_parasite_algae = parasite_algae.instance()
+						
+					var data = custom_gradient.get_data()
+					data.lock()
+					var gradient_value = data.get_pixel(xalgae + xmap * 0.5 , yalgae + ymap * 0.5).r * size_gradient
+						
+					var a = noise.get_noise_2d(xalgae,yalgae)
+					data.unlock()
+					a -= gradient_value
+					if a < possible_position.x and a > possible_position.y :
+						$YSort.add_child(make_parasite_algae)
+						make_parasite_algae.position = Vector2(xalgae*tilesize, yalgae*tilesize)
+						valid_position = true
 			
-		var data = custom_gradient.get_data()
-		data.lock()
-		var gradient_value = data.get_pixel(xalgae + xmap * 0.5 , yalgae + ymap * 0.5).r * size_gradient
-			
-		var a = noise.get_noise_2d(xalgae,yalgae)
-		data.unlock()
-		a -= gradient_value
-		if a < possible_position.x and a > possible_position.y :
-			$YSort.add_child(make_parasite_algae)
-			make_parasite_algae.position = Vector2(xalgae*tilesize, yalgae*tilesize)
-			valid_position = true
-			
-func	import_meteor():
+func	import_object(object_scene):
 	
 	var valid_position = false
 	while not valid_position :
-		var xmeteor = randi()% (xmap -2) + 2
-		var ymeteor = randi()% (ymap +2) - 2
-		var meteor = meteor_scene.instance()
+		var xobject = randi()% (xmap -2) + 2
+		var yobject = randi()% (ymap +2) - 2
+		var object = object_scene.instance()
 			
 		var data = custom_gradient.get_data()
 		data.lock()
-		var gradient_value = data.get_pixel(xmeteor + xmap * 0.5 , ymeteor + ymap * 0.5).r * size_gradient
+		var gradient_value = data.get_pixel(xobject + xmap * 0.5 , yobject + ymap * 0.5).r * size_gradient
 		
 
 			
-		var a = noise.get_noise_2d(xmeteor,ymeteor)
+		var a = noise.get_noise_2d(xobject,yobject)
 		data.unlock()
 		a -= gradient_value
 
 		if a < possible_position.x and a > possible_position.y :
-			$YSort.add_child(meteor)
-			meteor.position = Vector2(xmeteor*100, ymeteor*100)
+			$YSort.add_child(object)
+			object.position = Vector2(xobject*100, yobject*100)
 			valid_position = true
 			
 			
@@ -363,23 +377,6 @@ func _on_fluffisprout_item_pressed(gender):
 	fluffisprout_instance.gender = gender
 	$YSort.add_child(fluffisprout_instance)
 	fluffisprout_instance.position = (Vector2(mouse_x,mouse_y))
-
-	
-func _on_pond_item_pressed():
-	var mouse_position = get_local_mouse_position()#get_viewport().get_mouse_position()
-	var mouse_x = mouse_position.x
-	var mouse_y = mouse_position.y
-	var pond_instance = pond.instance()
-	$YSort.add_child(pond)
-	pond.position = (Vector2(mouse_x,mouse_y))
-
-func _on_hill_item_pressed():
-	var mouse_position = get_local_mouse_position()#get_viewport().get_mouse_position()
-	var mouse_x = mouse_position.x
-	var mouse_y = mouse_position.y
-	var hill_instance = hill.instance()
-	$YSort.add_child(hill)
-	hill.position = (Vector2(mouse_x,mouse_y))
 
 func _on_algae_cut():
 	strength_count += -1
@@ -430,7 +427,7 @@ func _on_end_of_day_timeout():
 	
 	var chance_of_meteor = randi()% 100 + 1 
 	if chance_of_meteor > 95 :
-		import_meteor()
+		import_object(meteor_scene)
 
 	var weather = randi()% 100 + 1
 	if rain_chance >= weather :
@@ -446,7 +443,21 @@ func _on_end_of_day_timeout():
 			
 		elif rain_falling == false :
 			pass
+	
+	
+	
+	if day_count > 10 :
+		for creature in get_tree().get_nodes_in_group("creature") :
+			var sickness_chance = randi()% 100 + 1
+			if sickness_chance >= 98 :
+				print ("creature got sick")
+				if creature.sick == false :
+					creature.sick = true
+				
+		#import_parasite_algae()
 
+		
+		
 	emit_signal("end_of_day")
 	
 
@@ -464,18 +475,9 @@ func _on_robot_repaired():
 	old_robot.queue_free()
 
 
-func _on_evolution_1_selected(text_1, id, cost_text_1):
+func _on_evolution_selected(text, id, cost):
 
-	evolution(text_1, id, cost_text_1)
-
-		
-func _on_evolution_2_selected(text_2, id, cost_text_2):
-
-		evolution(text_2, id, cost_text_2)
-		
-func _on_evolution_3_selected(text_3, id, cost_text_3):
-	
-		evolution(text_3, id, cost_text_3)
+	evolution(text, id, cost)
 	
 func 	evolution(text, id, cost) :
 	if mana_count >= cost :
@@ -510,8 +512,39 @@ func _on_hide_tree_button_pressed():
 func _on_show_tree_pressed():
 		for node in get_tree().get_nodes_in_group("hideable") :
 			node.sprite.play("default")
+			
+			
+func produce_object(min_radius, max_radius, object_scene, id):
+	var valid_position = false
+	while not valid_position :
+		var count = rand_range(0, 2)
+		var bush_radius = randi()% int(min_radius) + int(max_radius)
+		var radius = Vector2(bush_radius, 0)
+		var center = self.position
+		var step = float(count) * PI 
+		var spawn_pos = center + radius.rotated(step)
+		var object = object_scene.instance()
+		var data = custom_gradient.get_data()
+		data.lock()
+		var gradient_value = data.get_pixel(spawn_pos.x + xmap * 0.5 , spawn_pos.y + ymap * 0.5).r * size_gradient
+		
 
-	
+			
+		var a = noise.get_noise_2d(spawn_pos.x,spawn_pos.y)
+		data.unlock()
+		a -= gradient_value
+
+		if a < possible_position.x and a > possible_position.y :
+			object.id = id
+			get_tree().root.get_node("Game/game_start/YSort").add_child(object)
+			object.position = spawn_pos
+			valid_position = true
+
+
+		
+
+
+
 func save():
 	var save = {
 			"name" : get_name(),

@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends StaticBody2D
 
 var save_value = "Persist_child"
 
@@ -16,6 +16,7 @@ onready var sprite = $Sprite
 var orientation_choice
 
 func _ready():
+
 	if orientation_choice == null :
 		orientation_choice = randi()% 100 + 1
 	if orientation_choice > 50 :
@@ -32,7 +33,8 @@ func _ready():
 	add_to_group("vegetals", true)
 	add_to_group("produced",true)
 	
-	add_to_group(id)
+	if id != null :
+		add_to_group(id)
 	
 	
 	#emit_signal("bush_produced")

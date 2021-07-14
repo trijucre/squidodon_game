@@ -13,8 +13,8 @@ func _init():
 	evolution_3_text = "balance_path"
 	cost_text_3 = 12
 
-	health = 2
-	health_max = 2
+	health = 3
+	health_max = 3
 
 	energy = 3
 	energy_max = 3

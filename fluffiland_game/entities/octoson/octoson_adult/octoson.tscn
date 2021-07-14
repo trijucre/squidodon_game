@@ -10,19 +10,14 @@ height = 170.136
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
 "frames": [ ExtResource( 2 ) ],
-"loop": false,
-"name": "side_attack",
-"speed": 8.0
-}, {
-"frames": [ ExtResource( 2 ) ],
-"loop": true,
-"name": "side_walk",
-"speed": 8.0
-}, {
-"frames": [ ExtResource( 2 ) ],
 "loop": true,
 "name": "side_hurt",
 "speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": false,
+"name": "side_attack",
+"speed": 8.0
 }, {
 "frames": [ ExtResource( 2 ) ],
 "loop": true,
@@ -33,6 +28,11 @@ animations = [ {
 "loop": true,
 "name": "side_default",
 "speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "side_walk",
+"speed": 8.0
 } ]
 
 [node name="octoson" type="KinematicBody2D"]

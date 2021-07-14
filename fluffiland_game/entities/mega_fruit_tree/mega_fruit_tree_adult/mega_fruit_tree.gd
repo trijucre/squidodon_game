@@ -26,7 +26,7 @@ func _init():
 	water_consomption = 6
 	reproduction_chances = 99
 
-	bush_scene = load("res://food/tree_produced_megafruit/tree_produced_megafruit.tscn")
+	bush_scene = load("res://food/megafruit/megafruit.tscn")
 	seed_scene = load ("res://entities/mega_fruit_tree/mega_fruit_tree_egg/mega_fruit_tree_egg.tscn")
 	
 	popup_position = Vector2(0, -100)

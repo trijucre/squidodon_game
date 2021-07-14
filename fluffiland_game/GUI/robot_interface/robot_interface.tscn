@@ -1,0 +1,71 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://GUI/robot_interface/sprites/recolt_button.png" type="Texture" id=1]
+[ext_resource path="res://GUI/robot_interface/sprites/refill_button_pressed.png" type="Texture" id=2]
+[ext_resource path="res://GUI/robot_interface/sprites/recolt_button_pressed.png" type="Texture" id=3]
+[ext_resource path="res://GUI/robot_interface/sprites/fertilize_button.png" type="Texture" id=4]
+[ext_resource path="res://GUI/robot_interface/sprites/refill_button.png" type="Texture" id=5]
+[ext_resource path="res://GUI/robot_interface/sprites/fertilize_button_pressed.png" type="Texture" id=6]
+[ext_resource path="res://GUI/robot_interface/robot_interface.gd" type="Script" id=7]
+[ext_resource path="res://GUI/container_light.png" type="Texture" id=8]
+
+[node name="robot_interface" type="Node2D"]
+script = ExtResource( 7 )
+
+[node name="refill_button" type="TextureButton" parent="."]
+margin_left = 120.0
+margin_right = 233.0
+margin_bottom = 40.0
+texture_normal = ExtResource( 5 )
+texture_pressed = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="recolt_button" type="TextureButton" parent="."]
+margin_left = 59.8458
+margin_top = 42.2971
+margin_right = 172.846
+margin_bottom = 82.2971
+texture_normal = ExtResource( 1 )
+texture_pressed = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="fertilize_button" type="TextureButton" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="health_back" type="ColorRect" parent="."]
+margin_left = 7.44095
+margin_top = -43.0625
+margin_right = 33.4409
+margin_bottom = -17.0625
+color = Color( 0.0627451, 0.517647, 0.654902, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="health" type="ColorRect" parent="health_back"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 23.0
+margin_bottom = 23.0
+color = Color( 1, 0.647059, 0.486275, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 118.967, 14.9124 )
+scale = Vector2( 0.697671, 0.67287 )
+texture = ExtResource( 8 )
+[connection signal="pressed" from="refill_button" to="." method="_on_refill_button_pressed"]
+[connection signal="pressed" from="recolt_button" to="." method="_on_recolt_button_pressed"]
+[connection signal="pressed" from="fertilize_button" to="." method="_on_fertilize_button_pressed"]

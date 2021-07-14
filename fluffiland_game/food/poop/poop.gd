@@ -4,6 +4,7 @@ extends StaticBody2D
 var save_value = "Persist_child"
 var specie = "poop"
 
+var id
 var health = 1
 var quality = 2
 var eatable = false 
@@ -13,6 +14,7 @@ func _ready():
 	add_to_group("Persist", true)
 	add_to_group("persist_child", true)
 	add_to_group("poop", true)
+	add_to_group("produced", true)
 
 func _process(_delta):
 	if health <= 0 :

@@ -2,8 +2,8 @@ extends "res://entities/plant_base_script.gd"
 
 func _init():
 	
-	energy = 2
-	energy_max = 2
+	energy = 3
+	energy_max = 3
 	health = 3
 	health_max = 3
 	specie = "fluffiplant"
@@ -24,7 +24,10 @@ func _init():
 	max_happiness = 20
 	bush_capacity = 5
 	water_consomption = 1
+	strength_consumption = 1
 	reproduction_chances = 95
+	
+
 
 	bush_scene = load("res://food/herb/herb.tscn")
 	seed_scene = load ("res://entities/fluffiplant/fluffiplant_egg/fluffiplant_egg.tscn")

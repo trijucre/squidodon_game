@@ -4,6 +4,7 @@ extends Node2D
 onready var info_name = $info_panel_text/VBoxContainer/name
 onready var info_pregnant = $info_panel_text/VBoxContainer/pregnant
 onready var age_text = $info_panel_text/VBoxContainer/age
+onready var produce_text = $info_panel_text/VBoxContainer/produce
 onready var id
 onready var evolution_panel_scene = preload("res://GUI/evolution_panel/evolution_panel.tscn")
 
@@ -15,6 +16,8 @@ onready var health_container = $info_panel_text/VBoxContainer/stats_container/pv
 
 onready var eat_1
 onready var eat_2
+onready var produce_1
+onready var produce_2
 
 #onready var evolution_1
 #onready var evolution_2
@@ -44,26 +47,31 @@ onready var stat_bit_empty_scene = preload ("res://GUI/info_panel/stat_bit_empty
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print ("info panel energy ", energy )
+	
 	for node in get_tree().get_nodes_in_group("info_panel") :
 		node.queue_free()
 		
 	add_to_group("info_panel")
 	self.position = get_global_mouse_position()
 	info_name.bbcode_text = "Name : " + str(name_text) + "\nSpecie : " + str(specie_text) + "\nGender : " + str(gender_text) + "\nAge :" + str(age) + " days old"
-	if gender_text == "female" :
-		if pregnancy == false :
-			info_pregnant.text = ""
-		else :
+	if gender_text == "female" and pregnancy == true :
 			info_pregnant.text = "pregnant"
+	else :
+		info_pregnant.queue_free()
 	
 	if eat_1 == null :
 		age_text.text =	"eat nothing"
-	
 	elif eat_2 == null :
 		age_text.text = "eat " + str(eat_1) 
 	else :
 		age_text.text = "eat " + str(eat_1) +" and " + str(eat_2)
+
+	if produce_1 == null :
+		produce_text.text = "doesn't produce anything"
+	elif produce_2 == null :
+		produce_text.text = "produce " + str(produce_1) 
+	else :
+		produce_text.text = "produce " + str(produce_1) + "and" + str(produce_2)
 
 	for number in energy :
 		add_bit(energy_container)

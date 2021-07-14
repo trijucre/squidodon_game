@@ -62,8 +62,8 @@ func _ready():
 	
 	add_to_group(id)
 	saved = true
-func _on_Timer_timeout():
 	
+func _on_Timer_timeout():
 	
 	if ressource_transferred == true :
 		sprite.play("thirsty")

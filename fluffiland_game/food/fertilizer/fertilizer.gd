@@ -32,7 +32,6 @@ func save():
 #func _process(delta):
 #	pass
 
-
 func _on_Timer_timeout():
 	if in_box == false :
 		eatable = true # Rep

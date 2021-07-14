@@ -4,7 +4,7 @@
 [ext_resource path="res://food/fertilizer/fertilizer.gd" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 31.5775
+radius = 30.0
 
 [node name="poop_fertilizer" type="StaticBody2D"]
 collision_layer = 12

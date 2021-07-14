@@ -28,6 +28,7 @@ var health = 0
 var health_max = 0
 var specie =""
 var water_consomption = 0
+var strength_consumption = 0
 onready var used_position = Vector2(0, -60)
 
 
@@ -43,6 +44,9 @@ var evolution_3 =""
 var evolution_3_text=""
 var cost_text_3 = 0
 
+var produce_1
+var produce_2
+
 var gender
 var opposite_gender
 var happiness = 0
@@ -50,7 +54,7 @@ var max_happiness = 0
 var love_happiness = 0.8
 var baby_happiness= 0
 var hungry = false
-var good_health = health_max/2
+var good_health
 export(String) var random_noun
 export(String) var random_adjective
 var creature_name 
@@ -67,13 +71,17 @@ var rngy = RandomNumberGenerator.new()
 
 onready var love_bubble = preload("res://popup/love_bubble.tscn")
 onready var smile_bubble = preload("res://popup/happy_bubble.tscn")
-onready var hungry_bubble_scene = preload("res://popup/fertilizer_bubble.tscn")
+onready var hungry_bubble_scene = preload("res://popup/water_bubble.tscn")
 var popup_position = Vector2(0, 0)
 
 onready var used_indicator = preload("res://popup/produced_spent_indicator/water_used_indicator.tscn")
 var bush_produced = 0
 
 var orientation_choice
+
+var sick = false
+var virus_here = false
+onready var virus_scene = preload("res://other/virus/virus.tscn")
 
 func _ready():
 	
@@ -102,7 +110,11 @@ func _ready():
 	baby_happiness  = float(love_happiness) * float(max_happiness)
 	
 	gender = "neutral"
-		
+
+	if sick == true and virus_here == true :
+		var virus = virus_scene.instance()
+		self.add_child(virus)
+
 	if tree_id == null :
 		tree_id = str(self.get_instance_id())
 	
@@ -118,28 +130,58 @@ func _ready():
 		var hungry_bubble = hungry_bubble_scene.instance()
 		self.add_child(hungry_bubble)
 		hungry_bubble.position = used_position
-
+		
+	good_health = float(health_max/3)
+	print ("good_health :n ", good_health)
 	
 func _process(_delta):
-	print ("plant energy ", energy)
 	if health <= 0 :
 		self.queue_free()
 	elif health > health_max :
 		health = health_max
 	
-		if energy < 0 :
-			energy = 0
-
-	elif energy >= energy_max and health >= health_max/2 :
+	if energy < 0 :
+		energy = 0
+		
+	if energy >= energy_max :
 		energy = energy_max
-		if hungry == true :
-			hungry = false
-	
+		
 	if happiness > max_happiness :
 		happiness = max_happiness
+		
+	if health <= good_health and hungry == false:
+		var hungry_bubble = hungry_bubble_scene.instance()
+		self.add_child(hungry_bubble)
+		hungry_bubble.position = used_position
+		hungry = true
+	
+	if health > good_health and hungry == true :
+		for node in get_children() :
+			if node.is_in_group("popup") :
+				node.queue_free()
+		hungry = false
+		
+	if sick == false and virus_here == true :
+		for node in self.get_children() :
+			if node.is_in_group("virus") :
+				node.queue_free()
+				virus_here = false
+
 
 	find_food()
-
+	
+	if sick == true and virus_here == false :
+		var virus = virus_scene.instance()
+		self.add_child(virus)
+		virus_here = true
+		
+func happy(happiness_value):
+	
+	happiness+=happiness_value
+	var happy_popup = love_bubble.instance()
+	self.add_child(happy_popup)
+	happy_popup.position = popup_position
+	
 func find_food() :
 	var space_state = get_world_2d().direct_space_state
 	
@@ -148,8 +190,14 @@ func find_food() :
 			var result = space_state.intersect_ray(position, position + ray_directions[i].rotated(rotation) * look_ahead, [self])
 			
 			if result :
+				
 				var target = result["collider"]
-				if target.is_in_group("fertilizer") and target.eatable == true  :
+				if sick == true and target.is_in_group("medicine") and target.eatable == true :
+					#other_animation_playing = true
+					#animation.play("eating")
+					sick = false
+					
+				if sick == false and target.is_in_group("fertilizer") and target.eatable == true  :
 					animation.play("eating")
 					happiness += target.quality
 					health += target.quality
@@ -191,7 +239,10 @@ func show_stat():
 	info_panel.energy_max = energy_max
 	info_panel.name_text = creature_name
 	info_panel.age = age
-			
+	info_panel.eat_1 = "water"
+	info_panel.eat_1 = "strength"
+	info_panel.produce_1 = produce_1
+	info_panel.produce_2	 = produce_2
 	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
 
 func hide_stat():
@@ -207,7 +258,7 @@ func _on_Timer_timeout():
 	if bush_time >= 60 :
 		bush_produced = get_tree().get_nodes_in_group(tree_id).size()
 
-		if bush_produced <= bush_capacity and energy >= water_consomption :
+		if bush_produced <= bush_capacity and energy >= strength_consumption :
 			var count = rand_range(0, 2)
 			var bush_radius = randi()% int(child_radius) + int(area_radius)
 			var radius = Vector2(bush_radius, 0)
@@ -220,30 +271,42 @@ func _on_Timer_timeout():
 			get_tree().root.get_node("Game/game_start/YSort").add_child(tree_bush)
 
 			tree_bush.position = spawn_pos
-			energy -= water_consomption
-
-		
+			energy -= strength_consumption
 			
+		if sick == true :
+			health -= 1
+			happiness -= 1
+		
 		health -= 1
 		happiness -= 1
 		
-		
-		if 	get_tree().root.get_node("Game/game_start").water_count >= water_consomption :
-			
-			emit_signal("water_spend", water_consomption)
-
-			energy += water_consomption
-			if energy > energy_max :
-				energy = energy_max
-			
-		if 	get_tree().root.get_node("Game/game_start").strength_count >= 1 :
-			
-			emit_signal("strength_spend", 1)
-
+		var rain = get_tree().root.get_node("Game/game_start").rain_falling
+		if rain == true : 
 			health += 1
 			happiness += 1
-			if health > health_max :
-				health = health_max
+			
+			var happy_bubble = love_bubble.instance()
+			self.add_child(happy_bubble)
+			happy_bubble.position = used_position
+			
+		elif get_tree().root.get_node("Game/game_start").water_count >= water_consomption :
+			if health < health_max :
+				emit_signal("water_spend", water_consomption)
+				
+				health += water_consomption
+				if health > health_max :
+					health = health_max
+				
+			happiness += 1
+			
+			
+		if 	get_tree().root.get_node("Game/game_start").strength_count >= strength_consumption :
+			if energy < energy_max :
+				emit_signal("strength_spend", strength_consumption)
+
+				energy += strength_consumption
+				if energy > energy_max :
+					energy = energy_max
 	
 
 		age += 1	
@@ -264,21 +327,7 @@ func _on_Timer_timeout():
 								
 		
 		bush_time = 0
-		
-	if (energy <= 0 or health < good_health) and hungry == false:
-
-		var hungry_bubble = hungry_bubble_scene.instance()
-		self.add_child(hungry_bubble)
-		hungry_bubble.position = used_position
-		hungry = true
-	
-	if energy > 0 and health >= good_health :
-		for node in get_children() :
-			if node.is_in_group("popup") :
-				node.queue_free()
-	
-
-
+	print ("plant hungry : ", hungry)
 	
 func _on_bush_produced():
 	bush_produced +=1
@@ -286,35 +335,21 @@ func _on_bush_produced():
 
 func _on_info_panel_pressed():
 
-	var info_panel_scene = preload ("res://GUI/info_panel/info_panel.tscn")
-	var info_panel = info_panel_scene.instance()
+	var evolution_panel_scene = preload ("res://GUI/evolution_panel/evolution_panel.tscn")
+	var evolution_panel = evolution_panel_scene.instance()
 	
-	info_panel.specie_text = specie
-	info_panel.gender_text = gender
-	info_panel.pv_text = str (health, "/", health_max)
-	info_panel.pv = health
-	info_panel.pv_max = health_max
-	info_panel.energy = energy
-	info_panel.energy_max = energy_max
-	info_panel.energy_text = str (energy, "/", energy_max)
-	info_panel.name_text = creature_name
-	info_panel.happiness = happiness
-	info_panel.max_happiness = max_happiness
-	info_panel.love_happiness = love_happiness
-	info_panel.id = tree_id
-	info_panel.evolution_1 = evolution_1
-	info_panel.evolution_2 = evolution_2
-	info_panel.evolution_3 = evolution_3
-	info_panel.evolution_1_text = evolution_1_text	
-	info_panel.evolution_2_text = evolution_2_text
-	info_panel.evolution_3_text = evolution_3_text
-	info_panel.cost_text_1 = cost_text_1
-	info_panel.cost_text_2 = cost_text_2
-	info_panel.cost_text_3 = cost_text_3
-	info_panel.age = age
-			
-	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
-
+	evolution_panel.id = tree_id
+	evolution_panel.evolution_1 = evolution_1
+	evolution_panel.evolution_2 = evolution_2
+	evolution_panel.evolution_3 = evolution_3
+	evolution_panel.evolution_1_text = evolution_1_text	
+	evolution_panel.evolution_2_text = evolution_2_text
+	evolution_panel.evolution_3_text = evolution_3_text
+	evolution_panel.cost_text_1 = cost_text_1
+	evolution_panel.cost_text_2 = cost_text_2
+	evolution_panel.cost_text_3 = cost_text_3
+	
+	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(evolution_panel)
 	
 func save():
 	var save = {
@@ -331,7 +366,9 @@ func save():
 		"tree_id" : tree_id,
 		"age" : age, 
 		"hungry" : hungry,
-		"orientation_choice" : orientation_choice
+		"orientation_choice" : orientation_choice,
+		"sick" : sick,
+		"virus_here" : virus_here
 	}
 
 	return save

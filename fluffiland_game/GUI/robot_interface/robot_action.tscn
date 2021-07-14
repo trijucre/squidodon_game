@@ -1,0 +1,170 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=1]
+[ext_resource path="res://GUI/robot_interface/sprites/recolt_button.png" type="Texture" id=2]
+[ext_resource path="res://GUI/close_icon_clicked.png" type="Texture" id=3]
+[ext_resource path="res://GUI/close_icon.png" type="Texture" id=4]
+[ext_resource path="res://GUI/robot_interface/robot_action.gd" type="Script" id=5]
+
+[node name="robot_action" type="Node2D"]
+position = Vector2( 32, 280 )
+script = ExtResource( 5 )
+
+[node name="move" type="TextureButton" parent="."]
+margin_right = 113.0
+margin_bottom = 33.0
+texture_normal = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="move"]
+margin_left = 27.7073
+margin_top = 7.52545
+margin_right = 77.7073
+margin_bottom = 28.5255
+custom_fonts/font = ExtResource( 1 )
+text = "move"
+
+[node name="hug" type="TextureButton" parent="."]
+margin_top = -40.0
+margin_right = 113.0
+margin_bottom = -7.0
+texture_normal = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="hug"]
+margin_left = 27.7073
+margin_top = 7.52545
+margin_right = 77.7073
+margin_bottom = 28.5255
+custom_fonts/font = ExtResource( 1 )
+text = "hug"
+
+[node name="take" type="TextureButton" parent="."]
+margin_top = -80.0
+margin_right = 113.0
+margin_bottom = -47.0
+texture_normal = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label3" type="Label" parent="take"]
+margin_left = 27.7073
+margin_top = 7.52545
+margin_right = 77.7073
+margin_bottom = 28.5255
+custom_fonts/font = ExtResource( 1 )
+text = "take"
+
+[node name="recolt" type="TextureButton" parent="."]
+margin_top = -121.0
+margin_right = 113.0
+margin_bottom = -88.0
+texture_normal = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="refill" type="TextureButton" parent="."]
+margin_top = -161.0
+margin_right = 113.0
+margin_bottom = -128.0
+texture_normal = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="refill" type="Label" parent="refill"]
+margin_left = 28.0
+margin_top = 9.0
+margin_right = 78.0
+margin_bottom = 30.0
+custom_fonts/font = ExtResource( 1 )
+text = "refill"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="depose" type="TextureButton" parent="."]
+margin_top = -200.0
+margin_right = 113.0
+margin_bottom = -167.0
+texture_normal = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="depose" type="Label" parent="depose"]
+margin_left = 28.0
+margin_top = 8.0
+margin_right = 78.0
+margin_bottom = 29.0
+custom_fonts/font = ExtResource( 1 )
+text = "depose
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="water" type="TextureButton" parent="."]
+margin_top = -242.0
+margin_right = 113.0
+margin_bottom = -209.0
+texture_normal = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="water" type="Label" parent="water"]
+margin_left = 28.0
+margin_top = 8.0
+margin_right = 80.0
+margin_bottom = 29.0
+custom_fonts/font = ExtResource( 1 )
+text = "water"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cook" type="TextureButton" parent="."]
+margin_top = -282.0
+margin_right = 113.0
+margin_bottom = -249.0
+texture_normal = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="water" type="Label" parent="cook"]
+margin_left = 28.0
+margin_top = 8.0
+margin_right = 80.0
+margin_bottom = 29.0
+custom_fonts/font = ExtResource( 1 )
+text = "cook"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="quit" type="TextureButton" parent="."]
+margin_top = -336.0
+margin_right = 47.0
+margin_bottom = -288.0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="move" to="." method="_on_move_pressed"]
+[connection signal="pressed" from="hug" to="." method="_on_hug_pressed"]
+[connection signal="pressed" from="take" to="." method="_on_take_pressed"]
+[connection signal="pressed" from="recolt" to="." method="_on_recolt_pressed"]
+[connection signal="pressed" from="refill" to="." method="_on_refill_pressed"]
+[connection signal="pressed" from="depose" to="." method="_on_depose_pressed"]
+[connection signal="pressed" from="water" to="." method="_on_water_pressed"]
+[connection signal="pressed" from="cook" to="." method="_on_cook_pressed"]
+[connection signal="pressed" from="quit" to="." method="_on_quit_pressed"]

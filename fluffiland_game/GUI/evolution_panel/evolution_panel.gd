@@ -1,20 +1,18 @@
 extends Node2D
 
-signal evolution_1_selected
-signal evolution_2_selected
-signal evolution_3_selected
+signal evolution_selected
 
 onready var id
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-onready var evolution_text_1 = $text/evolution_available/evolution_1
-onready var evolution_text_2 = $text/evolution_available/evolution_2
-onready var evolution_text_3 = $text/evolution_available/evolution_3
+onready var evolution_text_1 = $VBoxContainer/evolution_1_bg/evolution_1_container/evolution_1
+onready var evolution_text_2 = $VBoxContainer/evolution_2_bg/evolution_2_container/evolution_2
+onready var evolution_text_3 = $VBoxContainer/evolution_3_bg/evolution_3_container/evolution_3
 
-onready var evolution_cost_1 = $text/evolution_cost/evolution_cost_1
-onready var evolution_cost_2 = $text/evolution_cost/evolution_cost_2
-onready var evolution_cost_3 = $text/evolution_cost/evolution_cost_3
+onready var evolution_cost_1 = $VBoxContainer/evolution_1_bg/evolution_1_container/cost_bg/cost
+onready var evolution_cost_2 = $VBoxContainer/evolution_2_bg/evolution_2_container/cost2_bg/cost
+onready var evolution_cost_3 = $VBoxContainer/evolution_3_bg/evolution_3_container/cost3_bg/cost
 
 onready var evolution_1
 onready var evolution_2
@@ -30,11 +28,12 @@ onready var cost_text_3
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
-	for node in get_tree().get_nodes_in_group("info_panel") :
+	print ("evolution panel here")
+	self.position = Vector2(0, 0)
+	for node in get_tree().get_nodes_in_group("evolution_panel") :
 		node.queue_free()
 		
-	add_to_group("info_panel")
+	add_to_group("evolution_panel")
 	
 	if evolution_1 == "null" :
 		$text/button/buy_1.set_disabled(true)
@@ -45,9 +44,8 @@ func _ready():
 	if evolution_3 == "null" :
 		$text/button/buy_3.set_disabled(true)
 		
-	self.connect("evolution_1_selected", get_tree().root.get_node("Game/game_start"), "_on_evolution_1_selected")
-	self.connect("evolution_2_selected", get_tree().root.get_node("Game/game_start"), "_on_evolution_2_selected")
-	self.connect("evolution_3_selected", get_tree().root.get_node("Game/game_start"), "_on_evolution_3_selected")	
+	self.connect("evolution_selected", get_tree().root.get_node("Game/game_start"), "_on_evolution_selected")
+
 	evolution_text_1.text = evolution_1_text
 	evolution_text_2.text = evolution_2_text
 	evolution_text_3.text = evolution_3_text
@@ -59,21 +57,17 @@ func _ready():
 
 
 func _on_TextureButton_pressed():
-	get_tree().paused = false
 	self.queue_free()
 
 
 func _on_buy_1_pressed():
-	get_tree().paused = false
-	emit_signal("evolution_1_selected", evolution_1, id, cost_text_1)
+	emit_signal("evolution_selected", evolution_1, id, cost_text_1)
 	self.queue_free()
 
 func _on_buy_2_pressed():
-	get_tree().paused = false	
-	emit_signal("evolution_2_selected", evolution_2, id, cost_text_2)
+	emit_signal("evolution_selected", evolution_2, id, cost_text_2)
 	self.queue_free()
 
-func _on_buy_3_pressed():
-	get_tree().paused = false	
-	emit_signal("evolution_3_selected", evolution_3, id, cost_text_3)
+func _on_buy_3_pressed():	
+	emit_signal("evolution_selected", evolution_3, id, cost_text_3)
 	self.queue_free()

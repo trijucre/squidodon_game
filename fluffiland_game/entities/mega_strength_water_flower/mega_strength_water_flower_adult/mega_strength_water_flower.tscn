@@ -23,7 +23,7 @@ script = ExtResource( 1 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
-[node name="water_button" type="TextureButton" parent="."]
+[node name="info_panel" type="TextureButton" parent="."]
 margin_left = -43.0
 margin_top = -173.0
 margin_right = 44.0
@@ -51,4 +51,4 @@ texture = ExtResource( 6 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/strength_water_flower_light_control = ExtResource( 5 )
-[connection signal="pressed" from="water_button" to="." method="_on_water_button_pressed"]
+[connection signal="pressed" from="info_panel" to="." method="_on_water_button_pressed"]

@@ -101,17 +101,7 @@ func load_game():
 			get_tree().root.get_node("Game/game_start/YSort").add_child(new_object, true)
 				#new_object.set_name()
 			new_object.position = Vector2(node_data["position"])
-		
-		elif new_object.save_value == "Persist_child_robot" :
-	
-			for i in node_data :
-				if i == "filename" or i == "parent" or i == "position" :#or i == "name" :
-					continue
-				new_object.set(i, node_data[i])
-				
-			get_tree().root.get_node("Game/game_start/YSort/robot/container").add_child(new_object, true)
-				#new_object.set_name()
-			new_object.position = Vector2(node_data["position"])
+			
 
 		elif new_object.save_value == "Persist_fluffi_button" :			
 

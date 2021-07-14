@@ -12,7 +12,6 @@ script = ExtResource( 98 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-smoothing_enabled = true
 script = ExtResource( 104 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -40,6 +39,11 @@ margin_bottom = 82.669
 custom_fonts/font = ExtResource( 2 )
 text = "quit
 "
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="load2" type="TextureButton" parent="CanvasLayer"]
 anchor_left = -0.0666667

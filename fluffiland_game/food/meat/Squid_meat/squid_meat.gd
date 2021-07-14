@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends StaticBody2D
 
 var save_value = "Persist_child"
 

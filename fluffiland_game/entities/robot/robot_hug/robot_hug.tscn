@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://entities/robot/sprites/robot_exalted.png" type="Texture" id=1]
+[ext_resource path="res://entities/robot/robot_hug/robot_hug.gd" type="Script" id=2]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 17.6137
+height = 30.5747
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "walk",
+"speed": 5.0
+} ]
+
+[node name="robot_hug" type="KinematicBody2D"]
+collision_layer = 7
+collision_mask = 7
+script = ExtResource( 2 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -12 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="sprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -148 )
+frames = SubResource( 2 )
+animation = "walk"
+
+[node name="robot_action" type="TextureButton" parent="."]
+margin_left = -34.0
+margin_top = -150.0
+margin_right = 40.0
+margin_bottom = -81.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="."]
+[connection signal="pressed" from="robot_action" to="." method="_on_robot_action_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

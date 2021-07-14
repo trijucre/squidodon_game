@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://Ground.tres" type="TileSet" id=1]
 [ext_resource path="res://Grass.tres" type="TileSet" id=2]
@@ -8,6 +8,9 @@
 [ext_resource path="res://GUI/user_interface/background/UI_background_top_left.png" type="Texture" id=6]
 [ext_resource path="res://GUI/user_interface/background/UI_background_back_left.png" type="Texture" id=7]
 [ext_resource path="res://mana_counter.gd" type="Script" id=8]
+[ext_resource path="res://GUI/user_interface/robot_button/robot_item_cook.tscn" type="PackedScene" id=9]
+[ext_resource path="res://GUI/user_interface/robot_button/robot_item_hug.tscn" type="PackedScene" id=10]
+[ext_resource path="res://GUI/user_interface/robot_button/robot_item_take.tscn" type="PackedScene" id=11]
 [ext_resource path="res://GUI/user_interface/background/UI_background.png" type="Texture" id=13]
 [ext_resource path="res://Camera2D.gd" type="Script" id=18]
 [ext_resource path="res://areas.gd" type="Script" id=20]
@@ -122,22 +125,22 @@ script = ExtResource( 39 )
 position = Vector2( 0, -1 )
 
 [node name="fluffi_container4" parent="CanvasLayer/fluffi_node" instance=ExtResource( 5 )]
-position = Vector2( 1350.46, 939.531 )
+position = Vector2( 1310.46, 939.531 )
 
 [node name="fluffi_container5" parent="CanvasLayer/fluffi_node" instance=ExtResource( 5 )]
-position = Vector2( 1206.46, 939.531 )
+position = Vector2( 1190.46, 939.531 )
 
 [node name="fluffi_container6" parent="CanvasLayer/fluffi_node" instance=ExtResource( 5 )]
-position = Vector2( 1054.46, 939.531 )
+position = Vector2( 1062.46, 939.531 )
 
 [node name="fluffi_container" parent="CanvasLayer/fluffi_node" instance=ExtResource( 4 )]
-position = Vector2( 353.481, 939.236 )
+position = Vector2( 297.481, 939.236 )
 
 [node name="fluffi_container2" parent="CanvasLayer/fluffi_node" instance=ExtResource( 4 )]
-position = Vector2( 505.481, 939.236 )
+position = Vector2( 425.481, 939.236 )
 
 [node name="fluffi_container3" parent="CanvasLayer/fluffi_node" instance=ExtResource( 4 )]
-position = Vector2( 657.481, 939.236 )
+position = Vector2( 553.481, 939.236 )
 
 [node name="clock_node" type="Node2D" parent="CanvasLayer"]
 position = Vector2( 0, -120 )
@@ -174,7 +177,7 @@ __meta__ = {
 }
 
 [node name="ui_background_right" type="TextureRect" parent="CanvasLayer/ui_background"]
-margin_left = 1501.03
+margin_left = 1413.03
 margin_top = -105.45
 margin_right = 1920.03
 margin_bottom = -0.449951
@@ -207,9 +210,9 @@ anchor_left = 0.949
 anchor_top = 0.937
 anchor_right = 0.981
 anchor_bottom = 0.979
-margin_left = -330.08
+margin_left = -347.08
 margin_top = 1.03998
-margin_right = -330.52
+margin_right = -347.52
 margin_bottom = 0.680054
 custom_fonts/font = ExtResource( 21 )
 custom_colors/font_color = Color( 0.764706, 0.235294, 0.0823529, 1 )
@@ -309,6 +312,51 @@ margin_right = 252.0
 margin_bottom = 28.0
 custom_fonts/font = ExtResource( 21 )
 text = "show tree"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="robot_items" type="Control" parent="CanvasLayer"]
+margin_left = 10.0
+margin_top = 787.0
+margin_right = 50.0
+margin_bottom = 827.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/robot_items"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="robot_item_cook" parent="CanvasLayer/robot_items/VBoxContainer" instance=ExtResource( 9 )]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+
+[node name="robot_item_hug" parent="CanvasLayer/robot_items/VBoxContainer" instance=ExtResource( 10 )]
+margin_top = 44.0
+margin_right = 40.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 0, 40 )
+
+[node name="robot_item_take" parent="CanvasLayer/robot_items/VBoxContainer" instance=ExtResource( 11 )]
+margin_top = 88.0
+margin_right = 40.0
+margin_bottom = 88.0
+
+[node name="robot_button_node" type="Node2D" parent="CanvasLayer"]
+position = Vector2( 9, 933 )
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/robot_button_node"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 258.0
+margin_bottom = 137.0
+columns = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }

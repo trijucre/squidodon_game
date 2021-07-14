@@ -1,244 +1,213 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://GUI/close_icon.png" type="Texture" id=1]
+[ext_resource path="res://GUI/evolution_panel/sprites/container_light.png" type="Texture" id=1]
 [ext_resource path="res://GUI/evolution_panel/evolution_panel.gd" type="Script" id=2]
-[ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=3]
-[ext_resource path="res://GUI/close_icon_clicked.png" type="Texture" id=4]
-[ext_resource path="res://GUI/info_panel/info_panel_base.png" type="Texture" id=5]
-[ext_resource path="res://GUI/items_tree/information_item/buy_button.png" type="Texture" id=6]
-[ext_resource path="res://GUI/items_tree/information_item/buy_button_pushed.png" type="Texture" id=7]
-[ext_resource path="res://GUI/strength_logo.png" type="Texture" id=8]
+[ext_resource path="res://GUI/evolution_panel/sprites/evolve_button.png" type="Texture" id=3]
+[ext_resource path="res://GUI/evolution_panel/sprites/evolve_button_pressed.png" type="Texture" id=4]
+[ext_resource path="res://GUI/evolution_panel/sprites/cost_background.png" type="Texture" id=5]
+[ext_resource path="res://GUI/close_icon.png" type="Texture" id=6]
+[ext_resource path="res://GUI/close_icon_clicked.png" type="Texture" id=7]
+[ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=8]
 
 [node name="evolution_panel" type="Node2D"]
 pause_mode = 2
 position = Vector2( -232, -176 )
 script = ExtResource( 2 )
 
-[node name="TextureRect" type="TextureRect" parent="."]
-margin_right = 340.0
-margin_bottom = 230.0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="evolution_1_bg" type="TextureRect" parent="VBoxContainer"]
+margin_right = 400.0
+margin_bottom = 66.0
+rect_pivot_offset = Vector2( -216.361, -33.606 )
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="evolution_1_container" type="Control" parent="VBoxContainer/evolution_1_bg"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="evolution_1" type="Label" parent="VBoxContainer/evolution_1_bg/evolution_1_container"]
+margin_left = 24.0
+margin_top = 11.0
+margin_right = 221.0
+margin_bottom = 48.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 0.0156863, 0.509804, 0.662745, 1 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cost_bg" type="TextureRect" parent="VBoxContainer/evolution_1_bg/evolution_1_container"]
+margin_left = 226.0
+margin_right = 276.0
+margin_bottom = 58.0
 texture = ExtResource( 5 )
+stretch_mode = 4
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="text" type="HBoxContainer" parent="."]
-margin_left = 12.0
-margin_top = 14.0
-margin_right = 373.0
-margin_bottom = 232.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="evolution_available" type="VBoxContainer" parent="text"]
-pause_mode = 2
-margin_right = 200.0
-margin_bottom = 218.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="evolution_1" type="Label" parent="text/evolution_available"]
-margin_right = 200.0
-margin_bottom = 54.0
-rect_min_size = Vector2( 200, 54 )
-custom_fonts/font = ExtResource( 3 )
-custom_colors/font_color = Color( 0.372549, 0.478431, 0.603922, 1 )
+[node name="cost" type="Label" parent="VBoxContainer/evolution_1_bg/evolution_1_container/cost_bg"]
+margin_right = 50.0
+margin_bottom = 58.0
+custom_fonts/font = ExtResource( 8 )
 align = 1
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="text/evolution_available"]
-margin_top = 58.0
-margin_right = 200.0
-margin_bottom = 78.0
-rect_min_size = Vector2( 0, 20 )
+[node name="buy_1" type="TextureButton" parent="VBoxContainer/evolution_1_bg/evolution_1_container"]
+margin_left = 317.0
+margin_right = 357.0
+margin_bottom = 58.0
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 4 )
+expand = true
+stretch_mode = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="evolution_2" type="Label" parent="text/evolution_available"]
-margin_top = 82.0
-margin_right = 200.0
+[node name="evolution_2_bg" type="TextureRect" parent="VBoxContainer"]
+margin_top = 70.0
+margin_right = 400.0
 margin_bottom = 136.0
-rect_min_size = Vector2( 200, 54 )
-custom_fonts/font = ExtResource( 3 )
+rect_pivot_offset = Vector2( -216.361, -33.606 )
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="evolution_2_container" type="Control" parent="VBoxContainer/evolution_2_bg"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="evolution_2" type="Label" parent="VBoxContainer/evolution_2_bg/evolution_2_container"]
+margin_left = 24.0
+margin_top = 11.0
+margin_right = 221.0
+margin_bottom = 48.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 0.0156863, 0.509804, 0.662745, 1 )
 align = 1
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer2" type="MarginContainer" parent="text/evolution_available"]
-margin_top = 140.0
-margin_right = 200.0
-margin_bottom = 160.0
-rect_min_size = Vector2( 0, 20 )
+[node name="cost2_bg" type="TextureRect" parent="VBoxContainer/evolution_2_bg/evolution_2_container"]
+margin_left = 226.0
+margin_right = 276.0
+margin_bottom = 58.0
+texture = ExtResource( 5 )
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="evolution_3" type="Label" parent="text/evolution_available"]
-margin_top = 164.0
-margin_right = 200.0
-margin_bottom = 218.0
-rect_min_size = Vector2( 200, 54 )
-custom_fonts/font = ExtResource( 3 )
+[node name="cost" type="Label" parent="VBoxContainer/evolution_2_bg/evolution_2_container/cost2_bg"]
+margin_right = 50.0
+margin_bottom = 58.0
+custom_fonts/font = ExtResource( 8 )
+align = 1
+valign = 1
+
+[node name="buy_2" type="TextureButton" parent="VBoxContainer/evolution_2_bg/evolution_2_container"]
+margin_left = 317.0
+margin_right = 357.0
+margin_bottom = 58.0
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 4 )
+expand = true
+stretch_mode = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="evolution_3_bg" type="TextureRect" parent="VBoxContainer"]
+margin_top = 140.0
+margin_right = 400.0
+margin_bottom = 206.0
+rect_pivot_offset = Vector2( -216.361, -33.606 )
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="evolution_3_container" type="Control" parent="VBoxContainer/evolution_3_bg"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="evolution_3" type="Label" parent="VBoxContainer/evolution_3_bg/evolution_3_container"]
+margin_left = 24.0
+margin_top = 11.0
+margin_right = 221.0
+margin_bottom = 48.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 0.0156863, 0.509804, 0.662745, 1 )
 align = 1
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="currency" type="VBoxContainer" parent="text"]
-margin_left = 204.0
-margin_right = 258.0
-margin_bottom = 218.0
-
-[node name="strength_icon" type="TextureRect" parent="text/currency"]
-margin_right = 54.0
-margin_bottom = 54.0
-rect_min_size = Vector2( 54, 54 )
-texture = ExtResource( 8 )
+[node name="cost3_bg" type="TextureRect" parent="VBoxContainer/evolution_3_bg/evolution_3_container"]
+margin_left = 226.0
+margin_right = 276.0
+margin_bottom = 58.0
+texture = ExtResource( 5 )
 stretch_mode = 4
-
-[node name="MarginContainer1" type="MarginContainer" parent="text/currency"]
-margin_top = 58.0
-margin_right = 54.0
-margin_bottom = 78.0
-rect_min_size = Vector2( 0, 20 )
-
-[node name="strength_icon2" type="TextureRect" parent="text/currency"]
-margin_top = 82.0
-margin_right = 54.0
-margin_bottom = 136.0
-rect_min_size = Vector2( 54, 54 )
-texture = ExtResource( 8 )
-stretch_mode = 4
-
-[node name="MarginContainer2" type="MarginContainer" parent="text/currency"]
-margin_top = 140.0
-margin_right = 54.0
-margin_bottom = 160.0
-rect_min_size = Vector2( 0, 20 )
-
-[node name="strength_icon3" type="TextureRect" parent="text/currency"]
-margin_top = 164.0
-margin_right = 54.0
-margin_bottom = 218.0
-rect_min_size = Vector2( 54, 54 )
-texture = ExtResource( 8 )
-stretch_mode = 4
-
-[node name="evolution_cost" type="VBoxContainer" parent="text"]
-margin_left = 262.0
-margin_right = 312.0
-margin_bottom = 218.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="evolution_cost_1" type="Label" parent="text/evolution_cost"]
+[node name="cost" type="Label" parent="VBoxContainer/evolution_3_bg/evolution_3_container/cost3_bg"]
 margin_right = 50.0
-margin_bottom = 54.0
-rect_min_size = Vector2( 50, 54 )
-custom_fonts/font = ExtResource( 3 )
+margin_bottom = 58.0
+custom_fonts/font = ExtResource( 8 )
+align = 1
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer1" type="MarginContainer" parent="text/evolution_cost"]
-margin_top = 58.0
-margin_right = 50.0
-margin_bottom = 78.0
-rect_min_size = Vector2( 0, 20 )
-
-[node name="evolution_cost_2" type="Label" parent="text/evolution_cost"]
-margin_top = 82.0
-margin_right = 50.0
-margin_bottom = 136.0
-rect_min_size = Vector2( 50, 54 )
-custom_fonts/font = ExtResource( 3 )
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MarginContainer2" type="MarginContainer" parent="text/evolution_cost"]
-margin_top = 140.0
-margin_right = 50.0
-margin_bottom = 160.0
-rect_min_size = Vector2( 0, 20 )
-
-[node name="evolution_cost_3" type="Label" parent="text/evolution_cost"]
-margin_top = 164.0
-margin_right = 50.0
-margin_bottom = 218.0
-rect_min_size = Vector2( 50, 54 )
-custom_fonts/font = ExtResource( 3 )
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="button" type="VBoxContainer" parent="text"]
-margin_left = 316.0
-margin_right = 419.0
-margin_bottom = 218.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="buy_1" type="TextureButton" parent="text/button"]
-margin_right = 103.0
-margin_bottom = 54.0
-texture_normal = ExtResource( 6 )
-texture_pressed = ExtResource( 7 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MarginContainer1" type="MarginContainer" parent="text/button"]
-margin_top = 58.0
-margin_right = 103.0
-margin_bottom = 78.0
-rect_min_size = Vector2( 0, 20 )
-
-[node name="buy_2" type="TextureButton" parent="text/button"]
-margin_top = 82.0
-margin_right = 103.0
-margin_bottom = 136.0
-texture_normal = ExtResource( 6 )
-texture_pressed = ExtResource( 7 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MarginContainer2" type="MarginContainer" parent="text/button"]
-margin_top = 140.0
-margin_right = 103.0
-margin_bottom = 160.0
-rect_min_size = Vector2( 0, 20 )
-
-[node name="buy_3" type="TextureButton" parent="text/button"]
-margin_top = 164.0
-margin_right = 103.0
-margin_bottom = 218.0
-texture_normal = ExtResource( 6 )
-texture_pressed = ExtResource( 7 )
+[node name="buy_3" type="TextureButton" parent="VBoxContainer/evolution_3_bg/evolution_3_container"]
+margin_left = 317.0
+margin_right = 357.0
+margin_bottom = 58.0
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 4 )
+expand = true
+stretch_mode = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TextureButton" type="TextureButton" parent="."]
-margin_left = -45.4612
-margin_top = 1.68376
-margin_right = 1.53876
-margin_bottom = 49.6838
-texture_normal = ExtResource( 1 )
-texture_pressed = ExtResource( 4 )
+margin_left = 408.0
+margin_top = 3.0
+margin_right = 455.0
+margin_bottom = 51.0
+texture_normal = ExtResource( 6 )
+texture_pressed = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="text/button/buy_1" to="." method="_on_buy_1_pressed"]
-[connection signal="pressed" from="text/button/buy_2" to="." method="_on_buy_2_pressed"]
-[connection signal="pressed" from="text/button/buy_3" to="." method="_on_buy_3_pressed"]
+[connection signal="pressed" from="VBoxContainer/evolution_1_bg/evolution_1_container/buy_1" to="." method="_on_buy_1_pressed"]
+[connection signal="pressed" from="VBoxContainer/evolution_2_bg/evolution_2_container/buy_2" to="." method="_on_buy_2_pressed"]
+[connection signal="pressed" from="VBoxContainer/evolution_3_bg/evolution_3_container/buy_3" to="." method="_on_buy_3_pressed"]
 [connection signal="pressed" from="TextureButton" to="." method="_on_TextureButton_pressed"]

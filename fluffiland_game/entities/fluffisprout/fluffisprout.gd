@@ -24,7 +24,10 @@ var energy_max = 3
 
 onready var sprite = $sprite
 onready var life_area = $fluffi_node_base/life_space/life_area
+
 onready var timer = $fluffi_node_base/Timer
+onready var button = $info_panel
+
 onready var area_radius = life_area.shape.radius
 export(String) var random_noun
 export(String) var random_adjective
@@ -84,42 +87,49 @@ func _ready():
 		random_adjective = str(get_random_word_from_file("res://other/adjectiveslist.txt"))
 		creature_name = str(random_adjective," ", random_noun)
 	timer.connect("timeout", self, "_on_Timer_timeout")
-	
+	button.connect("mouse_entered", self, "show_stat")
+	button.connect("mouse_exited", self, "hide_stat")
 	
 func set_sleep():
 
 	var animation = "side_sleep"
 	sprite.play(animation)
-
-func _on_info_panel_pressed():
+func show_stat():
+	print(creature_name," is hovered")
 	var info_panel_scene = preload ("res://GUI/info_panel/info_panel.tscn")
 	var info_panel = info_panel_scene.instance()
 	
 	info_panel.specie_text = specie
-	info_panel.gender_text =  gender
+	info_panel.gender_text = gender
 	info_panel.pv = health
 	info_panel.pv_max = health_max
 	info_panel.energy = energy
 	info_panel.energy_max = energy_max
-	info_panel.energy_text = str (energy, "/", energy_max)
 	info_panel.name_text = creature_name
-	info_panel.happiness = happiness
-	info_panel.max_happiness = max_happiness
-	info_panel.love_happiness = 0
-	info_panel.pregnancy = false
-	info_panel.id = id
-	info_panel.evolution_1 = evolution_1
-	info_panel.evolution_2 = evolution_2
-	info_panel.evolution_3 = evolution_3
-	info_panel.evolution_1_text = evolution_1_text	
-	info_panel.evolution_2_text = evolution_2_text
-	info_panel.evolution_3_text = evolution_3_text
-	info_panel.cost_text_1 = cost_text_1
-	info_panel.cost_text_2 = cost_text_2
-	info_panel.cost_text_3 = cost_text_3
 	info_panel.age = age
 			
 	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
+
+func hide_stat():
+	for node in get_tree().get_nodes_in_group("info_panel"):
+		node.queue_free()
+
+func _on_info_panel_pressed():
+	var evolution_panel_scene = preload ("res://GUI/evolution_panel/evolution_panel.tscn")
+	var evolution_panel = evolution_panel_scene.instance()
+	
+	evolution_panel.id = id
+	evolution_panel.evolution_1 = evolution_1
+	evolution_panel.evolution_2 = evolution_2
+	evolution_panel.evolution_3 = evolution_3
+	evolution_panel.evolution_1_text = evolution_1_text	
+	evolution_panel.evolution_2_text = evolution_2_text
+	evolution_panel.evolution_3_text = evolution_3_text
+	evolution_panel.cost_text_1 = cost_text_1
+	evolution_panel.cost_text_2 = cost_text_2
+	evolution_panel.cost_text_3 = cost_text_3
+			
+	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(evolution_panel)
 	
 
 func save():

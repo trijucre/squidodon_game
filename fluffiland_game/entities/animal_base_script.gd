@@ -127,6 +127,9 @@ var food_eaten = false
 var poop_scene
 var poop_time = 0
 
+#onready var timer = $energyandlife
+onready var animation = $AnimatedSprite
+onready var button = $info_button
 #variable popup
 var love_bubble = preload("res://popup/love_bubble.tscn")
 var hunger_bubble = preload("res://popup/hunger_bubble.tscn")
@@ -157,6 +160,10 @@ var robot_here = false
 var predator_here = false
 
 var food_found = false
+
+var sick = false
+var virus_here = false
+onready var virus_scene = preload("res://other/virus/virus.tscn")
 
 
 
@@ -190,8 +197,11 @@ func _ready():
 	add_to_group(id, true)
 	add_to_group ("Persist", true)
 	add_to_group("Persist_child", true)
-
 	
+	#timer.connect("timeout", self, "_on_Timer_timeout")
+	animation.connect("animation_finished", self , "_on_AnimatedSprite_animation_finished")
+	button.connect("mouse_entered", self, "show_stat")
+	button.connect("mouse_exited", self, "hide_stat")
 	rng.randomize()
 	rngx.randomize()
 	rngy.randomize()
@@ -201,7 +211,10 @@ func _ready():
 	directionY = 0
 	directionX = 0
 
-	
+	if sick == true and virus_here == true :
+		var virus = virus_scene.instance()
+		self.add_child(virus)
+		
 	love.resize(num_rays)
 	interest.resize(num_rays)
 	danger.resize(num_rays)
@@ -271,6 +284,11 @@ func animates_animal() :
 	
 
 func _physics_process(delta):
+	
+	if sick == true and virus_here == false :
+		var virus = virus_scene.instance()
+		self.add_child(virus)
+		virus_here = true
 
 	if energy > energy_max :
 		energy = energy_max
@@ -368,8 +386,10 @@ func set_interest():
 						
 				elif  target.is_in_group(specie) and target.sleeping == false and energy > hunger and not danger_here and not love_here and need_friend == true :
 					set_friendship(i,distance)
-				
-				elif energy <= hunger and (target.is_in_group(eat_1) or target.is_in_group(eat_2)) and not danger_here and not love_here and target.eatable == true  :
+				elif sick == true and target.is_in_group("medicine") and not danger_here and not love_here and target.eatable == true  :
+					set_searching_for_food(i, distance, target)
+					
+				elif sick == false and energy <= hunger and (target.is_in_group(eat_1) or target.is_in_group(eat_2)) and not danger_here and not love_here and target.eatable == true  :
 					set_searching_for_food(i, distance, target)
 				
 				elif food_chain_position == "hunter" and energy <= hunger and target.is_in_group("prey") and not danger_here and not love_here :
@@ -553,7 +573,7 @@ func set_sleep():
 
 	movement = 0
 	other_animation_playing = true
-	var animation = "side_sleep"
+	animation = "side_sleep"
 	$AnimatedSprite.play(animation)
 	chosen_dir = Vector2.ZERO
 	
@@ -594,7 +614,7 @@ func eat(target) :
 	max_speed = 0
 	movement = 0
 	other_animation_playing = true
-	var animation = "side_attack"
+	animation = "side_attack"
 	$AnimatedSprite.play(animation)
 	
 	health += target.health
@@ -609,6 +629,9 @@ func eat(target) :
 		
 	target.energy = 0
 	target.health = 0
+	
+	if target.is_in_group("medicine") and sick == true :
+		sick = false
 		
 	food_eaten = true
 		
@@ -629,7 +652,7 @@ func question():
 	#max_speed = 0
 	#movement = 0
 	other_animation_playing = true
-	var animation = "side_default"
+	animation = "side_default"
 	$AnimatedSprite.play(animation)
 	max_speed = speed
 
@@ -717,7 +740,7 @@ func _on_energyandlife_timeout():
 			pregnant = false
 
 	
-	if happiness >= max_happiness :
+	if happiness > max_happiness :
 		happiness = max_happiness
 	
 	if happiness >= baby_happiness and in_love == false :
@@ -767,7 +790,15 @@ func _on_energyandlife_timeout():
 			need_friend = true
 			time_to_meet_friend = 0
 		
+
+		
+	if sick == false and virus_here == true :
+		for node in self.get_children() :
+			if node.is_in_group("virus") :
+				node.queue_free()
+				virus_here = false
 	
+
 	time += 1
 	if time >= 60 :
 		age += 1
@@ -778,41 +809,51 @@ func _on_energyandlife_timeout():
 			happiness -= 1
 		else : 
 			health -= 1
+		
+		if sick == true :
+			health -= 1
 
-func _on_info_button_pressed():
+				
+func show_stat():
+	print(creature_name," is hovered")
 	var info_panel_scene = preload ("res://GUI/info_panel/info_panel.tscn")
 	var info_panel = info_panel_scene.instance()
 	
 	info_panel.specie_text = specie
 	info_panel.gender_text = gender
-	info_panel.pv_text = str (health, "/", health_max)
 	info_panel.pv = health
 	info_panel.pv_max = health_max
 	info_panel.energy = energy
 	info_panel.energy_max = energy_max
-	info_panel.energy_text = str (energy, "/", energy_max)
 	info_panel.name_text = creature_name
-	info_panel.happiness = happiness
-	info_panel.max_happiness = max_happiness
-	info_panel.love_happiness = love_happiness
-	info_panel.pregnancy = pregnant
-	info_panel.id = id
-	info_panel.evolution_1 = evolution_1
-	info_panel.evolution_2 = evolution_2
-	info_panel.evolution_3 = evolution_3
-	info_panel.evolution_1_text = evolution_1_text	
-	info_panel.evolution_2_text = evolution_2_text
-	info_panel.evolution_3_text = evolution_3_text
-	info_panel.cost_text_1 = cost_text_1
-	info_panel.cost_text_2 = cost_text_2
-	info_panel.cost_text_3 = cost_text_3
-	info_panel.produce_1 = produce_1
-	info_panel.produce_2 = produce_2
-	info_panel.eat_1 = eat_1
-	info_panel.eat_2 = eat_2
 	info_panel.age = age
-
+	info_panel.pregnancy = pregnant
+	info_panel.eat_1 = eat_1
+	info_panel.eat_1 = eat_2
+			
 	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
+
+func hide_stat():
+	for node in get_tree().get_nodes_in_group("info_panel"):
+		node.queue_free()
+		
+func _on_info_button_pressed():
+	print ("info button pressed for animal")
+	var evolution_panel_scene = preload ("res://GUI/evolution_panel/evolution_panel.tscn")
+	var evolution_panel = evolution_panel_scene.instance()
+	
+	evolution_panel.id = id
+	evolution_panel.evolution_1 = evolution_1
+	evolution_panel.evolution_2 = evolution_2
+	evolution_panel.evolution_3 = evolution_3
+	evolution_panel.evolution_1_text = evolution_1_text	
+	evolution_panel.evolution_2_text = evolution_2_text
+	evolution_panel.evolution_3_text = evolution_3_text
+	evolution_panel.cost_text_1 = cost_text_1
+	evolution_panel.cost_text_2 = cost_text_2
+	evolution_panel.cost_text_3 = cost_text_3
+
+	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(evolution_panel)
 	
 func save():
 	var save = {
@@ -845,7 +886,9 @@ func save():
 		"sleeping" : sleeping,
 		"in_love" : in_love,
 		"need_friend" : need_friend,
-		"time_to_meet_friend" : time_to_meet_friend
+		"time_to_meet_friend" : time_to_meet_friend,
+		"sick" : sick,
+		"virus_here" : virus_here
 
 	}
 	return save
