@@ -8,6 +8,7 @@ extends KinematicBody2D
 #signal fluffilus_birth
 #signal fluffilus_death
 signal gender
+signal produce_object
 
 var save_value = "Persist_child"
 
@@ -25,6 +26,9 @@ var produce_1
 var produce_2 
 var eat_1 
 var eat_2 
+
+var child_radius = 75
+var area_radius = 75
 
 var other_animation_playing = false
 var food_chain_position
@@ -126,6 +130,7 @@ var egg_number = 0
 var food_eaten = false
 var poop_scene
 var poop_time = 0
+var poop_number = 1
 
 #onready var timer = $energyandlife
 onready var animation = $AnimatedSprite
@@ -165,8 +170,8 @@ var sick = false
 var virus_here = false
 onready var virus_scene = preload("res://other/virus/virus.tscn")
 
-
-
+var mouse_hovering = false
+var time_mouse = 0
 
 
 func _ready():
@@ -202,6 +207,7 @@ func _ready():
 	animation.connect("animation_finished", self , "_on_AnimatedSprite_animation_finished")
 	button.connect("mouse_entered", self, "show_stat")
 	button.connect("mouse_exited", self, "hide_stat")
+	self.connect("produce_object", get_tree().root.get_node("Game/game_start"), "produce_object")
 	rng.randomize()
 	rngx.randomize()
 	rngy.randomize()
@@ -680,32 +686,20 @@ func pregnancy_true() :
 func pregnancy_end():
 	
 	for i in egg_number :
-		
-		var egg = egg_scene.instance()
-		get_tree().root.get_node("Game//game_start/YSort").add_child(egg)
-		
-		if sprite_direction == "right" :
-			egg.position.x = self.position.x - 50
-			egg.position.y = self.position.y + randi () % -50 + 50
-			
-		if sprite_direction == "left" :
-			egg.position.x = self.position.x + 50
-			egg.position.y = self.position.y + randi () % -50 + 50
-
+		emit_signal("produce_object", self.position, self.get_path(), child_radius, area_radius, egg_scene, id, "egg")
 
 func poop() :
-	var poop = poop_scene.instance()
-	get_tree().root.get_node("Game/game_start/YSort").add_child(poop)
-		
-	if sprite_direction == "right" :
-		poop.position.x = self.position.x - 70
-		poop.position.y = self.position.y - 15
-		
-	if sprite_direction == "left" :
-			poop.position.x = self.position.x + 70
-			poop.position.y = self.position.y - 15
+	for number in poop_number :
+		emit_signal("produce_object", self.position, self.get_path(), child_radius, area_radius, poop_scene, id, "poop")
 
-
+func _on_object_produced(type):
+	if type == "poop" :
+		poop_time = 0
+		food_eaten = false
+	
+	if type == "egg" :
+		pregnancy_time = 0
+		pregnant = false
 
 func death():
 	$energyandlife.stop()
@@ -725,19 +719,17 @@ func _on_AnimatedSprite_animation_finished():
 
 
 func _on_energyandlife_timeout():
+	
 	if food_eaten == true :
 		poop_time += 1
 		if poop_time >= 60 :
 			poop()
-			poop_time = 0
-			food_eaten = false
 		
 	if pregnant == true :
 		pregnancy_time += 1
 		if pregnancy_time >= baby_incubation :
 			pregnancy_end()
-			pregnancy_time = 0
-			pregnant = false
+
 
 	
 	if happiness > max_happiness :
@@ -812,33 +804,40 @@ func _on_energyandlife_timeout():
 		
 		if sick == true :
 			health -= 1
-
+			
+	if mouse_hovering == true  :
+		time_mouse += 1
+		if time_mouse >= 2 :
+			var info_panel_scene = preload ("res://GUI/info_panel/info_panel.tscn")
+			var info_panel = info_panel_scene.instance()
+			
+			info_panel.specie_text = specie
+			info_panel.gender_text = gender
+			info_panel.pv = health
+			info_panel.pv_max = health_max
+			info_panel.energy = energy
+			info_panel.energy_max = energy_max
+			info_panel.happiness = happiness
+			info_panel.max_happiness = max_happiness
+			info_panel.name_text = creature_name
+			info_panel.age = age
+			info_panel.pregnancy = pregnant
+			info_panel.eat_1 = eat_1
+			info_panel.eat_1 = eat_2
+					
+			get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
 				
 func show_stat():
-	print(creature_name," is hovered")
-	var info_panel_scene = preload ("res://GUI/info_panel/info_panel.tscn")
-	var info_panel = info_panel_scene.instance()
-	
-	info_panel.specie_text = specie
-	info_panel.gender_text = gender
-	info_panel.pv = health
-	info_panel.pv_max = health_max
-	info_panel.energy = energy
-	info_panel.energy_max = energy_max
-	info_panel.name_text = creature_name
-	info_panel.age = age
-	info_panel.pregnancy = pregnant
-	info_panel.eat_1 = eat_1
-	info_panel.eat_1 = eat_2
-			
-	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
+	mouse_hovering = true 
 
 func hide_stat():
+	mouse_hovering = false
+	time_mouse = 0
 	for node in get_tree().get_nodes_in_group("info_panel"):
 		node.queue_free()
 		
 func _on_info_button_pressed():
-	print ("info button pressed for animal")
+
 	var evolution_panel_scene = preload ("res://GUI/evolution_panel/evolution_panel.tscn")
 	var evolution_panel = evolution_panel_scene.instance()
 	

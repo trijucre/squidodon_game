@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://Ground.tres" type="TileSet" id=1]
 [ext_resource path="res://Grass.tres" type="TileSet" id=2]
@@ -11,7 +11,9 @@
 [ext_resource path="res://GUI/user_interface/robot_button/robot_item_cook.tscn" type="PackedScene" id=9]
 [ext_resource path="res://GUI/user_interface/robot_button/robot_item_hug.tscn" type="PackedScene" id=10]
 [ext_resource path="res://GUI/user_interface/robot_button/robot_item_take.tscn" type="PackedScene" id=11]
+[ext_resource path="res://strength_counter_max.gd" type="Script" id=12]
 [ext_resource path="res://GUI/user_interface/background/UI_background.png" type="Texture" id=13]
+[ext_resource path="res://mana_counter_max.gd" type="Script" id=14]
 [ext_resource path="res://Camera2D.gd" type="Script" id=18]
 [ext_resource path="res://areas.gd" type="Script" id=20]
 [ext_resource path="res://font/bold_font.tres" type="DynamicFont" id=21]
@@ -21,7 +23,6 @@
 [ext_resource path="res://game_start.gd" type="Script" id=26]
 [ext_resource path="res://GUI/close_icon.png" type="Texture" id=30]
 [ext_resource path="res://strength_counter.gd" type="Script" id=33]
-[ext_resource path="res://water_counter.gd" type="Script" id=34]
 [ext_resource path="res://year_counter.gd" type="Script" id=35]
 [ext_resource path="res://GUI/clock/clock.tscn" type="PackedScene" id=36]
 [ext_resource path="res://Water.gd" type="Script" id=37]
@@ -205,6 +206,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="strength_counter_max" type="Label" parent="CanvasLayer"]
+anchor_left = 0.906
+anchor_top = 0.937
+anchor_right = 0.937
+anchor_bottom = 0.979
+margin_left = -126.52
+margin_top = 17.04
+margin_right = -126.04
+margin_bottom = 16.6801
+custom_fonts/font = ExtResource( 21 )
+custom_colors/font_color = Color( 0.054902, 0.396078, 0.584314, 1 )
+custom_colors/font_outline_modulate = Color( 0.054902, 0.396078, 0.584314, 1 )
+align = 1
+valign = 1
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="mana_counter" type="Label" parent="CanvasLayer"]
 anchor_left = 0.949
 anchor_top = 0.937
@@ -224,21 +244,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="water_counter" type="Label" parent="CanvasLayer"]
+[node name="mana_counter_max" type="Label" parent="CanvasLayer"]
 anchor_left = 0.906
 anchor_top = 0.937
 anchor_right = 0.937
 anchor_bottom = 0.979
-margin_left = -86.52
-margin_top = 1.03998
-margin_right = -86.04
-margin_bottom = 0.680054
+margin_left = -222.52
+margin_top = 17.04
+margin_right = -222.04
+margin_bottom = 16.6801
 custom_fonts/font = ExtResource( 21 )
 custom_colors/font_color = Color( 0.054902, 0.396078, 0.584314, 1 )
 custom_colors/font_outline_modulate = Color( 0.054902, 0.396078, 0.584314, 1 )
 align = 1
 valign = 1
-script = ExtResource( 34 )
+script = ExtResource( 14 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -368,7 +388,7 @@ script = ExtResource( 40 )
 [connection signal="day_number" from="." to="CanvasLayer/day_counter" method="_on_game_start_day_number"]
 [connection signal="number_of_mana" from="." to="CanvasLayer/mana_counter" method="_on_game_start_number_of_mana"]
 [connection signal="number_of_strength" from="." to="CanvasLayer/strength_counter" method="_on_game_start_number_of_strength"]
-[connection signal="number_of_water" from="." to="CanvasLayer/water_counter" method="_on_game_start_number_of_water"]
+[connection signal="number_of_water" from="." to="CanvasLayer/strength_counter_max" method="_on_game_start_number_of_water"]
 [connection signal="year" from="." to="CanvasLayer/year_counter" method="_on_game_start_year"]
 [connection signal="pressed" from="CanvasLayer/hide_tree_button" to="." method="_on_hide_tree_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/show tree" to="." method="_on_show_tree_pressed"]

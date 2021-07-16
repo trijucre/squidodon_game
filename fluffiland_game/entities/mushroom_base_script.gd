@@ -76,6 +76,10 @@ var other_animation_playing = false
 
 var dead = false
 
+var mouse_hovering = false
+var time_mouse = 0
+
+
 func load_file(file_path):
 	var file = File.new()
 	file.open(file_path, file.READ)
@@ -263,30 +267,35 @@ func _on_Timer_timeout():
 				node.queue_free()
 				virus_here = false
 			
+	if mouse_hovering == true :
+		time_mouse += 1
+		if time_mouse >= 2 :
+			var info_panel_scene = preload ("res://GUI/info_panel/info_panel.tscn")
+			var info_panel = info_panel_scene.instance()
 			
+			info_panel.specie_text = specie
+			info_panel.gender_text = gender
+			info_panel.pv = health
+			info_panel.pv_max = health_max
+			info_panel.energy = energy
+			info_panel.energy_max = energy_max
+			info_panel.happiness = happiness
+			info_panel.max_happiness = max_happiness
+			info_panel.name_text = creature_name
+			info_panel.age = age
+			info_panel.eat_1 = "poop"
+			info_panel.produce_1 = produce_1
+			info_panel.produce_2 = produce_2
+			get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
 
 		
 func show_stat():
+	mouse_hovering = true 
 
-	var info_panel_scene = preload ("res://GUI/info_panel/info_panel.tscn")
-	var info_panel = info_panel_scene.instance()
-	
-	info_panel.specie_text = specie
-	info_panel.gender_text = gender
-	info_panel.pv = health
-	info_panel.pv_max = health_max
-	info_panel.energy = energy
-	info_panel.energy_max = energy_max
-	info_panel.name_text = creature_name
-	info_panel.age = age
-	info_panel.eat_1 = "poop"
-	info_panel.produce_1 = produce_1
-	info_panel.produce_2 = produce_2
-	
-	
-	get_tree().root.get_node("Game//game_start/CanvasLayer").add_child(info_panel)
 
 func hide_stat():
+	mouse_hovering = false
+	time_mouse = 0
 	for node in get_tree().get_nodes_in_group("info_panel"):
 		node.queue_free()
 		

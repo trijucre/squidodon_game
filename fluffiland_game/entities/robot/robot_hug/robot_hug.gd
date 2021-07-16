@@ -10,10 +10,10 @@ func _process(delta):
 	._process(delta)
 
 
-func _on_hug_pressed(number):
-	if number == id :
-		_cancel_action()
-		asked_to_hug = true
+func _on_hug_pressed():
+
+	_cancel_action()
+	asked_to_hug = true
 		
 func hug(delta):
 	var space = get_world_2d().direct_space_state
@@ -23,6 +23,7 @@ func hug(delta):
 	var collision_objects = space.intersect_point(mousePos, 1)
 	if collision_objects :
 		if collision_objects[0].collider.is_in_group("creature") and Input.is_action_pressed("left_click_mouse") and moving == false :
+			print ("robot detected a creature to hug")
 			target = collision_objects[0].collider
 			destination = collision_objects[0].collider.position
 			moving = true

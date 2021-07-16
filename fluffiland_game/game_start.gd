@@ -33,11 +33,11 @@ var robot_repaired
 var tree_hidden = false
 #var number_animals = 5 #xmap/20
 #var pearl_count = 6
-var water_count = 0
+var water_count = 10
 var water_max = 1000
-var strength_count = 0
+var strength_count = 10
 var strength_max = 1000
-var mana_count = 3000
+var mana_count = 30
 var mana_max = 1000
 var rain_falling = false
 
@@ -80,7 +80,10 @@ onready var pause_menu_scene = preload ("res://GUI/pause_menu/pause_menu.tscn")
 signal end_of_day
 signal number_of_water
 signal number_of_strength
+signal number_of_strength_max
 signal number_of_mana
+signal number_of_mana_max
+signal object_produced
 #var first_animal_instance = 10
 #var second_animal_instance = 10
 
@@ -144,8 +147,8 @@ func _ready():
 	
 	if saved == false :
 		import_robot()
-	#	import_object(robot_cook_scene)
-	#	import_object(robot_hug_scene)
+		import_object(robot_cook_scene)
+		import_object(robot_hug_scene)
 		import_object(water_point)
 	#if saved == false :
 	#	import_object(pot_scene)
@@ -251,21 +254,31 @@ func _on_construct_panel_pressed(ressource_given_count_max, ressource_given, res
 	get_tree().root.get_node("Game/game_start/CanvasLayer").add_child(info_panel)
 	info_panel.position = Vector2 (1500, 100)
 
-func _on_water_earned(water_value):
-	water_count += water_value
-	emit_signal("number_of_water", self)
+#func _on_water_earned(water_value):
+#	water_count += water_value
+#	emit_signal("number_of_water", self)
 	
 func _on_strength_earned(strength_value):
-	strength_count += strength_value
-	emit_signal("number_of_strength", self)
+	if strength_count < strength_max :
+		strength_count += strength_value
+		emit_signal("number_of_strength", self)
 	
 func _on_mana_earned(mana_value):
-	mana_count += mana_value
-	emit_signal("number_of_mana", self)
+	if mana_count < mana_max :
+		mana_count += mana_value
+		emit_signal("number_of_mana", self)
+
+func _on_mana_max_modified (stock_value) :
+	mana_max += stock_value
+	emit_signal("number_of_mana_max", self)
+
+func _on_strength_max_modified (stock_value) :
+	strength_max += stock_value
+	emit_signal("number_of_strength_max", self)
 	
-func _on_water_spend(water_value):
-	water_count -= water_value
-	emit_signal("number_of_water", self)
+#func _on_water_spend(water_value):
+#	water_count -= water_value
+#	emit_signal("number_of_water", self)
 
 func _on_strength_spend(strength_value):
 	strength_count -= strength_value
@@ -283,11 +296,11 @@ func _on_mana_spend(mana_value):
 #		emit_signal("number_of_strength", self)
 #		emit_signal("number_of_pearls", self)
 		
-func _on_item_bought_pearl():
-	emit_signal("number_of_pearls", self)
+#func _on_item_bought_pearl():
+#	emit_signal("number_of_pearls", self)
 
-func _on_item_bought_strength():
-	emit_signal("number_of_strength", self)
+#func _on_item_bought_strength():
+#	emit_signal("number_of_strength", self)
 
 func import_parasite_algae():
 	for x in map_size.x:
@@ -514,31 +527,42 @@ func _on_show_tree_pressed():
 			node.sprite.play("default")
 			
 			
-func produce_object(min_radius, max_radius, object_scene, id):
+func produce_object(parent_position, parent_path, min_radius, max_radius, object_scene, id, object_type):
+	
+	self.connect ("object_produced", get_tree().root.get_node(parent_path), "_on_object_produced")
+	
+	var earth_position = Vector2(1, -0.3)
 	var valid_position = false
+	var try_number = 0
 	while not valid_position :
 		var count = rand_range(0, 2)
 		var bush_radius = randi()% int(min_radius) + int(max_radius)
 		var radius = Vector2(bush_radius, 0)
-		var center = self.position
+		var center = parent_position
 		var step = float(count) * PI 
 		var spawn_pos = center + radius.rotated(step)
 		var object = object_scene.instance()
-		var data = custom_gradient.get_data()
-		data.lock()
-		var gradient_value = data.get_pixel(spawn_pos.x + xmap * 0.5 , spawn_pos.y + ymap * 0.5).r * size_gradient
-		
+		#var data = custom_gradient.get_data()
+		#data.lock()
+		#var gradient_value = data.get_pixel( float(spawn_pos.x/(0.5 * tilesize)) , float(spawn_pos.y/(0.5 * tilesize)) ).r * size_gradient
+		try_number += 1
+		print ("try number :", try_number)
+		#var a = noise.get_noise_2d(spawn_pos.x,spawn_pos.y)
+		#data.unlock()
+		#a -= gradient_value
+		var tilemap_ground  = $Ground.get_cell(spawn_pos.x/tilesize ,spawn_pos.y/tilesize )
 
-			
-		var a = noise.get_noise_2d(spawn_pos.x,spawn_pos.y)
-		data.unlock()
-		a -= gradient_value
+		if tilemap_ground == 0 :
 
-		if a < possible_position.x and a > possible_position.y :
-			object.id = id
 			get_tree().root.get_node("Game/game_start/YSort").add_child(object)
 			object.position = spawn_pos
 			valid_position = true
+			emit_signal("object_produced", object_type)
+		
+		if try_number >= 10 :
+			object.queue_free()
+			valid_position = true
+			
 
 
 		

@@ -7,6 +7,7 @@ onready var age_text = $info_panel_text/VBoxContainer/age
 onready var produce_text = $info_panel_text/VBoxContainer/produce
 onready var id
 onready var evolution_panel_scene = preload("res://GUI/evolution_panel/evolution_panel.tscn")
+onready var happiness_text = $info_panel_text/VBoxContainer/happy
 
 
 onready var energy_container = $info_panel_text/VBoxContainer/stats_container/energy_container
@@ -38,6 +39,8 @@ var energy_max
 var gender_text 
 var pregnancy
 var age
+var happiness
+var max_happiness
 
 onready var stat_bit_scene = preload ("res://GUI/info_panel/stat_bit.tscn")
 onready var stat_bit_empty_scene = preload ("res://GUI/info_panel/stat_bit_empty.tscn")
@@ -80,7 +83,7 @@ func _ready():
 		add_bit(health_container)
 		
 	var lost_energy = energy_max - energy
-	print ("info lost energy ", lost_energy, " ", energy, " ", energy_max)
+
 	for number in lost_energy :
 		add_bit_empty(energy_container)
 	
@@ -88,6 +91,19 @@ func _ready():
 	for number in lost_pv :
 		add_bit_empty(health_container)
 
+	var relative_happines = float(happiness) / float(max_happiness)
+
+	if relative_happines >= 0.8 :
+		happiness_text.text = str(name + " is very happy !")
+	
+	elif relative_happines >= 0.5 :
+		happiness_text.text = str(name + " is quite happy .")
+		
+	elif  relative_happines >= 0.25 :
+		happiness_text.text = str(name + " feels okay")
+	
+	else :
+		happiness_text.text = str(name + " isn't really happy")
 
 func _on_close_button_pressed():
 	

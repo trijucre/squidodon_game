@@ -43,6 +43,7 @@ func _init():
 	
 	energy_spent = 1
 	egg_number = 1
+	poop_number = 3
 	
 	meat_scene = preload("res://food/meat/Squid_meat/squid_meat.tscn")
 	egg_scene = preload("res://entities/fluffilus/fluffilus_egg/fluffilus_egg.tscn")
